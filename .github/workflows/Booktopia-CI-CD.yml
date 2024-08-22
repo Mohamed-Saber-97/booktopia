@@ -1,0 +1,77 @@
+name: Java CI/CD with Maven
+
+on:
+  push:
+    branches: [ "development" ]
+  pull_request:
+    branches: [ "development" ]
+
+jobs:
+  build-and-analyze:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 22
+      uses: actions/setup-java@v3
+      with:
+        java-version: '22'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn clean install
+    - name: Run tests and generate reports
+      run: |
+        mvn test jacoco:report
+        mvn pmd:pmd
+        mvn checkstyle:checkstyle
+        mvn spotbugs:spotbugs
+    - name: List files in target directory for debugging
+      run: |
+        ls -R target
+        echo "Listing files in target/site"
+        ls -R target/site
+    - name: Upload reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: reports
+        path: |
+          target/site/checkstyle.html
+          target/site/pmd.html
+          target/site/cpd.html
+          target/spotbugs.html
+          target/jacoco-report/index.html
+
+  upload-reports-to-report-pages:
+    needs: build-and-analyze
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        ref: report-pages
+    - name: Download reports
+      uses: actions/download-artifact@v3
+      with:
+        name: reports
+    - name: List downloaded artifact files for debugging
+      run: |
+        ls -R .
+        echo "Listing files in report-pages directory"
+        ls -R report-pages || echo "Directory report-pages not found"
+    - name: Create report-pages directory and copy reports
+      run: |
+        mkdir -p report-pages
+        cp target/site/checkstyle.html report-pages/ || echo "checkstyle.html not found"
+        cp target/site/pmd.html report-pages/ || echo "pmd.html not found"
+        cp target/site/cpd.html report-pages/ || echo "cpd.html not found"
+        cp target/spotbugs.html report-pages/ || echo "spotbugs.html not found"
+        cp target/jacoco-report/index.html report-pages/ || echo "index.html not found"
+    - name: Add and commit reports to report-pages branch
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Update reports" || true
+        git push origin report-pages
