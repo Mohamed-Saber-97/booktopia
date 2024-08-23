@@ -27,19 +27,14 @@ jobs:
         mvn spotbugs:spotbugs
     - name: List files in target directory for debugging
       run: |
+        echo "Listing all files in the target directory:"
         ls -R target
-        echo "Listing files in target/site"
-        ls -R target/site
-    - name: Upload reports
+    - name: Upload target directory as artifact
       uses: actions/upload-artifact@v3
       with:
-        name: reports
-        path: |
-          target/site/checkstyle.html
-          target/site/pmd.html
-          target/site/cpd.html
-          target/spotbugs.html
-          target/jacoco-report/index.html
+        name: target-directory
+        path: target
+        if-no-files-found: error
 
   upload-reports-to-report-pages:
     needs: build-and-analyze
@@ -49,29 +44,27 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        fetch-depth: 0
         ref: report-pages
-    - name: Download reports
+    - name: Clean report-pages branch
+      run: |
+        git rm -rf .
+        git clean -fxd
+    - name: Download target directory artifact
       uses: actions/download-artifact@v3
       with:
-        name: reports
-    - name: List downloaded artifact files for debugging
+        name: target-directory
+        path: .
+    - name: Remove unwanted directories and files
       run: |
-        ls -R .
-        echo "Listing files in report-pages directory"
-        ls -R report-pages || echo "Directory report-pages not found"
-    - name: Create report-pages directory and copy reports
+        rm -rf classes maven-archiver maven-status/maven-compiler-plugin pmd/rulesets test-classes *.jar
+    - name: List files for debugging
       run: |
-        mkdir -p report-pages
-        cp target/site/checkstyle.html report-pages/ || echo "checkstyle.html not found"
-        cp target/site/pmd.html report-pages/ || echo "pmd.html not found"
-        cp target/site/cpd.html report-pages/ || echo "cpd.html not found"
-        cp target/spotbugs.html report-pages/ || echo "spotbugs.html not found"
-        cp target/jacoco-report/index.html report-pages/ || echo "index.html not found"
+        echo "Listing contents of the current directory:"
+        ls -R
     - name: Add and commit reports to report-pages branch
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "Update reports" || true
-        git push origin report-pages
+        git commit -m "Update reports" || echo "No changes to commit"
+        git push --force origin report-pages
