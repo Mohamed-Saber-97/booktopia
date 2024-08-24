@@ -9,5 +9,4 @@ class AddressTest {
     void testApplicationConstructor() {
         assertDoesNotThrow(Address::new);
     }
-
 }

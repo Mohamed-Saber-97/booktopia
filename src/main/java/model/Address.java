@@ -2,7 +2,9 @@ package model;
 
 
 import jakarta.persistence.Column;
+import lombok.Data;
 
+@Data
 public class Address {
     @Column(name = "street")
     private String street;
