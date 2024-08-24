@@ -1,9 +1,6 @@
 package model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -25,6 +22,6 @@ public class Account {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
-    @Embeddable
+    @Embedded
     private Address address;
 }
