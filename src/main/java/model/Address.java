@@ -8,14 +8,12 @@ import lombok.Data;
 @Data
 @Embeddable
 public class Address {
-    @Column(name = "street")
+    @Column(name = "street",nullable = false)
     private String street;
-    @Column(name = "city")
+    @Column(name = "city",nullable = false)
     private String city;
-    @Column(name = "state")
-    private String state;
-    @Column(name = "zipcode")
+    @Column(name = "zipcode", nullable = false)
     private String zipcode;
-    @Column(name = "country")
+    @Column(name = "country", nullable = false)
     private String country;
 }
