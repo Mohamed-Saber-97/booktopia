@@ -51,10 +51,10 @@
 <th><img src="images/icon_warning_sml.gif" alt="" />&#160;Warnings</th>
 <th><img src="images/icon_error_sml.gif" alt="" />&#160;Errors</th></tr>
 <tr class="b">
-<td align="left">2</td>
+<td align="left">3</td>
 <td>0</td>
 <td>0</td>
-<td>10</td></tr></table></section><section>
+<td>20</td></tr></table></section><section>
 <h3><a name="Files"></a>Files</h3><a name="Files"></a>
 <table border="0" class="bodyTable">
 <tr class="a">
@@ -68,10 +68,15 @@
 <td>0</td>
 <td>4</td></tr>
 <tr class="a">
+<td align="left"><a href="#model.2FAccount.java">model/Account.java</a></td>
+<td>0</td>
+<td>0</td>
+<td>11</td></tr>
+<tr class="b">
 <td align="left"><a href="#model.2FAddress.java">model/Address.java</a></td>
 <td>0</td>
 <td>0</td>
-<td>6</td></tr></table></section><section>
+<td>5</td></tr></table></section><section>
 <h3><a name="Rules"></a>Rules</h3><a name="Rules"></a>
 <table border="0" class="bodyTable">
 <tr class="a">
@@ -85,23 +90,33 @@
 <td>1</td>
 <td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr>
 <tr class="a">
+<td align="left">imports</td>
+<td><a class="externalLink" href="https://checkstyle.org/checks/imports/avoidstarimport.html">AvoidStarImport</a></td>
+<td>1</td>
+<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr>
+<tr class="b">
 <td align="left">javadoc</td>
 <td><a class="externalLink" href="https://checkstyle.org/checks/javadoc/javadocpackage.html">JavadocPackage</a></td>
 <td>2</td>
 <td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr>
-<tr class="b">
+<tr class="a">
 <td align="left"></td>
 <td><a class="externalLink" href="https://checkstyle.org/checks/javadoc/javadocvariable.html">JavadocVariable</a></td>
-<td>5</td>
+<td>13</td>
 <td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr>
-<tr class="a">
+<tr class="b">
 <td align="left"></td>
 <td><a class="externalLink" href="https://checkstyle.org/checks/javadoc/missingjavadocmethod.html">MissingJavadocMethod</a></td>
 <td>1</td>
 <td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr>
-<tr class="b">
+<tr class="a">
 <td align="left">misc</td>
 <td><a class="externalLink" href="https://checkstyle.org/checks/misc/finalparameters.html">FinalParameters</a></td>
+<td>1</td>
+<td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr>
+<tr class="b">
+<td align="left"></td>
+<td><a class="externalLink" href="https://checkstyle.org/checks/misc/newlineatendoffile.html">NewlineAtEndOfFile</a></td>
 <td>1</td>
 <td><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td></tr></table></section><section>
 <h3><a name="Details"></a>Details</h3><a name="Details"></a><section>
@@ -137,7 +152,7 @@
 <td>FinalParameters</td>
 <td>Parameter args should be final.</td>
 <td>2</td></tr></table></section><section>
-<h4><a name="model.2FAddress.java"></a>model/Address.java</h4><a name="model.2FAddress.java"></a>
+<h4><a name="model.2FAccount.java"></a>model/Account.java</h4><a name="model.2FAccount.java"></a>
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>Severity</th>
@@ -147,16 +162,78 @@
 <th>Line</th></tr>
 <tr class="b">
 <td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
+<td>misc</td>
+<td>NewlineAtEndOfFile</td>
+<td>File does not end with a newline.</td>
+<td>1</td></tr>
+<tr class="a">
+<td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
 <td>javadoc</td>
 <td>JavadocPackage</td>
 <td>Missing package-info.java file.</td>
 <td>1</td></tr>
+<tr class="b">
+<td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
+<td>imports</td>
+<td>AvoidStarImport</td>
+<td>Using the '.*' form of import should be avoided - jakarta.persistence.*.</td>
+<td>3</td></tr>
 <tr class="a">
 <td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
 <td>javadoc</td>
 <td>JavadocVariable</td>
 <td>Missing a Javadoc comment.</td>
-<td>9</td></tr>
+<td>10</td></tr>
+<tr class="b">
+<td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
+<td>javadoc</td>
+<td>JavadocVariable</td>
+<td>Missing a Javadoc comment.</td>
+<td>12</td></tr>
+<tr class="a">
+<td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
+<td>javadoc</td>
+<td>JavadocVariable</td>
+<td>Missing a Javadoc comment.</td>
+<td>14</td></tr>
+<tr class="b">
+<td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
+<td>javadoc</td>
+<td>JavadocVariable</td>
+<td>Missing a Javadoc comment.</td>
+<td>17</td></tr>
+<tr class="a">
+<td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
+<td>javadoc</td>
+<td>JavadocVariable</td>
+<td>Missing a Javadoc comment.</td>
+<td>19</td></tr>
+<tr class="b">
+<td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
+<td>javadoc</td>
+<td>JavadocVariable</td>
+<td>Missing a Javadoc comment.</td>
+<td>21</td></tr>
+<tr class="a">
+<td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
+<td>javadoc</td>
+<td>JavadocVariable</td>
+<td>Missing a Javadoc comment.</td>
+<td>23</td></tr>
+<tr class="b">
+<td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
+<td>javadoc</td>
+<td>JavadocVariable</td>
+<td>Missing a Javadoc comment.</td>
+<td>25</td></tr></table></section><section>
+<h4><a name="model.2FAddress.java"></a>model/Address.java</h4><a name="model.2FAddress.java"></a>
+<table border="0" class="bodyTable">
+<tr class="a">
+<th>Severity</th>
+<th>Category</th>
+<th>Rule</th>
+<th>Message</th>
+<th>Line</th></tr>
 <tr class="b">
 <td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
 <td>javadoc</td>
@@ -180,7 +257,13 @@
 <td>javadoc</td>
 <td>JavadocVariable</td>
 <td>Missing a Javadoc comment.</td>
-<td>17</td></tr></table></section></section></section>
+<td>17</td></tr>
+<tr class="b">
+<td align="left"><img src="images/icon_error_sml.gif" alt="" />&#160;Error</td>
+<td>javadoc</td>
+<td>JavadocVariable</td>
+<td>Missing a Javadoc comment.</td>
+<td>19</td></tr></table></section></section></section>
       </div>
     </div>
     <div class="clear">
