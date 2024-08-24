@@ -2,7 +2,7 @@
 <pmd-cpd xmlns="https://pmd-code.org/schema/cpd-report"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          pmdVersion="7.3.0"
-         timestamp="2024-08-24T15:56:20.940349493Z"
+         timestamp="2024-08-24T16:19:56.522850142Z"
          version="1.0.0"
          xsi:schemaLocation="https://pmd-code.org/schema/cpd-report https://pmd.github.io/schema/cpd-report_1_0_0.xsd">
    <file path="/home/runner/work/booktopia/booktopia/src/main/java/Application.java"
@@ -11,4 +11,6 @@
          totalNumberOfTokens="129"/>
    <file path="/home/runner/work/booktopia/booktopia/src/main/java/model/Address.java"
          totalNumberOfTokens="65"/>
+   <file path="/home/runner/work/booktopia/booktopia/src/main/java/model/Admin.java"
+         totalNumberOfTokens="33"/>
 </pmd-cpd>
