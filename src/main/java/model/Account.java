@@ -7,13 +7,9 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "account")
 @Data
+@Embeddable
 public class Account {
-    @Id
-    @Column(name = "id")
-    private Long id;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "birthday", nullable = false)
