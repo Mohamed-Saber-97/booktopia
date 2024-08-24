@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AddressTest {
     @Test
-    void testApplicationConstructor() {
+    void testAddressConstructor() {
         assertDoesNotThrow(Address::new);
     }
 }
