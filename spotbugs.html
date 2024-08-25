@@ -81,9 +81,9 @@
          <br/>
       </p>
       <h2>Metrics</h2>
-      <p>78 lines of code analyzed,
-	in 4 classes, 
-	in 2 packages.</p>
+      <p>5 lines of code analyzed,
+	in 1 classes, 
+	in 1 packages.</p>
       <table width="500" cellpadding="5" cellspacing="2">
          <tr class="tableheader">
             <th align="left">Metric</th>
@@ -97,18 +97,18 @@
          </tr>
          <tr class="tablerow1">
             <td>Medium Priority Warnings</td>
-            <td align="right">4</td>
-            <td align="right">51.28</td>
+            <td align="right"/>
+            <td align="right">0.00</td>
          </tr>
          <tr class="$totalClass">
             <td>
                <b>Total Warnings</b>
             </td>
             <td align="right">
-               <b>4</b>
+               <b>0</b>
             </td>
             <td align="right">
-               <b>51.28</b>
+               <b>0.00</b>
             </td>
          </tr>
       </table>
@@ -122,9 +122,6 @@
       <h2>Contents</h2>
       <ul>
          <li>
-            <a href="#Warnings_MALICIOUS_CODE">Malicious code vulnerability Warnings</a>
-         </li>
-         <li>
             <a href="#Details">Details</a>
          </li>
       </ul>
@@ -136,112 +133,17 @@
          </tr>
          <tr class="tablerow0">
             <td>
-               <a href="#Warnings_MALICIOUS_CODE">Malicious code vulnerability Warnings</a>
-            </td>
-            <td align="right">4</td>
-         </tr>
-         <tr class="tablerow1">
-            <td>
                <b>Total</b>
             </td>
             <td align="right">
-               <b>4</b>
+               <b>0</b>
             </td>
          </tr>
       </table>
       <h1>Warnings</h1>
       <p>Click on a warning row to see full context information.</p>
-      <h2>
-         <a name="Warnings_MALICIOUS_CODE">Malicious code vulnerability Warnings</a>
-      </h2>
-      <table class="warningtable" width="100%" cellspacing="0">
-         <tr class="tableheader">
-            <th align="left">Code</th>
-            <th align="left">Warning</th>
-         </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e18');">
-            <td>
-               <span class="priority-2">EI</span>
-            </td>
-            <td>model.Account.getAddress() may expose internal representation by returning Account.address</td>
-         </tr>
-         <tr class="detailrow1">
-            <td/>
-            <td>
-               <p id="d1e18" style="display: none;">
-                  <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Account<br/>In method model.Account.getAddress()<br/>Field model.Account.address<br/>At Account.java:[line 29]</p>
-            </td>
-         </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e52');">
-            <td>
-               <span class="priority-2">EI</span>
-            </td>
-            <td>model.Admin.getAccount() may expose internal representation by returning Admin.account</td>
-         </tr>
-         <tr class="detailrow0">
-            <td/>
-            <td>
-               <p id="d1e52" style="display: none;">
-                  <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Admin<br/>In method model.Admin.getAccount()<br/>Field model.Admin.account<br/>At Admin.java:[line 14]</p>
-            </td>
-         </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e34');">
-            <td>
-               <span class="priority-2">EI2</span>
-            </td>
-            <td>model.Account.setAddress(Address) may expose internal representation by storing an externally mutable object into Account.address</td>
-         </tr>
-         <tr class="detailrow1">
-            <td/>
-            <td>
-               <p id="d1e34" style="display: none;">
-                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Account<br/>In method model.Account.setAddress(Address)<br/>Field model.Account.address<br/>Local variable named address<br/>At Account.java:[line 10]</p>
-            </td>
-         </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e68');">
-            <td>
-               <span class="priority-2">EI2</span>
-            </td>
-            <td>model.Admin.setAccount(Account) may expose internal representation by storing an externally mutable object into Admin.account</td>
-         </tr>
-         <tr class="detailrow0">
-            <td/>
-            <td>
-               <p id="d1e68" style="display: none;">
-                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Admin<br/>In method model.Admin.setAccount(Account)<br/>Field model.Admin.account<br/>Local variable named account<br/>At Admin.java:[line 8]</p>
-            </td>
-         </tr>
-      </table>
       <h1>
          <a name="Details">Details</a>
       </h1>
-      <h2>
-         <a name="EI_EXPOSE_REP">EI_EXPOSE_REP: May expose internal representation by returning reference to mutable object</a>
-      </h2>
-
-  <p> Returning a reference to a mutable object value stored in one of the object's fields
-  exposes the internal representation of the object.&nbsp;
-   If instances
-   are accessed by untrusted code, and unchecked changes to
-   the mutable object would compromise security or other
-   important properties, you will need to do something different.
-  Returning a new copy of the object is better approach in many situations.</p>
-
-    <h2>
-         <a name="EI_EXPOSE_REP2">EI_EXPOSE_REP2: May expose internal representation by incorporating reference to mutable object</a>
-      </h2>
-
-  <p> This code stores a reference to an externally mutable object into the
-  internal representation of the object.&nbsp;
-   If instances
-   are accessed by untrusted code, and unchecked changes to
-   the mutable object would compromise security or other
-   important properties, you will need to do something different.
-  Storing a copy of the object is better approach in many situations.</p>
-
-    </body>
+   </body>
 </html>
