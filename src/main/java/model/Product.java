@@ -31,11 +31,13 @@ public class Product {
     private BigDecimal price;
 
     @Min(value = 0)
+    @Column(name = "quantity")
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
     @NotBlank
+    @Column(name = "image_path")
     private String imagePath;
 }
