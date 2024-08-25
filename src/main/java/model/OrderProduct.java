@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_product")
-@IdClass(OrderProductsId.class)
+@IdClass(OrderProductId.class)
 @Getter
 @Setter
 public class OrderProduct {
