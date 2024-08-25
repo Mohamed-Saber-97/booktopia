@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
 public class OrderProductId {
     @Column(name = "order_id")
     private Long orderId;
