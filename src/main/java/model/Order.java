@@ -11,7 +11,7 @@ import java.time.Instant;
 
 
 @Entity
-@Table(name = "orders")
+@Table(name = "order")
 @Getter
 @Setter
 public class Order {
