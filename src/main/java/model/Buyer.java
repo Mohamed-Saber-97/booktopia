@@ -1,7 +1,9 @@
 package model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -16,6 +18,17 @@ public class Buyer {
     private Long id;
     @Embedded
     private Account account;
+    @Column(name = "credit_limit")
+    @DecimalMin(value = "0.0")
+    private BigDecimal creditLimit;
+    @Column(name = "interest")
+    @ElementCollection
+    @CollectionTable(
+            name = "buyer_interest",
+            catalog = "booktopia",
+            joinColumns = @JoinColumn(name = "buyer_id")
+    )
+    private Set<String> interests = new HashSet<>();
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "buyer_wishlist",
