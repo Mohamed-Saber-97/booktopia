@@ -11,7 +11,7 @@ import java.time.Instant;
 
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 @Getter
 @Setter
 public class Order {
@@ -25,13 +25,17 @@ public class Order {
     @Column(name = "last_updated_on")
     @NotNull
     private final Instant lastUpdatedOn = Instant.now();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "status")
     @NotNull
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.UNSHIPPED;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id", nullable = false)
+    private Buyer buyer;
 
     public enum OrderStatus {
         UNSHIPPED, SHIPPED, CANCELLED
