@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "category")
+@Table(name = "category", indexes = {@Index(name = "idx_category_name", columnList = "name")})
 @Setter
 @Getter
 public class Category {

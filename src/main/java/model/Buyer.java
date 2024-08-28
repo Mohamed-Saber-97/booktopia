@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Entity
-@Table(name = "buyer")
+@Table(name = "buyer", indexes = {@Index(name = "idx_buyer_category", columnList = "category_id"), @Index(name = "idx_buyer_product", columnList = "product_id")})
 @Getter
 @Setter
 public class Buyer {
@@ -28,23 +28,20 @@ public class Buyer {
     @DecimalMin(value = "0.0")
     private BigDecimal creditLimit;
 
-    @ElementCollection
-    @CollectionTable(name = "buyer_interest", catalog = "booktopia", joinColumns = @JoinColumn(name = "buyer_id"))
-    @Column(name = "interest")
-    private Set<String> interests = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "buyer_interest", joinColumns = @JoinColumn(name = "buyer_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> interests = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "buyer_wishlist", catalog = "booktopia",
-            joinColumns = @JoinColumn(name = "buyer_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "product_id", nullable = false))
-    private Set<Product> wishlist = new HashSet<>();
+    @JoinTable(name = "buyer_wishlist", catalog = "booktopia", joinColumns = @JoinColumn(name = "buyer_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "product_id", nullable = false))
+    private Set<Product> wishlist = HashSet.newHashSet(16);
 
     @ElementCollection
     @CollectionTable(name = "cart_items", joinColumns = @JoinColumn(name = "buyer_id"))
     @MapKeyJoinColumn(name = "product_id")
     @Column(name = "quantity")
-    private Map<Product, Integer> cart = new HashMap<>();
+    private Map<Product, Integer> cart = HashMap.newHashMap(16);
 
     @OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY)
-    private Set<Order> orders = new HashSet<>();
+    private Set<Order> orders = HashSet.newHashSet(16);
 }

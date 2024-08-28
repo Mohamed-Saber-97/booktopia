@@ -17,18 +17,21 @@ import java.time.Instant;
 public class Order {
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = false,nullable = false)
     @NotNull
     private final Instant createdOn = Instant.now();
+
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "last_updated_on")
+    @Column(name = "last_updated_on",nullable = false)
     @NotNull
     private final Instant lastUpdatedOn = Instant.now();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "status")
+
+    @Column(name = "status",nullable = false)
     @NotNull
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.UNSHIPPED;

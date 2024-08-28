@@ -15,10 +15,14 @@ import java.math.BigDecimal;
 @Setter
 public class OrderProduct {
     @Id
-    @Column(name = "order_id")
-    private Long orderId;
-    @Column(name = "product_id")
-    private Long productId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     @Column(name = "quantity")
     @Min(value = 0)
