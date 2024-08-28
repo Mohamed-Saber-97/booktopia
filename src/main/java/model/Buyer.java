@@ -1,5 +1,6 @@
 package model;
 
+import base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.Getter;
@@ -15,11 +16,7 @@ import java.util.Set;
 @Table(name = "buyer", indexes = {@Index(name = "idx_buyer_category", columnList = "category_id"), @Index(name = "idx_buyer_product", columnList = "product_id")})
 @Getter
 @Setter
-public class Buyer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class Buyer extends BaseEntity<Long> {
 
     @Embedded
     private Account account;

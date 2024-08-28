@@ -1,5 +1,6 @@
 package model;
 
+import base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -12,10 +13,7 @@ import java.util.Set;
 @Table(name = "category", indexes = {@Index(name = "idx_category_name", columnList = "name")})
 @Setter
 @Getter
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Category extends BaseEntity<Long> {
 
     @Column(name = "name", unique = true)
     @NotBlank

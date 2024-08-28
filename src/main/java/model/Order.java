@@ -1,5 +1,6 @@
 package model;
 
+import base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -14,22 +15,7 @@ import java.time.Instant;
 @Table(name = "orders")
 @Getter
 @Setter
-public class Order {
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", updatable = false,nullable = false)
-    @NotNull
-    private final Instant createdOn = Instant.now();
-
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "last_updated_on",nullable = false)
-    @NotNull
-    private final Instant lastUpdatedOn = Instant.now();
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Order extends BaseEntity<Long> {
 
     @Column(name = "status",nullable = false)
     @NotNull

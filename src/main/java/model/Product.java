@@ -1,5 +1,6 @@
 package model;
 
+import base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -13,10 +14,7 @@ import java.math.BigDecimal;
 @Table(name = "product")
 @Setter
 @Getter
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Product extends BaseEntity<Long> {
 
     @Column(name = "name")
     @NotBlank
