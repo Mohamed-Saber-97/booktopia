@@ -8,9 +8,12 @@ target/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+.idea/*
+.idea/
 *.iws
 *.iml
 *.ipr
+.idea/misc.xml
 
 ### Eclipse ###
 .apt_generated
@@ -82,4 +85,5 @@ buildNumber.properties
 
 factoryConfiguration.json
 
-# End of https://mrkandreev.name/snippets/gitignore-generator/#Java,Maven,Java-Web,Code-Java
+# End of https://mrkandreev.name/snippets/gitignore-generator/#Java,Maven,Java-Web,Code-Java!/src/main/resources/META-INF/persistence.xml
+src/main/resources/META-INF/persistence.xml
