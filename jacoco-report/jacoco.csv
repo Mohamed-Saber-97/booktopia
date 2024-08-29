@@ -1,2 +1,11 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Booktopia,default,Application,4,0,0,0,2,0,2,0,2,0
+Booktopia,default,Application,16,0,0,0,6,0,2,0,2,0
+Booktopia,model,Category,8,0,0,0,2,0,1,0,1,0
+Booktopia,model,Order,6,0,0,0,2,0,1,0,1,0
+Booktopia,model,OrderProduct,9,0,0,0,5,0,1,0,1,0
+Booktopia,model,Product,3,0,0,0,1,0,1,0,1,0
+Booktopia,model,Buyer,20,0,0,0,8,0,1,0,1,0
+Booktopia,model,Order.OrderStatus,21,0,0,0,2,0,1,0,1,0
+Booktopia,repository,BuyerRepository,21,0,2,0,6,0,3,0,2,0
+Booktopia,base,BaseEntity,9,0,0,0,5,0,1,0,1,0
+Booktopia,base,BaseRepository,194,0,10,0,55,0,17,0,12,0

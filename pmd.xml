@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 https://pmd.github.io/schema/report_2_0_0.xsd" version="7.3.0" timestamp="2024-08-27T08:48:10.988">
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 https://pmd.github.io/schema/report_2_0_0.xsd" version="7.3.0" timestamp="2024-08-29T17:31:42.243">
+<file name="/home/runner/work/booktopia/booktopia/src/main/java/model/Order.java">
+<violation beginline="8" endline="8" begincolumn="1" endcolumn="52" rule="UnnecessaryImport" ruleset="Code Style" package="model" class="Order" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.3.0/pmd_rules_java_codestyle.html#unnecessaryimport" priority="4">
+Unused import 'org.hibernate.annotations.CreationTimestamp'
+</violation>
+<violation beginline="9" endline="9" begincolumn="1" endcolumn="50" rule="UnnecessaryImport" ruleset="Code Style" package="model" class="Order" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.3.0/pmd_rules_java_codestyle.html#unnecessaryimport" priority="4">
+Unused import 'org.hibernate.annotations.UpdateTimestamp'
+</violation>
+<violation beginline="11" endline="11" begincolumn="1" endcolumn="26" rule="UnnecessaryImport" ruleset="Code Style" package="model" class="Order" externalInfoUrl="https://docs.pmd-code.org/pmd-doc-7.3.0/pmd_rules_java_codestyle.html#unnecessaryimport" priority="4">
+Unused import 'java.time.Instant'
+</violation>
+</file>
 </pmd>

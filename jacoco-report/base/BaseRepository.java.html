@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Booktopia</a> &gt; <a href="index.source.html" class="el_package">base</a> &gt; <span class="el_source">BaseRepository.java</span></div><h1>BaseRepository.java</h1><pre class="source lang-java linenums">package base;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+
+import java.util.List;
+import java.util.Optional;
+
+public abstract class BaseRepository&lt;T, ID&gt; {
+
+    private final Class&lt;T&gt; entityClass;
+
+    @PersistenceContext
+    protected EntityManager entityManager;
+
+<span class="nc" id="L18">    protected BaseRepository(Class&lt;T&gt; entityClass) {</span>
+<span class="nc" id="L19">        this.entityClass = entityClass;</span>
+<span class="nc" id="L20">    }</span>
+
+    protected EntityManager getEntityManager() {
+<span class="nc" id="L23">        return entityManager;</span>
+    }
+
+    protected Class&lt;T&gt; getEntityClass() {
+<span class="nc" id="L27">        return entityClass;</span>
+    }
+
+    public Optional&lt;T&gt; findById(ID id) {
+<span class="nc" id="L31">        String jpql = &quot;SELECT e FROM &quot; + entityClass.getSimpleName() + &quot; e WHERE e.id = :id&quot;;</span>
+<span class="nc" id="L32">        TypedQuery&lt;T&gt; query = entityManager.createQuery(jpql, entityClass);</span>
+<span class="nc" id="L33">        query.setParameter(&quot;id&quot;, id);</span>
+        try {
+<span class="nc" id="L35">            return Optional.of(query.getSingleResult());</span>
+<span class="nc" id="L36">        } catch (Exception e) {</span>
+<span class="nc" id="L37">            return Optional.empty();</span>
+        }
+    }
+
+    public List&lt;T&gt; findAll() {
+<span class="nc" id="L42">        String jpql = &quot;SELECT e FROM &quot; + entityClass.getSimpleName() + &quot; e&quot;;</span>
+<span class="nc" id="L43">        TypedQuery&lt;T&gt; query = entityManager.createQuery(jpql, entityClass);</span>
+<span class="nc" id="L44">        return query.getResultList();</span>
+    }
+
+    public T save(T entity) {
+<span class="nc" id="L48">        EntityTransaction transaction = entityManager.getTransaction();</span>
+        try {
+<span class="nc" id="L50">            transaction.begin();</span>
+<span class="nc" id="L51">            entityManager.persist(entity);</span>
+<span class="nc" id="L52">            transaction.commit();</span>
+<span class="nc" id="L53">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L55">                transaction.rollback();</span>
+            }
+<span class="nc" id="L57">            throw e;</span>
+<span class="nc" id="L58">        }</span>
+<span class="nc" id="L59">        return entity;</span>
+    }
+
+    public T update(T entity) {
+<span class="nc" id="L63">        EntityTransaction transaction = entityManager.getTransaction();</span>
+        try {
+<span class="nc" id="L65">            transaction.begin();</span>
+<span class="nc" id="L66">            T updatedEntity = entityManager.merge(entity);</span>
+<span class="nc" id="L67">            transaction.commit();</span>
+<span class="nc" id="L68">            return updatedEntity;</span>
+<span class="nc" id="L69">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L71">                transaction.rollback();</span>
+            }
+<span class="nc" id="L73">            throw e;</span>
+        }
+    }
+
+    public void delete(T entity) {
+<span class="nc" id="L78">        EntityTransaction transaction = entityManager.getTransaction();</span>
+        try {
+<span class="nc" id="L80">            transaction.begin();</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));</span>
+<span class="nc" id="L82">            transaction.commit();</span>
+<span class="nc" id="L83">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L85">                transaction.rollback();</span>
+            }
+<span class="nc" id="L87">            throw e;</span>
+<span class="nc" id="L88">        }</span>
+<span class="nc" id="L89">    }</span>
+
+    public void deleteById(ID id) {
+<span class="nc" id="L92">        findById(id).ifPresent(this::delete);</span>
+<span class="nc" id="L93">    }</span>
+
+    public long count() {
+<span class="nc" id="L96">        String jpql = &quot;SELECT COUNT(e) FROM &quot; + entityClass.getSimpleName() + &quot; e&quot;;</span>
+<span class="nc" id="L97">        TypedQuery&lt;Long&gt; query = entityManager.createQuery(jpql, Long.class);</span>
+<span class="nc" id="L98">        return query.getSingleResult();</span>
+    }
+
+    public List&lt;T&gt; findAllSorted(String sortField, boolean ascending) {
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        String jpql = &quot;SELECT e FROM &quot; + entityClass.getSimpleName() + &quot; e ORDER BY e.&quot; + sortField + (ascending ? &quot; ASC&quot; : &quot; DESC&quot;);</span>
+<span class="nc" id="L103">        TypedQuery&lt;T&gt; query = entityManager.createQuery(jpql, entityClass);</span>
+<span class="nc" id="L104">        return query.getResultList();</span>
+    }
+
+    public List&lt;T&gt; findByField(String fieldName, Object value) {
+<span class="nc" id="L108">        String jpql = &quot;SELECT e FROM &quot; + entityClass.getSimpleName() + &quot; e WHERE e.&quot; + fieldName + &quot; = :value&quot;;</span>
+<span class="nc" id="L109">        TypedQuery&lt;T&gt; query = entityManager.createQuery(jpql, entityClass);</span>
+<span class="nc" id="L110">        query.setParameter(&quot;value&quot;, value);</span>
+<span class="nc" id="L111">        return query.getResultList();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
