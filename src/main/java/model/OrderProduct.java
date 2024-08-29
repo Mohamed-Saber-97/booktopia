@@ -42,6 +42,9 @@ public class OrderProduct {
     @Column(name = "price")
     @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal price;
+    @Transient
+    @DecimalMin(value = "0.0", inclusive = false)
+    private BigDecimal totalPrice;
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
     @Column(name = "created_by")

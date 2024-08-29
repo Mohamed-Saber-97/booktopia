@@ -5,10 +5,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "product")
@@ -19,7 +22,17 @@ public class Product extends BaseEntity<Long> {
     @Column(name = "name")
     @NotBlank
     private String name;
-
+    @Column(name = "author")
+    @NotBlank
+    private String author;
+    @CreationTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column(name = "releaseDate", nullable = false)
+    @NotNull
+    private LocalDate releaseDate;
+    @Column(name = "isbn")
+    @NotBlank
+    private String isbn;
     @Column(name = "description")
     @NotBlank
     private String description;
