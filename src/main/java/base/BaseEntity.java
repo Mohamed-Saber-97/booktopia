@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -29,6 +30,7 @@ public abstract class BaseEntity<ID> implements Serializable {
     @Column(name = "id")
     private ID id;
     @Column(name = "is_deleted", nullable = false)
+    @ColumnDefault("false")
     private boolean isDeleted;
     @Column(name = "created_by")
     private String createdBy;
