@@ -214,7 +214,7 @@
                     <username>admin</username>
                     <password>admin</password>
                     <url>http://localhost:9090/manager/text</url>
-                    <path>/booktopia</path>
+                    <path>/</path>
                 </configuration>
             </plugin>
         </plugins>
