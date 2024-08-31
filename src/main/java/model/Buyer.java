@@ -14,7 +14,6 @@ import java.util.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false, exclude = {"interests", "wishlist", "cart", "orders"})
 @ToString(exclude = {"interests", "wishlist", "cart", "orders"})
 public class Buyer extends BaseEntity<Long> {
