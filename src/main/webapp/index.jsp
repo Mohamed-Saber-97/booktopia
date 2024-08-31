@@ -173,11 +173,10 @@
 
 
 <!-- Banner -->
-<div class="sec-banner bg0 p-t-80 p-b-50">
+<!-- <div class="sec-banner bg0 p-t-80 p-b-50">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 col-xl-4 p-b-30 m-lr-auto">
-				<!-- Block1 -->
 				<div class="block1 wrap-pic-w">
 					<img src="images/banner-01.jpg" alt="IMG-BANNER">
 
@@ -203,7 +202,6 @@
 			</div>
 
 			<div class="col-md-6 col-xl-4 p-b-30 m-lr-auto">
-				<!-- Block1 -->
 				<div class="block1 wrap-pic-w">
 					<img src="images/banner-02.jpg" alt="IMG-BANNER">
 
@@ -229,7 +227,6 @@
 			</div>
 
 			<div class="col-md-6 col-xl-4 p-b-30 m-lr-auto">
-				<!-- Block1 -->
 				<div class="block1 wrap-pic-w">
 					<img src="images/banner-03.jpg" alt="IMG-BANNER">
 
@@ -255,22 +252,22 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 
 
 <!-- Product -->
-<section class="bg0 p-t-23 p-b-140">
+<section class="bg0 p-t-23 p-b-140" id="all-books">
 	<div class="container">
 		<div class="p-b-10">
 			<h3 class="ltext-103 cl5">
-				Product Overview
+				Discover awesome books
 			</h3>
 		</div>
 
 		<div class="flex-w flex-sb-m p-b-52">
 			<div class="flex-w flex-l-m filter-tope-group m-tb-10">
 				<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
-					All Products
+					All books
 				</button>
 
 				<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">

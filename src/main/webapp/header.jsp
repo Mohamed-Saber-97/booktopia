@@ -113,11 +113,11 @@
 									<li><a href="home-03.html">Homepage 3</a></li>
 								</ul>
 							</li> -->
-                            <c:if test="${sessionScope.user != null}">
-                                <li>
-                                    <a href="product.html">All books</a>
-                                </li>
-                            </c:if>
+
+                            <li>
+                                <a href="#all-books">All books</a>
+                            </li>
+
 
 
                             <!-- <li class="label1" data-label1="hot">
