@@ -24,9 +24,9 @@ public class Buyer extends BaseEntity<Long> {
     @Setter
     private Account account;
 
-    @Column(name = "credit_limit")
-    @DecimalMin(value = "0.0")
-    @NotNull(message = "credit limit is required")
+    @Column(name = "credit_limit", nullable = false,columnDefinition = "0.0",precision = 2,scale = 2)
+    @DecimalMin(value = "0.0", inclusive = false, message = "Credit limit must be greater than 0")
+    @NotNull(message = "Credit limit is required")
     private BigDecimal creditLimit;
 
     @ManyToMany(fetch = FetchType.LAZY)
