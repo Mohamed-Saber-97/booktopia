@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -24,9 +25,10 @@ public class Buyer extends BaseEntity<Long> {
     @Setter
     private Account account;
 
-    @Column(name = "credit_limit", nullable = false,columnDefinition = "0.0",precision = 2,scale = 2)
+    @Column(name = "credit_limit", nullable = false, precision = 10, scale = 2, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
     @DecimalMin(value = "0.0", inclusive = false, message = "Credit limit must be greater than 0")
     @NotNull(message = "Credit limit is required")
+    @ColumnDefault(value = "0.0")
     private BigDecimal creditLimit;
 
     @ManyToMany(fetch = FetchType.LAZY)
