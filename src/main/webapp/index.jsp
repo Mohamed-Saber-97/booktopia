@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<%@taglib prefix="c" uri="jakarta.tags.core"%>
 
 <head>
 	<title>Home</title>
@@ -51,21 +52,32 @@
 					</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
+						<!-- <a href="#" class="flex-c-m trans-04 p-lr-25">
 							Help & FAQs
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							My Account
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							EN
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							USD
-						</a>
+						</a> -->
+						<c:choose>
+							<c:when test="${sessionScope.user != null}">
+								<a href="#" class="flex-c-m trans-04 p-lr-25">
+									My Account
+								</a>
+							</c:when>
+							<c:when test="${sessionScope.admin != null}">
+								<a href="#" class="flex-c-m trans-04 p-lr-25">
+									View categories
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="#" class="flex-c-m trans-04 p-lr-25">
+									Sign up
+								</a>
+								<a href="#" class="flex-c-m trans-04 p-lr-25">
+									Admin Login
+								</a>
+								<a href="#" class="flex-c-m trans-04 p-lr-25">
+									User Login
+								</a>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>
@@ -81,20 +93,20 @@
 					<!-- Menu desktop -->
 					<div class="menu-desktop">
 						<ul class="main-menu">
-							<li class="active-menu">
+							<!-- <li class="active-menu">
 								<a href="index.html">Home</a>
 								<ul class="sub-menu">
 									<li><a href="index.html">Homepage 1</a></li>
 									<li><a href="home-02.html">Homepage 2</a></li>
 									<li><a href="home-03.html">Homepage 3</a></li>
 								</ul>
-							</li>
+							</li> -->
 
 							<li>
-								<a href="product.html">Shop</a>
+								<a href="product.html">All books</a>
 							</li>
 
-							<li class="label1" data-label1="hot">
+							<!-- <li class="label1" data-label1="hot">
 								<a href="shoping-cart.html">Features</a>
 							</li>
 
@@ -108,7 +120,7 @@
 
 							<li>
 								<a href="contact.html">Contact</a>
-							</li>
+							</li> -->
 						</ul>
 					</div>
 
