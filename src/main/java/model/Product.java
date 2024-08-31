@@ -6,8 +6,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
@@ -15,30 +14,34 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "product")
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(exclude = {"category"}, callSuper = false)
+@ToString(exclude = {"category"})
 public class Product extends BaseEntity<Long> {
 
     @Column(name = "name")
-    @NotBlank
+    @NotBlank(message = "name is required")
     private String name;
     @Column(name = "author")
-    @NotBlank
+    @NotBlank(message = "author is required")
     private String author;
     @CreationTimestamp
     @Temporal(TemporalType.DATE)
     @Column(name = "releaseDate", nullable = false)
-    @NotNull
+    @NotNull(message = "Release Date is required")
     private LocalDate releaseDate;
-    @Column(name = "isbn")
-    @NotBlank
+    @Column(name = "isbn",unique = true)
+    @NotBlank(message = "ISBN is required")
     private String isbn;
     @Column(name = "description")
-    @NotBlank
+    @NotBlank(message = "Description is required")
     private String description;
 
     @Column(name = "price")
     @DecimalMin(value = "0.0", inclusive = false)
+    @NotNull(message = "price is required")
     private BigDecimal price;
 
     @Min(value = 0)
@@ -48,7 +51,7 @@ public class Product extends BaseEntity<Long> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-    @NotBlank
+    @NotBlank(message = "Description shouldn't be empty or null")
     @Column(name = "image_path")
     private String imagePath;
 }
