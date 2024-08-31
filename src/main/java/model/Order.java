@@ -18,7 +18,7 @@ import lombok.ToString;
 public class Order extends BaseEntity<Long> {
 
     @Column(name = "status", nullable = false)
-    @NotNull
+    @NotNull(message = "Order Status is required")
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.UNSHIPPED;
 
@@ -27,10 +27,16 @@ public class Order extends BaseEntity<Long> {
     private Buyer buyer;
 
     public Order(Buyer buyer) {
+        if (buyer == null) {
+            throw new IllegalArgumentException("Buyer cannot be null");
+        }
         this.buyer = buyer;
     }
 
     public void updateStatus(OrderStatus newStatus) {
+        if (newStatus == null) {
+            throw new IllegalArgumentException("New status cannot be null");
+        }
         this.status = newStatus;
     }
 
