@@ -4,6 +4,7 @@ import base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -25,6 +26,7 @@ public class Buyer extends BaseEntity<Long> {
 
     @Column(name = "credit_limit")
     @DecimalMin(value = "0.0")
+    @NotNull(message = "credit limit is required")
     private BigDecimal creditLimit;
 
     @ManyToMany(fetch = FetchType.LAZY)
