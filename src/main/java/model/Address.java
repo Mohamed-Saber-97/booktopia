@@ -3,22 +3,29 @@ package model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
+import java.io.Serializable;
+
+@Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(callSuper = false)
+@EqualsAndHashCode(callSuper = false)
 @Embeddable
-public class Address {
+public class Address implements Serializable {
     @Column(name = "street")
-    @NotNull
+    @NotBlank(message = "Street is required")
     private String street;
     @Column(name = "city")
-    @NotNull
+    @NotBlank(message = "City is required")
     private String city;
     @Column(name = "zipcode")
-    @NotNull
+    @NotBlank(message = "Zipcode is required")
     private String zipcode;
     @Column(name = "country")
-    @NotNull
+    @NotBlank(message = "Country is required")
     private String country;
 }
