@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Category extends BaseEntity<Long> {
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name", unique = true, nullable = false)
     @NotBlank(message = "name is required")
     @Setter
     private String name;
@@ -30,6 +30,9 @@ public class Category extends BaseEntity<Long> {
     }
 
     public void addProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
         if (this.getId() == null) {
             throw new IllegalStateException("Cannot add products to a new Category. The category must be persisted first.");
         }
@@ -38,6 +41,9 @@ public class Category extends BaseEntity<Long> {
     }
 
     public void removeProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
         products.remove(product);
         product.setCategory(null);
     }
