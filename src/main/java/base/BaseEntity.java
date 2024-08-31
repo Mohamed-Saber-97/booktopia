@@ -27,14 +27,19 @@ public abstract class BaseEntity<ID> implements Serializable {
     private final Instant lastUpdatedOn = Instant.now();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id",updatable = false, nullable = false)
     private ID id;
-    @Column(name = "is_deleted", nullable = false)
+    @Column(name = "is_deleted")
     @ColumnDefault("false")
+    @NotNull
     private boolean isDeleted;
     @Column(name = "created_by")
     private String createdBy;
     @Column(name = "modified_by")
     private String modifiedBy;
+    public void markAsDeleted() {
+        this.isDeleted = true;
+    }
+
 }
 
