@@ -1,7 +1,10 @@
 package model;
 
 import base.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.Data;
 
 @Entity
@@ -9,5 +12,6 @@ import lombok.Data;
 @Data
 public class Admin extends BaseEntity<Long> {
     @Embedded
+    @Valid
     private Account account;
 }
