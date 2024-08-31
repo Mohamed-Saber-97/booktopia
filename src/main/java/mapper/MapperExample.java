@@ -1,5 +1,5 @@
 package mapper;
 
 public class MapperExample {
-    // a place holder for a mapper class
+    // a placeholder for a mapper class
 }
