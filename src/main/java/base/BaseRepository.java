@@ -1,9 +1,7 @@
 package base;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
+import utils.EMFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,11 +10,13 @@ public abstract class BaseRepository<T, ID> {
 
     private final Class<T> entityClass;
 
-    @PersistenceContext
     protected EntityManager entityManager;
+    protected EntityManagerFactory emf;
 
     protected BaseRepository(Class<T> entityClass) {
         this.entityClass = entityClass;
+        emf = EMFactory.getEMF("booktopia");
+        entityManager = emf.createEntityManager();
     }
 
     protected EntityManager getEntityManager() {

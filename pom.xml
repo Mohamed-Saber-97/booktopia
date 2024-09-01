@@ -61,6 +61,7 @@
             <version>8.0.1.Final</version>
         </dependency>
 
+
         <!--        The following three (3) dependencies manage servlets and JSP-->
         <dependency>
             <groupId>jakarta.platform</groupId>
@@ -79,6 +80,16 @@
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
             <version>3.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <version>3.0.3</version>
+        </dependency>
 
     </dependencies>
     <build>
@@ -88,6 +99,14 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <mainClass>Application</mainClass>
                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
