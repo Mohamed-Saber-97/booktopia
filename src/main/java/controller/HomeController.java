@@ -14,7 +14,7 @@ public class HomeController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-        request.setAttribute("pageTitle", "Home");
+        request.getSession().setAttribute("pageTitle", "Home");
         dispatcher.forward(request, response);
     }
 

@@ -27,45 +27,19 @@ public class SignupController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
-        request.setAttribute("pageTitle", "Sign up");
+        request.getSession().setAttribute("pageTitle", "Sign up");
         dispatcher.forward(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String birthday = request.getParameter("birthday");
-        String job = request.getParameter("job");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String creditLimit = request.getParameter("creditLimit");
-        String phoneNumber = request.getParameter("phoneNumber");
-        String country = request.getParameter("country");
-        String city = request.getParameter("city");
-        String street = request.getParameter("street");
-        String zipcode = request.getParameter("zipcode");
-
-        Buyer buyer = new Buyer();
-        buyer.setAccount(new Account());
-        buyer.getAccount().setAddress(new Address());
-        buyer.getAccount().setName(name);
-        buyer.getAccount().setBirthday(LocalDate.parse(birthday));
-        buyer.getAccount().setJob(job);
-        buyer.getAccount().setEmail(email);
-        buyer.getAccount().setPassword(password);
-        buyer.setCreditLimit(BigDecimal.valueOf(Double.parseDouble(creditLimit)));
-        buyer.getAccount().setPhoneNumber(phoneNumber);
-        buyer.getAccount().getAddress().setCountry(country);
-        buyer.getAccount().getAddress().setCity(city);
-        buyer.getAccount().getAddress().setStreet(street);
-        buyer.getAccount().getAddress().setZipcode(zipcode);
-
+        Buyer buyer = (Buyer) request.getAttribute("buyer");
         Buyer savedBuyer = buyerController.save(buyer);
-
         HttpSession session = request.getSession(true);
         session.setAttribute("user", savedBuyer);
-        request.setAttribute("pageTitle", "Home");
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        session.setAttribute("pageTitle", "Home");
+        System.out.println("Redirecting to home page");
+        response.sendRedirect(request.getContextPath() + "/");
     }
 
     @Override

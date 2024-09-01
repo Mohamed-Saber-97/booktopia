@@ -13,4 +13,12 @@ public class BuyerService {
     public Buyer save(Buyer buyer) {
         return buyerRepository.save(buyer);
     }
+
+    public boolean existsByEmail(String email) {
+        return buyerRepository.existsByEmail(email);
+    }
+
+    public boolean existsByPhoneNumber(String phoneNumber) {
+        return buyerRepository.existsByPhoneNumber(phoneNumber);
+    }
 }
