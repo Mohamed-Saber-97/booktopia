@@ -619,6 +619,89 @@
     <script src="js/map-custom.js"></script>
     <!--===============================================================================================-->
     <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const emailInput = form.querySelector('input[name="email"]');
+            const nameInput = form.querySelector('input[name="name"]');
+            const dateInput = form.querySelector('input[name="date"]');
+            const passwordInput = form.querySelector('input[name="pass"]');
+            const jobInput = form.querySelector('input[name="job"]');
+            const phoneInput = form.querySelector('input[name="phone"]');
+            const addressInput = form.querySelector('input[name="address"]');
+
+            form.addEventListener('submit', function(event) {
+                let valid = true;
+
+                // Clear previous error messages
+                form.querySelectorAll('.error-message').forEach(el => el.remove());
+
+                // Validate email
+                if (!validateEmail(emailInput.value)) {
+                    showError(emailInput, 'Please enter a valid email address.');
+                    valid = false;
+                }
+
+                // Validate name
+                if (nameInput.value.trim() === '') {
+                    showError(nameInput, 'Full name is required.');
+                    valid = false;
+                }
+
+                // Validate date
+                if (dateInput.value.trim() === '') {
+                    showError(dateInput, 'Date of birth is required.');
+                    valid = false;
+                }
+
+                // Validate password
+                if (passwordInput.value.length < 6) {
+                    showError(passwordInput, 'Password must be at least 6 characters long.');
+                    valid = false;
+                }
+
+                // Validate job
+                if (jobInput.value.trim() === '') {
+                    showError(jobInput, 'Job is required.');
+                    valid = false;
+                }
+
+                // Validate phone
+                if (!validatePhone(phoneInput.value)) {
+                    showError(phoneInput, 'Please enter a valid phone number.');
+                    valid = false;
+                }
+
+                // Validate address
+                if (addressInput.value.trim() === '') {
+                    showError(addressInput, 'Address is required.');
+                    valid = false;
+                }
+
+                if (!valid) {
+                    event.preventDefault();
+                }
+            });
+
+            function validateEmail(email) {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailPattern.test(email);
+            }
+
+            function validatePhone(phone) {
+                const phonePattern = /^[0-9]{10}$/; // Adjust as needed
+                return phonePattern.test(phone);
+            }
+
+            function showError(input, message) {
+                const error = document.createElement('div');
+                error.className = 'error-message';
+                error.style.color = 'red';
+                error.textContent = message;
+                input.parentElement.insertBefore(error, input.nextSibling);
+            }
+        });
+    </script>
 
 
 <%@include file="footer.jsp"%>
