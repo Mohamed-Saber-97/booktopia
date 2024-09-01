@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="jakarta.tags.core"%>
 
 <head>
-    <title><%= request.getAttribute("pageTitle") %></title>
+    <title><%= session.getAttribute("pageTitle") %></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
