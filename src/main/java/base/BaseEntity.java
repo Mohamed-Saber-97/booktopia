@@ -29,19 +29,19 @@ public abstract class BaseEntity<ID> implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",updatable = false, nullable = false)
+    @Column(name = "id", updatable = false, nullable = false)
     private ID id;
 
-    @Column(name = "is_deleted",nullable = false)
+    @Column(name = "is_deleted", nullable = false)
     @NotNull
     @ColumnDefault("false")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
-    @Column(name = "created_by",length = 100)
-    private String createdBy;
+    @Column(name = "created_by", length = 100)
+    private String createdBy = null;
 
-    @Column(name = "modified_by",length = 100)
-    private String modifiedBy;
+    @Column(name = "modified_by", length = 100)
+    private String modifiedBy = null;
 
     public void markAsDeleted() {
         this.isDeleted = true;

@@ -38,56 +38,12 @@ public class SignupController extends HttpServlet {
         String job = request.getParameter("job");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirmPassword");
         String creditLimit = request.getParameter("creditLimit");
         String phoneNumber = request.getParameter("phoneNumber");
         String country = request.getParameter("country");
         String city = request.getParameter("city");
         String street = request.getParameter("street");
         String zipcode = request.getParameter("zipcode");
-
-        if (!NotEmptyValidator.isValid(name, birthday, job, email, password, confirmPassword, creditLimit, phoneNumber, country, city, street, zipcode)) {
-            request.setAttribute("error", "All fields are required");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
-            request.setAttribute("pageTitle", "Sign up");
-            dispatcher.forward(request, response);
-            return;
-        }
-        if (!EmailValidator.isValid(email)) {
-            request.setAttribute("error", "Invalid email");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
-            request.setAttribute("pageTitle", "Sign up");
-            dispatcher.forward(request, response);
-            return;
-        }
-        if (!PasswordConfirmationValidator.isValid(password, confirmPassword)) {
-            request.setAttribute("error", "Password and confirm password do not match");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
-            request.setAttribute("pageTitle", "Sign up");
-            dispatcher.forward(request, response);
-            return;
-        }
-        if (!CreditLimitValidator.isValid(creditLimit)) {
-            request.setAttribute("error", "Invalid credit limit");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
-            request.setAttribute("pageTitle", "Sign up");
-            dispatcher.forward(request, response);
-            return;
-        }
-        if (!PhoneNumberValidator.isValid(phoneNumber)) {
-            request.setAttribute("error", "Invalid phone number");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
-            request.setAttribute("pageTitle", "Sign up");
-            dispatcher.forward(request, response);
-            return;
-        }
-        if (!CountryValidator.isValid(country)) {
-            request.setAttribute("error", "Invalid country");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
-            request.setAttribute("pageTitle", "Sign up");
-            dispatcher.forward(request, response);
-            return;
-        }
 
         Buyer buyer = new Buyer();
         buyer.setAccount(new Account());
