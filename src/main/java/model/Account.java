@@ -27,7 +27,7 @@ public class Account implements Serializable {
     @Temporal(TemporalType.DATE)
     private LocalDate birthday;
 
-    @Column(name = "password", length = 60, nullable = false)
+    @Column(name = "password", length = 72, nullable = false)
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
