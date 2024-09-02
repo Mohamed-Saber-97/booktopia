@@ -1,7 +1,10 @@
 package service;
 
 import model.Buyer;
+import model.Product;
 import repository.BuyerRepository;
+
+import java.util.List;
 
 public class BuyerService {
     private BuyerRepository buyerRepository;
@@ -20,5 +23,10 @@ public class BuyerService {
 
     public boolean existsByPhoneNumber(String phoneNumber) {
         return buyerRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+    public List<Product> findInterestsByBuyerId(Long buyerId) {
+        List<Product> interests = buyerRepository.findInterestsByBuyerId(buyerId);
+        return interests.subList(0, Math.min(interests.size(), 16));
     }
 }

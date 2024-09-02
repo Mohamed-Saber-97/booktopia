@@ -3,6 +3,7 @@ package repository;
 import base.BaseRepository;
 import model.Buyer;
 import model.Order;
+import model.Product;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,5 +32,15 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         return entityManager.createQuery("SELECT COUNT(b) FROM Buyer b WHERE b.account.phoneNumber = :phoneNumber", Long.class)
                 .setParameter("phoneNumber", phoneNumber)
                 .getSingleResult() > 0;
+    }
+
+    public List<Product> findInterestsByBuyerId(Long buyerId) {
+        Buyer buyer = findById(buyerId).orElse(null);
+        if (buyer != null) {
+            List<Product> interests = new ArrayList<>();
+            buyer.getInterests().forEach(category -> interests.addAll(category.getProducts()));
+            return interests;
+        }
+        return Collections.emptyList();
     }
 }
