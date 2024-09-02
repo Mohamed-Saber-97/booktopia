@@ -1,4 +1,5 @@
 <%@include file="header.jsp"%>
+
 <c:if test="${not empty error}">
     <div class="alert alert-danger text-center" style="width: fit-content; margin: 0 auto;">
         ${error}
@@ -83,7 +84,7 @@
                 </div>
                 <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
                     form="updateProfileForm">
-                    Submit
+                    Update my profile
                 </button>
             </div>
         </div>
@@ -108,4 +109,5 @@
             .catch(error => console.error('Error fetching country names:', error));
     }
 </script> -->
+
 <%@include file="footer.jsp"%>

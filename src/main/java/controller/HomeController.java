@@ -25,7 +25,6 @@ public class HomeController extends HttpServlet {
         request.getSession().setAttribute("pageTitle", "Home");
         List<Product> interests;
         if (request.getSession().getAttribute("user") != null) {
-            System.out.println("IDDD+=" + ((Buyer) request.getSession().getAttribute("user")).getId());
             interests = buyerService.findInterestsByBuyerId(((Buyer) request.getSession().getAttribute("user")).getId());
             request.setAttribute("interests", interests);
         } else {
