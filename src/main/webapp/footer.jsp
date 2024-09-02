@@ -2,7 +2,7 @@
 <footer class="bg3 p-t-75 p-b-32">
     <div class="container">
         <div class="row">
-            <div class="col-sm-6 col-lg-3 p-b-50">
+            <!-- <div class="col-sm-6 col-lg-3 p-b-50">
                 <h4 class="stext-301 cl0 p-b-30">
                     Categories
                 </h4>
@@ -32,38 +32,26 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
 
             <div class="col-sm-6 col-lg-3 p-b-50">
-                <h4 class="stext-301 cl0 p-b-30">
+                <!-- <h4 class="stext-301 cl0 p-b-30">
                     Help
                 </h4>
 
                 <ul>
                     <li class="p-b-10">
                         <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                            Track Order
+                            Order history
                         </a>
                     </li>
-
-                    <!-- <li class="p-b-10">
-                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                            Returns
-                        </a>
-                    </li> -->
 
                     <li class="p-b-10">
                         <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
                             Shipping
                         </a>
                     </li>
-
-                    <!-- <li class="p-b-10">
-                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                            FAQs
-                        </a>
-                    </li> -->
-                </ul>
+                </ul> -->
             </div>
 
             <div class="col-sm-6 col-lg-3 p-b-50">
@@ -72,11 +60,11 @@
                 </h4>
 
                 <p class="stext-107 cl7 size-201">
-                    Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us
-                    on (+1) 96 716 6879
+                    Any questions? Let us know in store at 8th floor, 212 Cairo St, Egypt, QA 11566 or call us
+                    on 01247789036
                 </p>
 
-                <div class="p-t-27">
+                <!-- <div class="p-t-27">
                     <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
                         <i class="fa fa-facebook"></i>
                     </a>
@@ -88,7 +76,7 @@
                     <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
                         <i class="fa fa-pinterest-p"></i>
                     </a>
-                </div>
+                </div> -->
             </div>
 
             <!-- <div class="col-sm-6 col-lg-3 p-b-50">
@@ -140,9 +128,8 @@
                 Copyright &copy;<script>
                     document.write(new Date().getFullYear());
                 </script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by
-                Mohamed Saber, Abdelrahman Elmohandes, Khled Hesham
+                Mohamed Saber & Abdelrahman Elmohandes & Khled Hesham
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-
             </p>
         </div>
     </div>

@@ -28,6 +28,8 @@ public class SignupController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
         request.getSession().setAttribute("pageTitle", "Sign up");
+        String[] countries = CountryValidator.countryArray;
+        request.getSession().setAttribute("countries", countries);
         dispatcher.forward(request, response);
     }
 

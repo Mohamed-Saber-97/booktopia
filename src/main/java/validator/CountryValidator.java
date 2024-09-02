@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class CountryValidator {
     private static Set<String> countrySet = new HashSet<>();
-    private static String[] countryArray = new String[]{"Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola",
+    public static String[] countryArray = new String[]{"Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola",
             "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria",
             "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin",
             "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil",

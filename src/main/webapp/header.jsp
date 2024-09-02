@@ -52,29 +52,23 @@
                     </div>
 
                     <div class="right-top-bar flex-w h-full">
-                        <!-- <a href="#" class="flex-c-m trans-04 p-lr-25">
-							Help & FAQs
-						</a> -->
                         <c:choose>
                             <c:when test="${sessionScope.user != null}">
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
+                                <a href="view-my-profile" class="flex-c-m trans-04 p-lr-25">
                                     My Account
                                 </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
-                                    Track order
-                                </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
+                                <a href="order-history" class="flex-c-m trans-04 p-lr-25">
                                     Order history
                                 </a>
                             </c:when>
                             <c:when test="${sessionScope.admin != null}">
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
+                                <a href="view-books" class="flex-c-m trans-04 p-lr-25">
                                     Manage books
                                 </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
+                                <a href="view-categories" class="flex-c-m trans-04 p-lr-25">
                                     Manage categories
                                 </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
+                                <a href="view-users" class="flex-c-m trans-04 p-lr-25">
                                     View users
                                 </a>
                             </c:when>
@@ -82,10 +76,10 @@
                                 <a href="signup" class="flex-c-m trans-04 p-lr-25">
                                     Sign up
                                 </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
+                                <!-- <a href="admin-login" class="flex-c-m trans-04 p-lr-25">
                                     Admin Login
-                                </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
+                                </a> -->
+                                <a href="user-login" class="flex-c-m trans-04 p-lr-25">
                                     User Login
                                 </a>
                             </c:otherwise>
@@ -98,7 +92,7 @@
                 <nav class="limiter-menu-desktop container">
 
                     <!-- Logo desktop -->
-                    <a href="#" class="logo">
+                    <a href="/" class="logo">
                         <img src="images/icons/logo-01.png" alt="IMG-LOGO">
                     </a>
 
@@ -117,8 +111,6 @@
                             <li>
                                 <a href="#all-books">All books</a>
                             </li>
-
-
 
                             <!-- <li class="label1" data-label1="hot">
 								<a href="shoping-cart.html">Features</a>
@@ -145,13 +137,13 @@
                         </div>
 
                         <c:if test="${sessionScope.user != null}">
-                            <a href="#"
+                            <a href="view-cart"
                                 class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
                                 data-notify="2">
                                 <i class="zmdi zmdi-shopping-cart"></i>
                             </a>
 
-                            <a href="#"
+                            <a href="view-wishlist"
                                 class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
                                 data-notify="0">
                                 <i class="zmdi zmdi-favorite-outline"></i>
@@ -166,7 +158,7 @@
         <div class="wrap-header-mobile">
             <!-- Logo moblie -->
             <div class="logo-mobile">
-                <a href="index.html"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
+                <a href="/"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
             </div>
 
             <!-- Icon header -->
@@ -176,12 +168,14 @@
                 </div>
 
                 <c:if test="${sessionScope.user != null}">
-                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+                    <a href="view-cart"
+                        class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                         data-notify="2">
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </a>
 
-                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+                    <a href="view-wishlist"
+                        class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                         data-notify="0">
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
@@ -202,33 +196,50 @@
             <ul class="topbar-mobile">
                 <li>
                     <div class="left-top-bar">
-                        Free shipping for standard order over $100
+                        Your only way to get enlightened
                     </div>
                 </li>
 
                 <li>
                     <div class="right-top-bar flex-w h-full">
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            Help & FAQs
-                        </a>
-
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            My Account
-                        </a>
-
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            EN
-                        </a>
-
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            USD
-                        </a>
+                        <c:choose>
+                            <c:when test="${sessionScope.user != null}">
+                                <a href="view-my-profile" class="flex-c-m p-lr-10 trans-04">
+                                    My Account
+                                </a>
+                                <a href="order-history" class="flex-c-m p-lr-10 trans-04">
+                                    Order history
+                                </a>
+                            </c:when>
+                            <c:when test="${sessionScope.admin != null}">
+                                <a href="view-books" class="flex-c-m p-lr-10 trans-04">
+                                    Manage books
+                                </a>
+                                <a href="view-categories" class="flex-c-m p-lr-10 trans-04">
+                                    Manage categories
+                                </a>
+                                <a href="view-users" class="flex-c-m p-lr-10 trans-04">
+                                    View users
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="signup" class="flex-c-m p-lr-10 trans-04">
+                                    Sign up
+                                </a>
+                                <!-- <a href="admin-login" class="flex-c-m p-lr-10 trans-04">
+                                    Admin Login
+                                </a> -->
+                                <a href="user-login" class="flex-c-m p-lr-10 trans-04">
+                                    User Login
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </li>
             </ul>
 
             <ul class="main-menu-m">
-                <li>
+                <!-- <li>
                     <a href="index.html">Home</a>
                     <ul class="sub-menu-m">
                         <li><a href="index.html">Homepage 1</a></li>
@@ -238,13 +249,13 @@
                     <span class="arrow-main-menu-m">
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </span>
-                </li>
+                </li> -->
 
                 <li>
-                    <a href="product.html">Shop</a>
+                    <a href="#all-books">All books</a>
                 </li>
 
-                <li>
+                <!-- <li>
                     <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
                 </li>
 
@@ -258,7 +269,7 @@
 
                 <li>
                     <a href="contact.html">Contact</a>
-                </li>
+                </li> -->
             </ul>
         </div>
 
