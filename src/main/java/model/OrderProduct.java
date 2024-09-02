@@ -48,7 +48,7 @@ public class OrderProduct {
     @NotNull
     private Product product;
 
-    @Column(name = "quantity",nullable = false)
+    @Column(name = "quantity", nullable = false)
     @Min(value = 0, message = "Quantity must be at least 0")
     @ColumnDefault(value = "0")
     @NotNull(message = "Quantity is required")
@@ -64,16 +64,16 @@ public class OrderProduct {
     @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal totalPrice;
 
-    @Column(name = "is_deleted",nullable = false)
+    @Column(name = "is_deleted", nullable = false)
     @NotNull
     @ColumnDefault("false")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
     @Column(name = "created_by")
-    private String createdBy;
+    private String createdBy = null;
 
     @Column(name = "modified_by")
-    private String modifiedBy;
+    private String modifiedBy = null;
 
     public BigDecimal calculateTotalPrice() {
         return this.price.multiply(BigDecimal.valueOf(this.quantity));
