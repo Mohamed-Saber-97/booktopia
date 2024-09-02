@@ -12,20 +12,25 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Buyer;
 import model.Product;
 import service.BuyerService;
+import service.ProductService;
 
 @WebServlet(value = "")
 public class HomeController extends HttpServlet {
     BuyerService buyerService;
+    ProductService productService;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
         request.getSession().setAttribute("pageTitle", "Home");
+        List<Product> interests;
         if (request.getSession().getAttribute("user") != null) {
-            List<Product> interests = buyerService.findInterestsByBuyerId(((Buyer) request.getSession().getAttribute("user")).getId());
+            System.out.println("IDDD+=" + ((Buyer) request.getSession().getAttribute("user")).getId());
+            interests = buyerService.findInterestsByBuyerId(((Buyer) request.getSession().getAttribute("user")).getId());
             request.setAttribute("interests", interests);
         } else {
-            // TODO: get 16 products
+            interests = productService.findFirstX(16);
+            request.setAttribute("interests", interests);
         }
         dispatcher.forward(request, response);
     }
@@ -33,5 +38,6 @@ public class HomeController extends HttpServlet {
     @Override
     public void init() throws ServletException {
         buyerService = new BuyerService();
+        productService = new ProductService();
     }
 }

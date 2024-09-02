@@ -1,7 +1,9 @@
 package repository;
 
 import base.BaseRepository;
+import jakarta.persistence.TypedQuery;
 import model.Buyer;
+import model.Category;
 import model.Order;
 import model.Product;
 
@@ -37,9 +39,9 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
     public List<Product> findInterestsByBuyerId(Long buyerId) {
         Buyer buyer = findById(buyerId).orElse(null);
         if (buyer != null) {
-            List<Product> interests = new ArrayList<>();
-            buyer.getInterests().forEach(category -> interests.addAll(category.getProducts()));
-            return interests;
+            TypedQuery<Product> query = entityManager.createQuery("SELECT p FROM Product p JOIN Category c ON p MEMBER OF c.products JOIN Buyer b ON c MEMBER OF b.interests WHERE b.id = :buyerId AND p.isDeleted = false AND c.isDeleted = false", Product.class);
+            query.setParameter("buyerId", buyerId);
+            return query.getResultList();
         }
         return Collections.emptyList();
     }
