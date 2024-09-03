@@ -19,7 +19,10 @@ public class ViewProfileController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("profile.jsp");
-        request.getSession().setAttribute("pageTitle", "View My Profile");
+        request.getSession().setAttribute("pageTitle", "My Profile");
+        if (request.getSession().getAttribute("buyer") != null) {
+            request.getSession().setAttribute("creditLimit", "Y");
+        }
         dispatcher.forward(request, response);
     }
 }

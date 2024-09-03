@@ -43,7 +43,7 @@
             </div>
 
             <div class="size-210 bor10 flex-w flex-col-m p-lr-93 p-tb-30 p-lr-15-lg w-full-md">
-                <c:if test="${sessionScope.creditLimit != null}">
+                <c:if test="${sessionScope.buyer != null}">
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0"
                             name="creditLimit" form="updateProfileForm" placeholder="Credit Limit"

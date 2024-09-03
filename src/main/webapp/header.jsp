@@ -57,18 +57,20 @@
                                 <a href="profile" class="flex-c-m trans-04 p-lr-25">
                                     My Account
                                 </a>
+                            </c:when>
+                            <c:when test="${sessionScope.buyer != null}">
                                 <a href="order-history" class="flex-c-m trans-04 p-lr-25">
                                     Order history
                                 </a>
                             </c:when>
                             <c:when test="${sessionScope.admin != null}">
-                                <a href="view-books" class="flex-c-m trans-04 p-lr-25">
+                                <a href="books" class="flex-c-m trans-04 p-lr-25">
                                     Manage books
                                 </a>
-                                <a href="view-categories" class="flex-c-m trans-04 p-lr-25">
+                                <a href="categories" class="flex-c-m trans-04 p-lr-25">
                                     Manage categories
                                 </a>
-                                <a href="view-users" class="flex-c-m trans-04 p-lr-25">
+                                <a href="users" class="flex-c-m trans-04 p-lr-25">
                                     View users
                                 </a>
                             </c:when>
@@ -136,7 +138,7 @@
                             <i class="zmdi zmdi-search"></i>
                         </div>
 
-                        <c:if test="${sessionScope.user != null}">
+                        <c:if test="${sessionScope.buyer != null}">
                             <a href="view-cart"
                                 class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
                                 data-notify="2">
@@ -167,7 +169,7 @@
                     <i class="zmdi zmdi-search"></i>
                 </div>
 
-                <c:if test="${sessionScope.user != null}">
+                <c:if test="${sessionScope.buyer != null}">
                     <a href="view-cart"
                         class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                         data-notify="2">
@@ -212,13 +214,13 @@
                                 </a>
                             </c:when>
                             <c:when test="${sessionScope.admin != null}">
-                                <a href="view-books" class="flex-c-m p-lr-10 trans-04">
+                                <a href="books" class="flex-c-m p-lr-10 trans-04">
                                     Manage books
                                 </a>
-                                <a href="view-categories" class="flex-c-m p-lr-10 trans-04">
+                                <a href="categories" class="flex-c-m p-lr-10 trans-04">
                                     Manage categories
                                 </a>
-                                <a href="view-users" class="flex-c-m p-lr-10 trans-04">
+                                <a href="users" class="flex-c-m p-lr-10 trans-04">
                                     View users
                                 </a>
                             </c:when>
