@@ -57,7 +57,8 @@
                                 <a href="view-my-profile" class="flex-c-m trans-04 p-lr-25">
                                     My Account
                                 </a>
-                                <a href="order-history" class="flex-c-m trans-04 p-lr-25">
+                                <a href="${pageContext.request.contextPath}/profile/order-history"
+                                    class="flex-c-m trans-04 p-lr-25">
                                     Order history
                                 </a>
                             </c:when>
