@@ -24,15 +24,11 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
     }
 
     public boolean existsByEmail(String email) {
-        return entityManager.createQuery("SELECT COUNT(b) FROM Buyer b WHERE b.account.email = :email", Long.class)
-                .setParameter("email", email)
-                .getSingleResult() > 0;
+        return entityManager.createQuery("SELECT COUNT(b) FROM Buyer b WHERE b.account.email = :email", Long.class).setParameter("email", email).getSingleResult() > 0;
     }
 
     public boolean existsByPhoneNumber(String phoneNumber) {
-        return entityManager.createQuery("SELECT COUNT(b) FROM Buyer b WHERE b.account.phoneNumber = :phoneNumber", Long.class)
-                .setParameter("phoneNumber", phoneNumber)
-                .getSingleResult() > 0;
+        return entityManager.createQuery("SELECT COUNT(b) FROM Buyer b WHERE b.account.phoneNumber = :phoneNumber", Long.class).setParameter("phoneNumber", phoneNumber).getSingleResult() > 0;
     }
 
     public List<Product> findInterestsByBuyerId(Long buyerId) {

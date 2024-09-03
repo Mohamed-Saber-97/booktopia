@@ -18,7 +18,13 @@ public class BuyerService {
     public Buyer save(Buyer buyer) {
         return buyerRepository.save(buyer);
     }
-
+    public Buyer update(Buyer buyer) {
+        Buyer savedBuyer = findByEmail(buyer.getAccount().getEmail());
+        savedBuyer.getAccount().setAddress(buyer.getAccount().getAddress());
+        savedBuyer.setAccount(buyer.getAccount());
+        savedBuyer.setCreditLimit(buyer.getCreditLimit());
+        return buyerRepository.update(savedBuyer);
+    }
     public boolean existsByEmail(String email) {
         return buyerRepository.existsByEmail(email);
     }
@@ -33,5 +39,8 @@ public class BuyerService {
             return productService.findFirstX(16);
         }
         return interests.subList(0, Math.min(interests.size(), 16));
+    }
+    public Buyer findByEmail(String email) {
+        return buyerRepository.findByEmail(email);
     }
 }
