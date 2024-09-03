@@ -25,7 +25,7 @@ public class Buyer extends BaseEntity<Long> {
     @Setter
     private Account account;
 
-    @Column(name = "credit_limit", nullable = false, precision = 10, scale = 2, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
+    @Column(name = "credit_limit", nullable = false, precision = 65, scale = 2, columnDefinition = "DECIMAL(65,2) DEFAULT 0.00")
     @DecimalMin(value = "0.0", inclusive = false, message = "Credit limit must be greater than 0")
     @NotNull(message = "Credit limit is required")
     @ColumnDefault(value = "0.0")
