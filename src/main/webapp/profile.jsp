@@ -18,13 +18,11 @@
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="name"
                             placeholder="Name" value="${user.getAccount().getName()}">
                     </div>
-                    <!-- birthday -->
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="birthday"
                             onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Birthday"
                             value="${user.getAccount().getBirthday()}">
                     </div>
-                    <!-- job -->
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="job"
                             placeholder="Job" value="${user.getAccount().getJob()}">
@@ -37,7 +35,6 @@
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="password" name="password"
                             placeholder="Password">
                     </div>
-                    <!-- confirm password -->
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="password" name="confirmPassword"
                             placeholder="Confirm Password">
@@ -46,10 +43,13 @@
             </div>
 
             <div class="size-210 bor10 flex-w flex-col-m p-lr-93 p-tb-30 p-lr-15-lg w-full-md">
-                <div class="bor8 m-b-20">
-                    <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0" name="creditLimit"
-                        form="updateProfileForm" placeholder="Credit Limit" value="${user.getCreditLimit()}">
-                </div>
+                <c:if test="${sessionScope.creditLimit != null}">
+                    <div class="bor8 m-b-20">
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0"
+                            name="creditLimit" form="updateProfileForm" placeholder="Credit Limit"
+                            value="${user.getCreditLimit()}">
+                    </div>
+                </c:if>
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="phoneNumber"
                         form="updateProfileForm" placeholder="Phone Number"
