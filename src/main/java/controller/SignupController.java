@@ -30,9 +30,9 @@ public class SignupController extends HttpServlet {
         Buyer buyer = (Buyer) request.getAttribute("buyer");
         Buyer savedBuyer = buyerController.save(buyer);
         HttpSession session = request.getSession(true);
-        session.setAttribute("buyer", savedBuyer);
+        session.setAttribute("user", savedBuyer);
+        session.setAttribute("buyer", "Y");
         session.setAttribute("pageTitle", "Home");
-        System.out.println("Redirecting to home page");
         response.sendRedirect(request.getContextPath() + "/");
     }
 
