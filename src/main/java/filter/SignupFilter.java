@@ -77,6 +77,10 @@ public class SignupFilter implements Filter {
                 request.setAttribute("error", "Zipcode must be up to 15 characters");
                 isValid = false;
             }
+            else if (!BirthdayValidator.isValid(LocalDate.parse(birthday))) {
+                request.setAttribute("error", "Age should be older than 18 years old");
+                isValid = false;
+            }
             if (!isValid) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
                 ((HttpServletRequest) request).getSession().setAttribute("pageTitle", "Sign up");
