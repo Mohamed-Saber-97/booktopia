@@ -59,7 +59,7 @@
                                 </a>
                             </c:when>
                             <c:when test="${sessionScope.buyer != null}">
-                                <a href="order-history" class="flex-c-m trans-04 p-lr-25">
+                                <a href="orders" class="flex-c-m trans-04 p-lr-25">
                                     Order history
                                 </a>
                             </c:when>
@@ -70,8 +70,8 @@
                                 <a href="categories" class="flex-c-m trans-04 p-lr-25">
                                     Manage categories
                                 </a>
-                                <a href="users" class="flex-c-m trans-04 p-lr-25">
-                                    View users
+                                <a href="buyers" class="flex-c-m trans-04 p-lr-25">
+                                    View buyers
                                 </a>
                             </c:when>
                             <c:otherwise>
@@ -209,7 +209,7 @@
                                 <a href="profile" class="flex-c-m p-lr-10 trans-04">
                                     My Account
                                 </a>
-                                <a href="order-history" class="flex-c-m p-lr-10 trans-04">
+                                <a href="orders" class="flex-c-m p-lr-10 trans-04">
                                     Order history
                                 </a>
                             </c:when>
@@ -220,8 +220,8 @@
                                 <a href="categories" class="flex-c-m p-lr-10 trans-04">
                                     Manage categories
                                 </a>
-                                <a href="users" class="flex-c-m p-lr-10 trans-04">
-                                    View users
+                                <a href="buyers" class="flex-c-m p-lr-10 trans-04">
+                                    View buyers
                                 </a>
                             </c:when>
                             <c:otherwise>
