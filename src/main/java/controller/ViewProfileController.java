@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(value = "/view-my-profile")
+@WebServlet(value = "/profile")
 public class ViewProfileController extends HttpServlet {
     @Override
     public void init() throws ServletException {
@@ -18,7 +18,7 @@ public class ViewProfileController extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view-my-profile.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("profile.jsp");
         request.getSession().setAttribute("pageTitle", "View My Profile");
         dispatcher.forward(request, response);
     }

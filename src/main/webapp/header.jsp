@@ -54,7 +54,7 @@
                     <div class="right-top-bar flex-w h-full">
                         <c:choose>
                             <c:when test="${sessionScope.user != null}">
-                                <a href="view-my-profile" class="flex-c-m trans-04 p-lr-25">
+                                <a href="profile" class="flex-c-m trans-04 p-lr-25">
                                     My Account
                                 </a>
                                 <a href="order-history" class="flex-c-m trans-04 p-lr-25">
@@ -204,7 +204,7 @@
                     <div class="right-top-bar flex-w h-full">
                         <c:choose>
                             <c:when test="${sessionScope.user != null}">
-                                <a href="view-my-profile" class="flex-c-m p-lr-10 trans-04">
+                                <a href="profile" class="flex-c-m p-lr-10 trans-04">
                                     My Account
                                 </a>
                                 <a href="order-history" class="flex-c-m p-lr-10 trans-04">
