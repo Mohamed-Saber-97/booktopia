@@ -80,7 +80,11 @@ public class SignupFilter implements Filter {
                 } else if (!MaxFieldLengthValidator.isValid(100, city)) {
                     request.setAttribute("error", "City name must be up to 100 characters");
                     isValid = false;
-                } else if (!MaxFieldLengthValidator.isValid(15, zipcode)) {
+                }else if (!BirthdayValidator.isValid(LocalDate.parse(birthday))) {
+                    request.setAttribute("error", "Age should be older than 18 years old");
+                    isValid = false;
+                }
+                else if (!MaxFieldLengthValidator.isValid(15, zipcode)) {
                     request.setAttribute("error", "Zipcode must be up to 15 characters");
                     isValid = false;
                 }
