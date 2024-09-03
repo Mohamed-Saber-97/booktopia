@@ -3,7 +3,6 @@ package repository;
 import base.BaseRepository;
 import jakarta.persistence.TypedQuery;
 import model.Buyer;
-import model.Category;
 import model.Order;
 import model.Product;
 
@@ -25,15 +24,11 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
     }
 
     public boolean existsByEmail(String email) {
-        return entityManager.createQuery("SELECT COUNT(b) FROM Buyer b WHERE b.account.email = :email", Long.class)
-                .setParameter("email", email)
-                .getSingleResult() > 0;
+        return entityManager.createQuery("SELECT COUNT(b) FROM Buyer b WHERE b.account.email = :email", Long.class).setParameter("email", email).getSingleResult() > 0;
     }
 
     public boolean existsByPhoneNumber(String phoneNumber) {
-        return entityManager.createQuery("SELECT COUNT(b) FROM Buyer b WHERE b.account.phoneNumber = :phoneNumber", Long.class)
-                .setParameter("phoneNumber", phoneNumber)
-                .getSingleResult() > 0;
+        return entityManager.createQuery("SELECT COUNT(b) FROM Buyer b WHERE b.account.phoneNumber = :phoneNumber", Long.class).setParameter("phoneNumber", phoneNumber).getSingleResult() > 0;
     }
 
     public List<Product> findInterestsByBuyerId(Long buyerId) {
@@ -44,5 +39,12 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
             return query.getResultList();
         }
         return Collections.emptyList();
+    }
+
+    public Buyer findByEmail(String email) {
+        String jpql = "SELECT b FROM Buyer b WHERE b.account.email = :email";
+        TypedQuery<Buyer> query = entityManager.createQuery(jpql, Buyer.class);
+        query.setParameter("email", email);
+        return query.getSingleResult();
     }
 }

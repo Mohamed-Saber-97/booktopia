@@ -13,4 +13,7 @@ public class BuyerController {
     public Buyer save(Buyer buyer) {
         return buyerService.save(buyer);
     }
+    public Buyer update(Buyer buyer) {
+        return buyerService.update(buyer);
+    }
 }
