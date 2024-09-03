@@ -44,4 +44,11 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         }
         return Collections.emptyList();
     }
+
+    public Buyer findByEmail(String email) {
+        String jpql = "SELECT b FROM Buyer b WHERE b.account.email = :email";
+        TypedQuery<Buyer> query = entityManager.createQuery(jpql, Buyer.class);
+        query.setParameter("email", email);
+        return query.getSingleResult();
+    }
 }
