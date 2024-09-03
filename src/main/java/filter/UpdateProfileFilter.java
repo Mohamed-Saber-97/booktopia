@@ -1,39 +1,23 @@
 package filter;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import model.Account;
 import model.Address;
+import model.Admin;
 import model.Buyer;
-import validator.BirthdayValidator;
-import validator.CountryValidator;
-import validator.CreditLimitValidator;
-import validator.EmailValidator;
-import validator.MaxFieldLengthValidator;
-import validator.MinFieldLengthValidator;
-import validator.NotEmptyValidator;
-import validator.PasswordConfirmationValidator;
-import validator.PhoneNumberValidator;
-import validator.UniqueEmailValidator;
-import validator.UniquePhoneNumberValidator;
+import validator.*;
 
-@WebFilter(urlPatterns = "/signup")
-public class SignupFilter implements Filter {
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@WebFilter(urlPatterns = "/update-profile")
+public class UpdateProfileFilter implements Filter {
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-
         String method = httpRequest.getMethod();
         if (method.equals("POST")) {
             String name = request.getParameter("name");
@@ -49,8 +33,7 @@ public class SignupFilter implements Filter {
             String street = request.getParameter("street");
             String zipcode = request.getParameter("zipcode");
             boolean isValid = true;
-            if (!NotEmptyValidator.isValid(name, birthday, job, email, password, confirmPassword, creditLimit,
-                    phoneNumber, country, city, street, zipcode)) {
+            if (!NotEmptyValidator.isValid(name, birthday, job, email, password, confirmPassword, creditLimit, phoneNumber, country, city, street, zipcode)) {
                 request.setAttribute("error", "All fields are required");
                 isValid = false;
 
@@ -59,10 +42,6 @@ public class SignupFilter implements Filter {
                 isValid = false;
             } else if (!EmailValidator.isValid(email)) {
                 request.setAttribute("error", "Invalid email");
-                isValid = false;
-
-            } else if (!UniqueEmailValidator.isValid(email)) {
-                request.setAttribute("error", "Email already exists");
                 isValid = false;
             } else if (!MinFieldLengthValidator.isValid(6, password)) {
                 request.setAttribute("error", "Password must be at least 6 characters long");
@@ -78,9 +57,6 @@ public class SignupFilter implements Filter {
                 isValid = false;
             } else if (!PhoneNumberValidator.isValid(phoneNumber)) {
                 request.setAttribute("error", "Invalid phone number");
-                isValid = false;
-            } else if (!UniquePhoneNumberValidator.isValid(phoneNumber)) {
-                request.setAttribute("error", "Phone number already exists");
                 isValid = false;
             } else if (!CountryValidator.isValid(country)) {
                 request.setAttribute("error", "Invalid country");
@@ -99,10 +75,10 @@ public class SignupFilter implements Filter {
                 isValid = false;
             }
             if (!isValid) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
-                ((HttpServletRequest) request).getSession().setAttribute("pageTitle", "Sign up");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("view-my-profile.jsp");
+                ((HttpServletRequest) request).getSession().setAttribute("pageTitle", "Update Profile");
                 dispatcher.forward(request, response);
-            } else {
+            } else if (((HttpServletRequest) request).getSession().getAttribute("buyer") != null) {
                 Buyer buyer = new Buyer();
                 buyer.setAccount(new Account());
                 buyer.getAccount().setAddress(new Address());
@@ -119,10 +95,25 @@ public class SignupFilter implements Filter {
                 buyer.getAccount().getAddress().setZipcode(zipcode);
                 request.setAttribute("buyer", buyer);
                 chain.doFilter(request, response);
+            } else if (((HttpServletRequest) request).getSession().getAttribute("admin") != null) {
+                Admin admin = new Admin();
+                admin.setAccount(new Account());
+                admin.getAccount().setAddress(new Address());
+                admin.getAccount().setName(name);
+                admin.getAccount().setBirthday(LocalDate.parse(birthday));
+                admin.getAccount().setJob(job);
+                admin.getAccount().setEmail(email);
+                admin.getAccount().setPassword(password);
+                admin.getAccount().setPhoneNumber(phoneNumber);
+                admin.getAccount().getAddress().setCountry(country);
+                admin.getAccount().getAddress().setCity(city);
+                admin.getAccount().getAddress().setStreet(street);
+                admin.getAccount().getAddress().setZipcode(zipcode);
+                request.setAttribute("admin", admin);
+                chain.doFilter(request, response);
             }
         } else {
             chain.doFilter(request, response);
         }
-
     }
 }
