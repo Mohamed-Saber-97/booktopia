@@ -52,40 +52,38 @@
                     </div>
 
                     <div class="right-top-bar flex-w h-full">
-                        <c:choose>
-                            <c:when test="${sessionScope.user != null}">
-                                <a href="profile" class="flex-c-m trans-04 p-lr-25">
-                                    My Account
-                                </a>
-                            </c:when>
-                            <c:when test="${sessionScope.buyer != null}">
-                                <a href="orders" class="flex-c-m trans-04 p-lr-25">
-                                    Order history
-                                </a>
-                            </c:when>
-                            <c:when test="${sessionScope.admin != null}">
-                                <a href="books" class="flex-c-m trans-04 p-lr-25">
-                                    Manage books
-                                </a>
-                                <a href="categories" class="flex-c-m trans-04 p-lr-25">
-                                    Manage categories
-                                </a>
-                                <a href="buyers" class="flex-c-m trans-04 p-lr-25">
-                                    View buyers
-                                </a>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="signup" class="flex-c-m trans-04 p-lr-25">
-                                    Sign up
-                                </a>
-                                <!-- <a href="admin-login" class="flex-c-m trans-04 p-lr-25">
+                        <c:if test="${sessionScope.user != null}">
+                            <a href="profile" class="flex-c-m trans-04 p-lr-25">
+                                My Account
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.buyer != null}">
+                            <a href="orders" class="flex-c-m trans-04 p-lr-25">
+                                Orders
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.admin != null}">
+                            <a href="books" class="flex-c-m trans-04 p-lr-25">
+                                Manage books
+                            </a>
+                            <a href="categories" class="flex-c-m trans-04 p-lr-25">
+                                Manage categories
+                            </a>
+                            <a href="buyers" class="flex-c-m trans-04 p-lr-25">
+                                View buyers
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.user == null}">
+                            <a href="signup" class="flex-c-m trans-04 p-lr-25">
+                                Sign up
+                            </a>
+                            <!-- <a href="admin-login" class="flex-c-m trans-04 p-lr-25">
                                     Admin Login
                                 </a> -->
-                                <a href="user-login" class="flex-c-m trans-04 p-lr-25">
-                                    User Login
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
+                            <a href="user-login" class="flex-c-m trans-04 p-lr-25">
+                                Login
+                            </a>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -204,38 +202,38 @@
 
                 <li>
                     <div class="right-top-bar flex-w h-full">
-                        <c:choose>
-                            <c:when test="${sessionScope.user != null}">
-                                <a href="profile" class="flex-c-m p-lr-10 trans-04">
-                                    My Account
-                                </a>
-                                <a href="orders" class="flex-c-m p-lr-10 trans-04">
-                                    Order history
-                                </a>
-                            </c:when>
-                            <c:when test="${sessionScope.admin != null}">
-                                <a href="books" class="flex-c-m p-lr-10 trans-04">
-                                    Manage books
-                                </a>
-                                <a href="categories" class="flex-c-m p-lr-10 trans-04">
-                                    Manage categories
-                                </a>
-                                <a href="buyers" class="flex-c-m p-lr-10 trans-04">
-                                    View buyers
-                                </a>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="signup" class="flex-c-m p-lr-10 trans-04">
-                                    Sign up
-                                </a>
-                                <!-- <a href="admin-login" class="flex-c-m p-lr-10 trans-04">
+                        <c:if test="${sessionScope.user != null}">
+                            <a href="profile" class="flex-c-m p-lr-10 trans-04">
+                                My Account
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.buyer != null}">
+                            <a href="orders" class="flex-c-m p-lr-10 trans-04">
+                                Orders
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.admin != null}">
+                            <a href="books" class="flex-c-m p-lr-10 trans-04">
+                                Manage books
+                            </a>
+                            <a href="categories" class="flex-c-m p-lr-10 trans-04">
+                                Manage categories
+                            </a>
+                            <a href="buyers" class="flex-c-m p-lr-10 trans-04">
+                                View buyers
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.user == null}">
+                            <a href="signup" class="flex-c-m p-lr-10 trans-04">
+                                Sign up
+                            </a>
+                            <!-- <a href="admin-login" class="flex-c-m p-lr-10 trans-04">
                                     Admin Login
                                 </a> -->
-                                <a href="user-login" class="flex-c-m p-lr-10 trans-04">
-                                    User Login
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
+                            <a href="user-login" class="flex-c-m p-lr-10 trans-04">
+                                Login
+                            </a>
+                        </c:if>
                     </div>
                 </li>
             </ul>
