@@ -3,7 +3,6 @@ package repository;
 import base.BaseRepository;
 import jakarta.persistence.TypedQuery;
 import model.Buyer;
-import model.Category;
 import model.Order;
 import model.Product;
 
