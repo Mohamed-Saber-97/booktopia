@@ -1,24 +1,16 @@
 package controller;
 
+import java.io.IOException;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.servlet.http.HttpSession;
-import model.Account;
-import model.Address;
 import model.Buyer;
-import model.Category;
-import validator.*;
+import validator.CountryValidator;
 
 @WebServlet(value = "/signup")
 public class SignupController extends HttpServlet {

@@ -11,7 +11,6 @@ import jakarta.servlet.annotation.WebListener;
 public class EmfLoader implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ServletContext context = sce.getServletContext();
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("booktopia");
         ServletContext servletContext = sce.getServletContext();
         servletContext.setAttribute("emf", emf);
