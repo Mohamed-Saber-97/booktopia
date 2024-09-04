@@ -21,7 +21,7 @@
 						</div>
 
 						<div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
-							<a href="view-products"
+							<a href="products"
 								class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
 								Shop Now
 							</a>
@@ -46,7 +46,7 @@
 						</div>
 
 						<div class="layer-slick1 animated visible-false" data-appear="slideInUp" data-delay="1600">
-							<a href="view-products"
+							<a href="products"
 								class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
 								Shop Now
 							</a>
@@ -71,7 +71,7 @@
 						</div>
 
 						<div class="layer-slick1 animated visible-false" data-appear="rotateIn" data-delay="1600">
-							<a href="view-products"
+							<a href="products"
 								class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
 								Shop Now
 							</a>
@@ -104,7 +104,7 @@
 
 							<div class="block2-txt flex-w flex-t p-t-14">
 								<div class="block2-txt-child1 flex-col-l ">
-									<a href="view-product-details?id=${interest.getId()}"
+									<a href="product/${interest.getId()}"
 										class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
 										${interest.getName()}
 									</a>
@@ -132,7 +132,7 @@
 
 		<!-- Load more -->
 		<div class="flex-c-m flex-w w-full p-t-45">
-			<a href="view-products" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+			<a href="products" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
 				Load More
 			</a>
 		</div>
