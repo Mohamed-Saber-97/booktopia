@@ -1,6 +1,7 @@
 package repository;
 
 import base.BaseRepository;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import model.Admin;
 
@@ -13,6 +14,10 @@ public class AdminRepository extends BaseRepository<Admin, Long> {
         String jpql = "SELECT admin FROM Admin admin WHERE admin.account.email = :email";
         TypedQuery<Admin> query = entityManager.createQuery(jpql, Admin.class);
         query.setParameter("email", email);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
