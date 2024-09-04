@@ -17,7 +17,7 @@ public class AdminService {
         return adminRepository.update(savedAdmin);
     }
 
-    Admin findByEmail(String email) {
+    public Admin findByEmail(String email) {
         return adminRepository.findByEmail(email);
     }
 }
