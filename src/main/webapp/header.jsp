@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<%@taglib prefix="c" uri="jakarta.tags.core"%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
 
 <head>
-    <title><%= session.getAttribute("pageTitle") %></title>
+    <title><%= session.getAttribute("pageTitle") %>
+    </title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -78,8 +79,8 @@
                                 Sign up
                             </a>
                             <!-- <a href="admin-login" class="flex-c-m trans-04 p-lr-25">
-                                    Admin Login
-                                </a> -->
+                        Admin Login
+                        </a> -->
                             <a href="user-login" class="flex-c-m trans-04 p-lr-25">
                                 Login
                             </a>
@@ -100,33 +101,33 @@
                     <div class="menu-desktop">
                         <ul class="main-menu">
                             <!-- <li class="active-menu">
-								<a href="index.html">Home</a>
-								<ul class="sub-menu">
-									<li><a href="index.html">Homepage 1</a></li>
-									<li><a href="home-02.html">Homepage 2</a></li>
-									<li><a href="home-03.html">Homepage 3</a></li>
-								</ul>
-							</li> -->
+                            <a href="index.html">Home</a>
+                            <ul class="sub-menu">
+                                <li><a href="index.html">Homepage 1</a></li>
+                                <li><a href="home-02.html">Homepage 2</a></li>
+                                <li><a href="home-03.html">Homepage 3</a></li>
+                            </ul>
+                        </li> -->
 
                             <li>
-                                <a href="#all-books">All books</a>
+                                <a href="products">All books</a>
                             </li>
 
                             <!-- <li class="label1" data-label1="hot">
-								<a href="shoping-cart.html">Features</a>
-							</li>
+                            <a href="shoping-cart.html">Features</a>
+                        </li>
 
-							<li>
-								<a href="blog.html">Blog</a>
-							</li>
+                        <li>
+                            <a href="blog.html">Blog</a>
+                        </li>
 
-							<li>
-								<a href="about.html">About</a>
-							</li>
+                        <li>
+                            <a href="about.html">About</a>
+                        </li>
 
-							<li>
-								<a href="contact.html">Contact</a>
-							</li> -->
+                        <li>
+                            <a href="contact.html">Contact</a>
+                        </li> -->
                         </ul>
                     </div>
 
@@ -228,8 +229,8 @@
                                 Sign up
                             </a>
                             <!-- <a href="admin-login" class="flex-c-m p-lr-10 trans-04">
-                                    Admin Login
-                                </a> -->
+                        Admin Login
+                        </a> -->
                             <a href="user-login" class="flex-c-m p-lr-10 trans-04">
                                 Login
                             </a>
@@ -240,36 +241,36 @@
 
             <ul class="main-menu-m">
                 <!-- <li>
-                    <a href="index.html">Home</a>
-                    <ul class="sub-menu-m">
-                        <li><a href="index.html">Homepage 1</a></li>
-                        <li><a href="home-02.html">Homepage 2</a></li>
-                        <li><a href="home-03.html">Homepage 3</a></li>
-                    </ul>
-                    <span class="arrow-main-menu-m">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </span>
-                </li> -->
+                <a href="index.html">Home</a>
+                <ul class="sub-menu-m">
+                    <li><a href="index.html">Homepage 1</a></li>
+                    <li><a href="home-02.html">Homepage 2</a></li>
+                    <li><a href="home-03.html">Homepage 3</a></li>
+                </ul>
+                <span class="arrow-main-menu-m">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </span>
+            </li> -->
 
                 <li>
-                    <a href="#all-books">All books</a>
+                    <a href="products">All books</a>
                 </li>
 
                 <!-- <li>
-                    <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
-                </li>
+                <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
+            </li>
 
-                <li>
-                    <a href="blog.html">Blog</a>
-                </li>
+            <li>
+                <a href="blog.html">Blog</a>
+            </li>
 
-                <li>
-                    <a href="about.html">About</a>
-                </li>
+            <li>
+                <a href="about.html">About</a>
+            </li>
 
-                <li>
-                    <a href="contact.html">Contact</a>
-                </li> -->
+            <li>
+                <a href="contact.html">Contact</a>
+            </li> -->
             </ul>
         </div>
 

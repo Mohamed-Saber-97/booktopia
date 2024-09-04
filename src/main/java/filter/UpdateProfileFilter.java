@@ -16,7 +16,8 @@ import java.time.LocalDate;
 @WebFilter(urlPatterns = "/update-profile")
 public class UpdateProfileFilter implements Filter {
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String method = httpRequest.getMethod();
         if (method.equals("POST")) {
@@ -26,14 +27,20 @@ public class UpdateProfileFilter implements Filter {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             String confirmPassword = request.getParameter("confirmPassword");
-            String creditLimit = request.getParameter("creditLimit");
+            String creditLimit = null;
+            if (((HttpServletRequest) request).getSession().getAttribute("buyer") != null) {
+                creditLimit = request.getParameter("creditLimit");
+            } else {
+                creditLimit = "1";
+            }
             String phoneNumber = request.getParameter("phoneNumber");
             String country = request.getParameter("country");
             String city = request.getParameter("city");
             String street = request.getParameter("street");
             String zipcode = request.getParameter("zipcode");
             boolean isValid = true;
-            if (!NotEmptyValidator.isValid(name, birthday, job, email, password, confirmPassword, creditLimit, phoneNumber, country, city, street, zipcode)) {
+            if (!NotEmptyValidator.isValid(name, birthday, job, email, password, confirmPassword, creditLimit,
+                    phoneNumber, country, city, street, zipcode)) {
                 request.setAttribute("error", "All fields are required");
                 isValid = false;
 
@@ -75,7 +82,7 @@ public class UpdateProfileFilter implements Filter {
                 isValid = false;
             }
             if (!isValid) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("view-my-profile.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("profile.jsp");
                 ((HttpServletRequest) request).getSession().setAttribute("pageTitle", "Update Profile");
                 dispatcher.forward(request, response);
             } else if (((HttpServletRequest) request).getSession().getAttribute("buyer") != null) {
