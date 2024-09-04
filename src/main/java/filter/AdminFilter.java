@@ -7,15 +7,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/admin-login")
+//@WebFilter(urlPatterns = "/admin-login")
 public class AdminFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        if (httpRequest.getSession().getAttribute("user") == null) {
-            chain.doFilter(request, response);
-        } else {
+        if (httpRequest.getSession().getAttribute("admin") == null) {
             ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/");
+        } else {
+            chain.doFilter(request, response);
         }
     }
 }
