@@ -40,9 +40,8 @@
 </head>
 
 <body class="animsition">
-
     <!-- Header -->
-    <header>
+    <header class="${pageContext.request.requestURI eq '/products.jsp' ? 'header-v4' : '' }">
         <!-- Header desktop -->
         <div class="container-menu-desktop">
             <!-- Topbar -->
@@ -133,9 +132,9 @@
 
                     <!-- Icon header -->
                     <div class="wrap-icon-header flex-w flex-r-m">
-                        <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+                        <!-- <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
                             <i class="zmdi zmdi-search"></i>
-                        </div>
+                        </div> -->
 
                         <c:if test="${sessionScope.buyer != null}">
                             <a href="cart"
