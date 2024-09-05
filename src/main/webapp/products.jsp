@@ -169,6 +169,11 @@
 				</a>
 			</div>
 		</c:if>
+		<c:if test="${empty products}">
+			<div class="flex-c-m flex-w w-full p-t-45">
+				<h3 class="ltext-103 cl5">No books found</h3>
+			</div>
+		</c:if>
 	</div>
 </div>
 

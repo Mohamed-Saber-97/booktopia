@@ -29,6 +29,7 @@ public class ViewProductsViewController extends HttpServlet {
         String minPrice = request.getParameter("minPrice");
         String maxPrice = request.getParameter("maxPrice");
         String category = request.getParameter("category");
+        String name = request.getParameter("name");
         Map<String, String> queryParameters = new HashMap<>();
         if (NotEmptyValidator.isValid(minPrice)) {
             queryParameters.put("minPrice", minPrice);
@@ -38,6 +39,9 @@ public class ViewProductsViewController extends HttpServlet {
         }
         if (NotEmptyValidator.isValid(category)) {
             queryParameters.put("category", category);
+        }
+        if (NotEmptyValidator.isValid(name)) {
+            queryParameters.put("name", name);
         }
         List<Product> products = productController.search(queryParameters);
         List<Category> categories = categoryController.findAll();
