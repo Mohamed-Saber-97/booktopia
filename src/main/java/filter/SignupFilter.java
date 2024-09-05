@@ -24,7 +24,7 @@ public class SignupFilter implements Filter {
                 ((HttpServletRequest) request).getSession().setAttribute("pageTitle", "Sign up");
                 dispatcher.forward(request, response);
             } else {
-                Buyer buyer = RequestBuilderUtil.buildBuyerFromRequest(httpRequest);
+                Buyer buyer = RequestBuilderUtil.createBuyerFromRequest(httpRequest);
                 request.setAttribute("buyer", buyer);
                 chain.doFilter(request, response);
             }
