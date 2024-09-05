@@ -10,13 +10,18 @@ public class AdminService {
         this.adminRepository = new AdminRepository();
     }
 
-    public Admin update(Admin admin) {
-        Admin savedAdmin = findByEmail(admin.getAccount().getEmail());
-        savedAdmin.getAccount().setAddress(admin.getAccount().getAddress());
-        savedAdmin.setAccount(admin.getAccount());
-        return adminRepository.update(savedAdmin);
+    public Admin update(Admin newAdmin) {
+        Admin existingAdmin = adminRepository.findById(newAdmin.getId()).orElse(null);
+        if (existingAdmin == null) {
+            return null;
+        }
+        if (existingAdmin.hashCode() == newAdmin.hashCode()) {
+            return existingAdmin;
+        }
+        existingAdmin.getAccount().setAddress(newAdmin.getAccount().getAddress());
+        existingAdmin.setAccount(newAdmin.getAccount());
+        return adminRepository.update(existingAdmin);
     }
-
     Admin findByEmail(String email) {
         return adminRepository.findByEmail(email);
     }
