@@ -4,7 +4,7 @@ import model.Category;
 import service.CategoryService;
 
 public class CategoryController {
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public CategoryController() {
         this.categoryService = new CategoryService();

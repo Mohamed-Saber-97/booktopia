@@ -1,8 +1,5 @@
 package controller;
 
-import java.io.IOException;
-import java.util.List;
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,6 +10,9 @@ import model.Buyer;
 import model.Product;
 import service.BuyerService;
 import service.ProductService;
+
+import java.io.IOException;
+import java.util.List;
 
 @WebServlet(value = "")
 public class HomeController extends HttpServlet {

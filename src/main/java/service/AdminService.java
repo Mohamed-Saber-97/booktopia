@@ -22,6 +22,7 @@ public class AdminService {
         existingAdmin.setAccount(newAdmin.getAccount());
         return adminRepository.update(existingAdmin);
     }
+
     Admin findByEmail(String email) {
         return adminRepository.findByEmail(email);
     }

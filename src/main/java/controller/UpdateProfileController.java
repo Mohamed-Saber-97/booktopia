@@ -19,13 +19,15 @@ public class UpdateProfileController extends HttpServlet {
     private static final String BUYER = "buyer";
 
     private BuyerController buyerController;
-private AdminController adminController;
+    private AdminController adminController;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         buyerController = new BuyerController();
         adminController = new AdminController();
     }
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute(BUYER) != null) {

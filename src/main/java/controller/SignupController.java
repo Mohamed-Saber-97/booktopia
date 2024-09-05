@@ -1,7 +1,5 @@
 package controller;
 
-import java.io.IOException;
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,6 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Buyer;
 import validator.CountryValidator;
+
+import java.io.IOException;
 
 @WebServlet(value = "/signup")
 public class SignupController extends HttpServlet {
