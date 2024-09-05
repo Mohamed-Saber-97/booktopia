@@ -1,5 +1,6 @@
 package utils;
 
+import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import model.Account;
 import model.Address;
@@ -15,7 +16,7 @@ public class RequestBuilderUtil {
 
     }
 
-    public static Buyer buildBuyerFromRequest(HttpServletRequest request) {
+    public static Buyer createBuyerFromRequest(ServletRequest request) {
         Buyer buyer = new Buyer();
         Account account = buildAccountFromRequest(request);
         buyer.setAccount(account);
@@ -23,14 +24,31 @@ public class RequestBuilderUtil {
         return buyer;
     }
 
-    public static Admin buildAdminFromRequest(HttpServletRequest request) {
+    public static Buyer updateBuyerFromRequest(ServletRequest request) {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        Buyer buyer = (Buyer) httpRequest.getSession().getAttribute("user");
+        Account account = buildAccountFromRequest(request);
+        buyer.setAccount(account);
+        buyer.setCreditLimit(BigDecimal.valueOf(Double.parseDouble(request.getParameter("creditLimit"))));
+        return buyer;
+    }
+
+    public static Admin updateAdminFromRequest(ServletRequest request) {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        Admin admin = (Admin) httpRequest.getSession().getAttribute("user");
+        Account account = buildAccountFromRequest(request);
+        admin.setAccount(account);
+        return admin;
+    }
+
+    public static Admin createAdminFromRequest(ServletRequest request) {
         Admin admin = new Admin();
         Account account = buildAccountFromRequest(request);
         admin.setAccount(account);
         return admin;
     }
 
-    private static Account buildAccountFromRequest(HttpServletRequest request) {
+    private static Account buildAccountFromRequest(ServletRequest request) {
         Account account = new Account();
         Address address = new Address();
 
