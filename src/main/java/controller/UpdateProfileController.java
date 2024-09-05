@@ -14,30 +14,35 @@ import java.io.IOException;
 
 @WebServlet(value = "/update-profile")
 public class UpdateProfileController extends HttpServlet {
-    private BuyerController buyerController;
+    private static final String ADMIN = "admin";
+    private static final String USER = "user";
+    private static final String BUYER = "buyer";
 
+    private BuyerController buyerController;
+private AdminController adminController;
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         buyerController = new BuyerController();
+        adminController = new AdminController();
     }
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getAttribute("buyer") != null) {
-            Buyer buyer = (Buyer) request.getAttribute("buyer");
+        if (request.getSession().getAttribute(BUYER) != null) {
+            Buyer buyer = (Buyer) request.getSession().getAttribute("user");
             Buyer savedBuyer = buyerController.update(buyer);
             HttpSession session = request.getSession();
-            session.setAttribute("user", savedBuyer);
-            session.setAttribute("buyer", "Y");
+            session.setAttribute(USER, savedBuyer);
+            session.setAttribute(BUYER, "Y");
             session.setAttribute("pageTitle", "Home");
             response.sendRedirect(request.getContextPath() + "/");
-        } else if (request.getAttribute("admin") != null) {
-//            Admin admin = (Admin) request.getAttribute("admin");
-//            Admin savedAdmin = buyerController.update(admin);
-//            HttpSession session = request.getSession();
-//            session.setAttribute("user", savedAdmin);
-//            session.setAttribute("admin", "Y");
-//            session.setAttribute("pageTitle", "Home");
+        } else if (request.getSession().getAttribute(ADMIN) != null) {
+            Admin admin = (Admin) request.getAttribute(ADMIN);
+            Admin savedAdmin = adminController.update(admin);
+            HttpSession session = request.getSession();
+            session.setAttribute(USER, savedAdmin);
+            session.setAttribute(ADMIN, "Y");
+            session.setAttribute("pageTitle", "Home");
             response.sendRedirect(request.getContextPath() + "/");
         }
 
