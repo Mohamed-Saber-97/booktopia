@@ -7,8 +7,8 @@ import repository.BuyerRepository;
 import java.util.List;
 
 public class BuyerService {
-    private BuyerRepository buyerRepository;
-    private ProductService productService;
+    private final BuyerRepository buyerRepository;
+    private final ProductService productService;
 
     public BuyerService() {
         buyerRepository = new BuyerRepository();
@@ -18,13 +18,21 @@ public class BuyerService {
     public Buyer save(Buyer buyer) {
         return buyerRepository.save(buyer);
     }
-    public Buyer update(Buyer buyer) {
-        Buyer savedBuyer = findByEmail(buyer.getAccount().getEmail());
-        savedBuyer.getAccount().setAddress(buyer.getAccount().getAddress());
-        savedBuyer.setAccount(buyer.getAccount());
-        savedBuyer.setCreditLimit(buyer.getCreditLimit());
-        return buyerRepository.update(savedBuyer);
+
+    public Buyer update(Buyer newBuyer) {
+        Buyer existingBuyer = buyerRepository.findById(newBuyer.getId()).orElse(null);
+        if (existingBuyer == null) {
+            return null;
+        }
+        if (existingBuyer.hashCode() == newBuyer.hashCode()) {
+            return existingBuyer;
+        }
+        existingBuyer.getAccount().setAddress(newBuyer.getAccount().getAddress());
+        existingBuyer.setAccount(newBuyer.getAccount());
+        existingBuyer.setCreditLimit(newBuyer.getCreditLimit());
+        return buyerRepository.update(existingBuyer);
     }
+
     public boolean existsByEmail(String email) {
         return buyerRepository.existsByEmail(email);
     }
@@ -40,7 +48,18 @@ public class BuyerService {
         }
         return interests.subList(0, Math.min(interests.size(), 16));
     }
+
     public Buyer findByEmail(String email) {
-        return buyerRepository.findByEmail(email);
+        Buyer buyer;
+        try {
+            buyer = buyerRepository.findByEmail(email);
+        } catch (Exception e) {
+            return null;
+        }
+        return buyer;
+    }
+
+    public Buyer findById(Long id) {
+        return buyerRepository.findById(id).orElse(null);
     }
 }
