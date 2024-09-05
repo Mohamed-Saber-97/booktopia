@@ -1,6 +1,9 @@
 package utils;
 
+import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
+import model.Buyer;
+import service.BuyerService;
 import validator.*;
 
 import java.time.LocalDate;
@@ -10,7 +13,10 @@ import java.util.Map;
 public class ValidatorUtil {
     private static final String ERROR = "error";
 
-    private static Map<String, String> commonValidation(HttpServletRequest request) {
+    private ValidatorUtil() {
+    }
+
+    private static Map<String, String> commonValidation(ServletRequest request) {
         Map<String, String> errors = new HashMap<>();
         String name = request.getParameter("name");
         String birthday = request.getParameter("birthday");
@@ -35,8 +41,6 @@ public class ValidatorUtil {
             errors.put(ERROR, "Password and confirm password do not match");
         } else if (!PhoneNumberValidator.isValid(phoneNumber)) {
             errors.put(ERROR, "Invalid phone number");
-        } else if (!UniquePhoneNumberValidator.isValid(phoneNumber)) {
-            errors.put(ERROR, "Phone number already exists");
         } else if (!CountryValidator.isValid(country)) {
             errors.put(ERROR, "Invalid country");
         } else if (!MaxFieldLengthValidator.isValid(255, street)) {
@@ -51,22 +55,52 @@ public class ValidatorUtil {
         return errors;
     }
 
-    public static Map<String, String> validateSignup(HttpServletRequest request) {
-        Map<String, String> errors = commonValidation(request);
+    public static Map<String, String> validateSignup(ServletRequest request) {
+        Map<String, String> errors = new HashMap<>(commonValidation(request));
 
         String email = request.getParameter("email");
         String creditLimit = request.getParameter("creditLimit");
+        String phoneNumber = request.getParameter("phoneNumber");
 
         if (!UniqueEmailValidator.isValid(email)) {
             errors.put(ERROR, "Email already exists");
         } else if (!CreditLimitValidator.isValid(creditLimit)) {
             errors.put(ERROR, "Invalid credit limit");
+        } else if (!UniquePhoneNumberValidator.isValid(phoneNumber)) {
+            errors.put(ERROR, "Phone number already exists");
         }
         return errors;
     }
 
-    public static Map<String, String> validateBuyerUpdateProfile(HttpServletRequest request) {
-        Map<String, String> errors = commonValidation(request);
+    public static Map<String, String> validateBuyerUpdateProfile(ServletRequest request) {
+        Map<String, String> errors = new HashMap<>(commonValidation(request));
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        Buyer requestedBuyer = (Buyer) httpRequest.getSession().getAttribute("user");
+        if (requestedBuyer == null) {
+            errors.put(ERROR, "User not found in session.");
+            return errors;
+        }
+        Buyer savedBuyer = new BuyerService().findById(requestedBuyer.getId());
+        if (savedBuyer == null) {
+            errors.put(ERROR, "Buyer not found in the database.");
+            return errors;
+        }
+        String newEmail = requestedBuyer.getAccount().getEmail();
+        String newPhoneNumber = requestedBuyer.getAccount().getPhoneNumber();
+
+        if (!EmailValidator.isValid(newEmail)) {
+            errors.put(ERROR, "Invalid email");
+        } else if (!newEmail.equals(savedBuyer.getAccount().getEmail()) && new BuyerService().existsByEmail(newEmail)) {
+            errors.put(ERROR, "Email is already taken by someone else.");
+        }
+
+        if (newPhoneNumber != null && !newPhoneNumber.isEmpty()) {
+            if (!PhoneNumberValidator.isValid(newPhoneNumber)) {
+                errors.put(ERROR, "Invalid phone number.");
+            } else if (!newPhoneNumber.equals(savedBuyer.getAccount().getPhoneNumber()) && new BuyerService().existsByPhoneNumber(newPhoneNumber)) {
+                errors.put(ERROR, "Phone number is already taken by someone else.");
+            }
+        }
         String creditLimit = request.getParameter("creditLimit");
         if (!CreditLimitValidator.isValid(creditLimit)) {
             errors.put(ERROR, "Invalid credit limit");
@@ -74,7 +108,7 @@ public class ValidatorUtil {
         return errors;
     }
 
-    public static Map<String, String> validateAdminUpdateProfile(HttpServletRequest request) {
+    public static Map<String, String> validateAdminUpdateProfile(ServletRequest request) {
         return commonValidation(request);
     }
 }
