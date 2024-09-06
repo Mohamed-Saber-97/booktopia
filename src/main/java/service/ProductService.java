@@ -17,6 +17,10 @@ public class ProductService {
         entityManager = EMFactory.getEMF("booktopia").createEntityManager();
     }
 
+    public Product findById(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
     public List<Product> findFirstX(int x) {
         List<Product> products = productRepository.findAll();
         return products.subList(0, Math.min(products.size(), x));
