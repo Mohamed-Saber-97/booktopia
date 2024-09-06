@@ -13,7 +13,7 @@ public class ProductController {
         productService = new ProductService();
     }
 
-    public List<Product> search(Map<String, String> queryParameters) {
-        return productService.search(queryParameters);
+    public List<Product> search(Map<String, String> queryParameters, int pageNumber, int pageSize) {
+        return productService.search(queryParameters, pageNumber, pageSize);
     }
 }

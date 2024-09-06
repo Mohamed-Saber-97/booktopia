@@ -16,7 +16,7 @@ public class ProductRepository extends BaseRepository<Product, Long> {
         super(Product.class);
     }
 
-    public List<Product> search(Map<String, String> queryParameters) {
+    public List<Product> search(Map<String, String> queryParameters, int pageNumber, int pageSize) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Product> query = cb.createQuery(Product.class);
         Root<Product> productRoot = query.from(Product.class);
@@ -34,6 +34,7 @@ public class ProductRepository extends BaseRepository<Product, Long> {
             predicate = cb.and(predicate, cb.like(productRoot.get("name"), "%" + queryParameters.get("name") + "%"));
         }
         query.select(productRoot).where(predicate);
-        return entityManager.createQuery(query).getResultList();
+        return entityManager.createQuery(query).setFirstResult(pageNumber * pageSize).setMaxResults(pageSize).getResultList();
+//        return entityManager.createQuery(query).getResultList();
     }
 }

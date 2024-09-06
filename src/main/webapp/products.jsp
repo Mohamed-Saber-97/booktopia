@@ -31,7 +31,7 @@
 						<i class="zmdi zmdi-search"></i>
 					</button>
 					<input class="mtext-107 cl2 size-114 plh2 p-r-15" form="search-form" type="text" name="name"
-						placeholder="Search">
+						id="name" placeholder="Search">
 				</div>
 			</div>
 
@@ -89,11 +89,11 @@
 						<div class="flex-w p-t-4 m-r--5">
 							<div class="bor8 m-b-20">
 								<input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" form="search-form"
-									type="number" min="0" name="minPrice" placeholder="minimum price">
+									id="minPrice" type="number" min="0" name="minPrice" placeholder="minimum price">
 							</div>
 							<div class="bor8 m-b-20">
 								<input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" form="search-form"
-									type="number" min="0" name="maxPrice" placeholder="maximum price">
+									id="maxPrice" type="number" min="0" name="maxPrice" placeholder="maximum price">
 							</div>
 
 
@@ -124,10 +124,10 @@
 			</div>
 		</div>
 
-		<div class="row isotope-grid">
+		<div class="row isotope-grid" id="productsDiv">
 			<c:if test="${not empty products}">
 				<c:forEach items="${products}" var="product">
-					<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${product.getCategory().getName()}">
+					<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
 						<div class="block2">
 							<div class="block2-pic hov-img0">
 								<img src="${product.getImagePath()}" alt="IMG-PRODUCT">
@@ -164,9 +164,9 @@
 		<!-- Load more -->
 		<c:if test="${not empty products}">
 			<div class="flex-c-m flex-w w-full p-t-45">
-				<a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+				<button id="loadMore" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
 					Load More
-				</a>
+				</button>
 			</div>
 		</c:if>
 		<c:if test="${empty products}">
@@ -177,10 +177,100 @@
 	</div>
 </div>
 
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script>
-	window.onload = function () {
+	window.addEventListener('load', function () {
+		let $grid;
+		let pageNumber = 1;
 
-	}
+		$grid = $('.isotope-grid').isotope({
+			itemSelector: '.isotope-item',
+			layoutMode: 'fitRows',
+			percentPosition: true,
+			masonry: {
+				columnWidth: '.isotope-item'
+			}
+			// fitRows: {
+			// 	gutter: '.gutter-sizer'
+			// }
+		});
+
+		document.getElementById('loadMore').addEventListener('click', loadProducts);
+
+		function loadProducts() {
+			console.log('Loading page ' + pageNumber);
+			$('#loadMore').prop('disabled', true);
+
+			let name = $('#name').val();
+			let minPrice = $('#minPrice').val();
+			let maxPrice = $('#maxPrice').val();
+			let category = $('#categories').val();
+
+			$.ajax({
+				url: "/next-products",
+				type: "GET",
+				data: {
+					page: pageNumber++,
+					name: name,
+					minPrice: minPrice,
+					maxPrice: maxPrice,
+					category: category,
+				},
+				success: function (response) {
+					console.log(response.products);
+
+					let $newItems = $(response.products.map(function (product) {
+						return `
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
+                        <div class="block2">
+                            <div class="block2-pic hov-img0">
+                                <img src="` + product.imagePath + `" alt="IMG-PRODUCT">
+                            </div>
+                            <div class="block2-txt flex-w flex-t p-t-14">
+                                <div class="block2-txt-child1 flex-col-l ">
+                                    <a href="product/` + product.id + `" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                       ` + product.name + `
+                                    </a>
+                                    <span class="stext-105 cl3">
+                                      ` + product.price + `
+                                    </span>
+                                </div>
+                                <div class="block2-txt-child2 flex-r p-t-3">
+                                    <a href="add-to-wishlist" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                        <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+					}).join(''));
+
+					// Append new items to the grid
+					$grid.append($newItems);
+
+					// Use imagesLoaded on the entire grid
+					imagesLoaded($grid, function () {
+						// Update Isotope layout after images are loaded
+						$grid.isotope('appended', $newItems);
+						$grid.isotope('layout');
+					});
+				},
+				error: function (xhr, status, error) {
+					console.error("An error occurred: " + error);
+				},
+				complete: function () {
+					$('#loadMore').prop('disabled', false);
+				}
+			});
+		}
+
+		// Initial layout
+		imagesLoaded($grid, function () {
+			$grid.isotope('layout');
+		});
+	});
 </script>
 
 <%@include file="footer.jsp" %>
