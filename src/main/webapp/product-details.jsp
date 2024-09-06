@@ -126,9 +126,9 @@
 			event.preventDefault();
 			const productId = $(this).attr('data-product-id');
 			const numProduct = $('.num-product').val();
-			$.post('addtocart', {
+			$.post('addToCart', {
 				productId: productId,
-				numProduct: numProduct
+				quantity: numProduct
 			}, function (data, status) {
 				if (status === 'success') {
 					if (data === 'added') {
