@@ -31,7 +31,7 @@
 						<i class="zmdi zmdi-search"></i>
 					</button>
 					<input class="mtext-107 cl2 size-114 plh2 p-r-15" form="search-form" type="text" name="name"
-						id="name" placeholder="Search">
+						value="${param.name}" id="name" placeholder="Search">
 				</div>
 			</div>
 
@@ -89,11 +89,13 @@
 						<div class="flex-w p-t-4 m-r--5">
 							<div class="bor8 m-b-20">
 								<input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" form="search-form"
-									id="minPrice" type="number" min="0" name="minPrice" placeholder="minimum price">
+									value="${param.minPrice}" id="minPrice" type="number" min="0" name="minPrice"
+									placeholder="minimum price">
 							</div>
 							<div class="bor8 m-b-20">
 								<input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" form="search-form"
-									id="maxPrice" type="number" min="0" name="maxPrice" placeholder="maximum price">
+									value="${param.maxPrice}" id="maxPrice" type="number" min="0" name="maxPrice"
+									placeholder="maximum price">
 							</div>
 
 
@@ -108,13 +110,21 @@
 							<div class="bor8 m-b-20">
 								<select class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" form="search-form"
 									id="categories" name="category">
-									<option value="" disabled selected>Category</option>
+									<c:if test="${empty param.category}">
+										<option value="" disabled selected>Category</option>
+									</c:if>
 									<c:forEach items="${categories}" var="category">
 										<option value="${category.getId()}">${category.getName()}</option>
 									</c:forEach>
 								</select>
 							</div>
 						</c:if>
+						<!-- add margin buttom -->
+						<button
+							class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer m-b-10"
+							id="resetForm" form="search-form">
+							Reset
+						</button>
 						<button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
 							form="search-form">
 							Search
@@ -195,16 +205,30 @@
 			// }
 		});
 
+		$('#resetForm').click(function (event) {
+			event.preventDefault();
+			$('#name').val('');
+			$('#minPrice').val('');
+			$('#maxPrice').val('');
+			$('#categories').val('');
+		});
+
 		document.getElementById('loadMore').addEventListener('click', loadProducts);
 
 		function loadProducts() {
 			console.log('Loading page ' + pageNumber);
 			$('#loadMore').prop('disabled', true);
 
-			let name = $('#name').val();
-			let minPrice = $('#minPrice').val();
-			let maxPrice = $('#maxPrice').val();
-			let category = $('#categories').val();
+			let name = $('#name').val().trim();
+			let minPrice = $('#minPrice').val().trim();
+			let maxPrice = $('#maxPrice').val().trim();
+			// let category = $('#categories').val().trim();
+			let category = $('#categories').val() ? $('#categories').val().trim() : null;
+
+			console.log('name: ' + name);
+			console.log('minPrice: ' + minPrice);
+			console.log('maxPrice: ' + maxPrice);
+			console.log('category: ' + category);
 
 			$.ajax({
 				url: "/next-products",
