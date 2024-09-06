@@ -1,5 +1,19 @@
 package controller;
 
-public class ProductController {
+import model.Product;
+import service.ProductService;
 
+import java.util.List;
+import java.util.Map;
+
+public class ProductController {
+    private ProductService productService;
+
+    public ProductController() {
+        productService = new ProductService();
+    }
+
+    public List<Product> search(Map<String, String> queryParameters) {
+        return productService.search(queryParameters);
+    }
 }
