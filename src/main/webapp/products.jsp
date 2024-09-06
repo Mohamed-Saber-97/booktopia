@@ -177,4 +177,10 @@
 	</div>
 </div>
 
+<script>
+	window.onload = function () {
+
+	}
+</script>
+
 <%@include file="footer.jsp" %>
