@@ -5,6 +5,7 @@ import model.Product;
 import repository.BuyerRepository;
 
 import java.util.List;
+import java.util.Map;
 
 public class BuyerService {
     private BuyerRepository buyerRepository;
@@ -62,6 +63,10 @@ public class BuyerService {
 
     public void clearBuyerCart(Buyer buyer){
         buyerRepository.clearCart(buyer);
+    }
+
+    public Map<Product, Integer> retreiveBuyerCart(Buyer buyer){
+        return buyer.getCart();
     }
 
 }
