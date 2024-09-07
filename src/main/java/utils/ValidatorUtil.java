@@ -109,6 +109,12 @@ public class ValidatorUtil {
     }
 
     public static Map<String, String> validateAdminUpdateProfile(ServletRequest request) {
-        return commonValidation(request);
+        return commonSignUpValidation(request);
+    }
+    public static Map<String, String> validateAdminLogin(ServletRequest request) {
+        return commonLogInValidation(request);
+    }
+    public static Map<String, String> validateBuyerLogin(ServletRequest request) {
+        return commonLogInValidation(request);
     }
 }

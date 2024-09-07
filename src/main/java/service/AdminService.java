@@ -23,6 +23,14 @@ public class AdminService {
         return adminRepository.update(existingAdmin);
     }
 
+    public boolean checkValidLoginCredentials(String email, String password) {
+        Admin admin = adminRepository.findByEmail(email);
+        if (admin == null) {
+            return false;
+        }
+        return admin.getAccount().getPassword().equals(password);
+    }
+
     public Admin findByEmail(String email) {
         return adminRepository.findByEmail(email);
     }
