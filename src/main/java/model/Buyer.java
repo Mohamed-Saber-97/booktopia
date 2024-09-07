@@ -80,6 +80,8 @@ public class Buyer extends BaseEntity<Long> {
         this.cart.remove(product);
     }
 
+    public void clearCart() {this.cart.clear(); }
+
     public Map<Product, Integer> getCart() {
         return Collections.unmodifiableMap(this.cart);
     }

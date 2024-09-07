@@ -5,6 +5,7 @@ import model.Product;
 import repository.BuyerRepository;
 
 import java.util.List;
+import java.util.Map;
 
 public class BuyerService {
     private final BuyerRepository buyerRepository;
@@ -62,4 +63,33 @@ public class BuyerService {
     public Buyer findById(Long id) {
         return buyerRepository.findById(id).orElse(null);
     }
+
+    public void addProductToBuyerCart(Buyer buyer, Product product, int quantity) {
+        buyerRepository.addProductToCart(buyer, product, quantity);
+    }
+
+    public void removeProductFromBuyerCart(Buyer buyer, Product product) {
+        buyerRepository.removeProductFromCart(buyer, product);
+    }
+
+    public void incrementBuyerCartProductQuantity(Buyer buyer, Product product) {
+        buyerRepository.incrementProductQuantity(buyer, product);
+    }
+
+    public void decrementBuyerCartProductQuantity(Buyer buyer, Product product) {
+        buyerRepository.decrementProductQuantity(buyer, product);
+    }
+
+    public void clearBuyerCart(Buyer buyer){
+        buyerRepository.clearCart(buyer);
+    }
+
+    public Map<Product, Integer> retreiveBuyerCart(Buyer buyer){
+        return buyer.getCart();
+    }
+
+    public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity){
+        buyerRepository.setProductQuantity(buyer, product, quantity);
+    }
+
 }

@@ -1,6 +1,7 @@
 package repository;
 
 import base.BaseRepository;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import model.Buyer;
 import model.Order;
@@ -49,4 +50,104 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         query.setParameter(EMAIL, email);
         return query.getSingleResult();
     }
+
+    public void addProductToCart(Buyer buyer, Product product, int quantity) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            if (!buyer.getCart().containsKey(product)) {
+                buyer.addToCart(product, quantity);
+                buyer = entityManager.merge(buyer);
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public void removeProductFromCart(Buyer buyer, Product product) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            buyer.removeFromCart(product);
+            buyer = entityManager.merge(buyer);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public void incrementProductQuantity(Buyer buyer, Product product) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            buyer.addToCart(product, 1);
+            buyer = entityManager.merge(buyer);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public void decrementProductQuantity(Buyer buyer, Product product) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            int currentQuantity = buyer.getCart().getOrDefault(product, 0);
+            if (currentQuantity > 1) {
+                buyer.addToCart(product, -1);
+                buyer = entityManager.merge(buyer);
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public void clearCart(Buyer buyer) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            buyer.clearCart();
+            buyer = entityManager.merge(buyer);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public void setProductQuantity(Buyer buyer, Product product, int quantity) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            if (quantity > 0) {
+                buyer.getCart().put(product, quantity);
+            } else {
+                buyer.getCart().remove(product);
+            }
+            update(buyer);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
 }
