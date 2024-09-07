@@ -1,6 +1,9 @@
 package base;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import utils.EMFactory;
 
 import java.util.List;

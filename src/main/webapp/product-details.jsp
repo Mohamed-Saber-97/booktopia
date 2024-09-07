@@ -1,5 +1,9 @@
 <%@include file="header.jsp" %>
 
+<div class="alert alert-danger text-center m-t-20 mx-auto pos-fixed"
+	style="width: fit-content; display: none; left: 50%; transform: translateX(-50%); z-index: 9999;">
+</div>
+
 <!-- Product Detail -->
 <section class="sec-product-detail bg0 p-t-65 p-b-60">
 	<div class="container">
@@ -92,7 +96,7 @@
 							</div>
 						</div>
 					</div>
-					<form action="login" method="GET" id="loginForm"></form>
+					<form action="user-login" method="GET" id="loginForm"></form>
 					<c:if test="${sessionScope.buyer != null}">
 						<div class="flex-w flex-m p-l-100 p-t-40 respon7">
 							<div class="flex-m p-r-10 m-r-11">
@@ -154,21 +158,50 @@
 				type: "POST",
 				data: {
 					productId: productId,
-					quantity: numProduct,
-					buyer: 'Y'
+					quantity: numProduct
 				},
 				success: function (response) {
-					console.log("success.");
-					if (response.added === 'yes') {
-						$('#cart').attr('data-notify', parseInt($('#cart').attr(
+					if (response.trim() == "Product added to cart") {
+						$('.cart').attr('data-notify', parseInt($('.cart').attr(
 								'data-notify')) +
 							1);
 						$('#addToCart').text('Remove from cart');
-					} else if (response.removed === 'yes') {
-						$('#cart').attr('data-notify', parseInt($('#cart').attr(
+						$('.alert').text(response)
+							.removeClass('alert-danger')
+							.addClass('alert-info').show();
+
+						setTimeout(function () {
+							$('.alert').text('').removeClass('alert-info').addClass(
+									'alert-danger')
+								.hide();
+						}, 7000);
+					} else if (response.trim() === 'Product removed from cart') {
+						$('.cart').attr('data-notify', parseInt($('.cart').attr(
 								'data-notify')) -
 							1);
 						$('#addToCart').text('Add to cart');
+						$('.alert').text(response).removeClass('alert-danger').addClass(
+							'alert-info').show();
+						setTimeout(function () {
+							$('.alert').text('').removeClass('alert-info').addClass(
+									'alert-danger')
+								.hide();
+						}, 7000);
+					} else if (response.trim() === 'Invalid input') {
+						$('.alert').text('Invalid input').show();
+						setTimeout(function () {
+							$('.alert').text('').hide();
+						}, 7000);
+					} else if (response.trim() === 'Product not found') {
+						$('.alert').text('Product not found').show();
+						setTimeout(function () {
+							$('.alert').text('').hide();
+						}, 7000);
+					} else if (response.trim() === 'Invalid quantity') {
+						$('.alert').text('Invalid quantity').show();
+						setTimeout(function () {
+							$('.alert').text('').hide();
+						}, 7000);
 					}
 				},
 				error: function (xhr, status, error) {

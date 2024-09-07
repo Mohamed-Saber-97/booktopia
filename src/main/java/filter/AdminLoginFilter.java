@@ -1,65 +1,58 @@
 package filter;
 
+import controller.AdminController;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import model.Admin;
-import model.Buyer;
-import service.AdminService;
-import validator.EmailValidator;
-import validator.MinFieldLengthValidator;
-import validator.NotEmptyValidator;
-import validator.UniqueEmailValidator;
+import utils.RequestAttributeUtil;
+import utils.ValidatorUtil;
 
 import java.io.IOException;
+import java.util.Map;
+
+import static utils.RequestAttributeUtil.*;
+import static utils.RequestParameterUtil.EMAIL;
+import static utils.RequestParameterUtil.PASSWORD;
 
 @WebFilter(urlPatterns = "/admin-login")
 public class AdminLoginFilter implements Filter {
-    AdminService adminService;
+    private AdminController adminController;
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        adminController = new AdminController();
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String method = httpRequest.getMethod();
-        if (method.equals("GET")) {
-            chain.doFilter(request, response);
-        } else {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            boolean isValid = true;
-            if (!NotEmptyValidator.isValid(email, password)) {
-                request.setAttribute("error", "All fields are required");
-                isValid = false;
-            } else if (!EmailValidator.isValid(email)) {
-                request.setAttribute("error", "Invalid email format");
-                isValid = false;
-            } else if (!MinFieldLengthValidator.isValid(6, password)) {
-                request.setAttribute("error", "Password must be at least 6 characters long");
-                isValid = false;
-            }
-            if (isValid) {
-                Admin admin = adminService.findByEmail(email);
-                if (admin == null || !admin.getAccount().getPassword().equals(password)) {
-                    request.setAttribute("error", "Invalid email or password");
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("admin-login.jsp");
-                    ((HttpServletRequest) request).getSession().setAttribute("pageTitle", "Admin login");
-                    dispatcher.forward(request, response);
-                } else {
-                    request.setAttribute("admin", admin);
+
+        if ("POST".equalsIgnoreCase(httpRequest.getMethod())) {
+            Map<String, String> errors = ValidatorUtil.validateAdminLogin(httpRequest);
+
+            if (errors.isEmpty()) {
+                String email = request.getParameter(EMAIL);
+                String password = request.getParameter(PASSWORD);
+                if (adminController.login(email, password)) {
+                    Admin admin = adminController.findByEmail(email);
+                    request.setAttribute(USER, admin);
+                    request.setAttribute(ADMIN, YES);
                     chain.doFilter(request, response);
+                } else {
+                    request.setAttribute(ERROR, "Invalid email or password");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("admin-login.jsp");
+                    ((HttpServletRequest) request).getSession().setAttribute(PAGE_TITLE, "Admin login");
+                    dispatcher.forward(request, response);
                 }
             } else {
+                request.setAttribute(ERROR, errors.get(RequestAttributeUtil.ERROR));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("admin-login.jsp");
-                ((HttpServletRequest) request).getSession().setAttribute("pageTitle", "Admin login");
+                ((HttpServletRequest) request).getSession().setAttribute(PAGE_TITLE, "Admin Login");
                 dispatcher.forward(request, response);
             }
+        } else {
+            chain.doFilter(request, response);
         }
-    }
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        adminService = new AdminService();
     }
 }

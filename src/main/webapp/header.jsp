@@ -137,15 +137,15 @@
                         </div> -->
 
                         <c:if test="${sessionScope.buyer != null}">
-                            <a href="cart" id="cart"
-                                class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-                                data-notify="2">
+                            <a href="cart"
+                                class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti cart"
+                                data-notify="${sessionScope.user.getCart().size()}">
                                 <i class="zmdi zmdi-shopping-cart"></i>
                             </a>
 
-                            <a href="wishlist" id="wishlist"
-                                class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-                                data-notify="0">
+                            <a href="wishlist"
+                                class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti wishlist"
+                                data-notify="${sessionScope.user.getWishlist().size()}">
                                 <i class="zmdi zmdi-favorite-outline"></i>
                             </a>
                         </c:if>
@@ -169,14 +169,14 @@
 
                 <c:if test="${sessionScope.buyer != null}">
                     <a href="cart"
-                        class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
-                        data-notify="2">
+                        class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti cart"
+                        data-notify="${sessionScope.user.getCart().size()}">
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </a>
 
                     <a href="wishlist"
-                        class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
-                        data-notify="0">
+                        class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti wishlist"
+                        data-notify="${sessionScope.user.getWishlist().size()}">
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
                 </c:if>
