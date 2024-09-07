@@ -19,17 +19,13 @@ public class SingleProductViewController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String productId = request.getParameter("p");
         if (productId == null || productId.isEmpty() || !productId.matches("\\d+")) {
-            System.out.println("Invalid product id");
             response.sendRedirect("/products");
         } else {
             Long id = Long.parseLong(productId);
             Product product = productController.findById(id);
             if (product == null) {
-                System.out.println("Product not found");
                 response.sendRedirect("/products");
             } else {
-                System.out.println("Product found");
-                System.out.println("Product: " + product);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("product-details.jsp");
                 request.getSession().setAttribute("pageTitle", product.getName());
                 request.getSession().setAttribute("product", product);
