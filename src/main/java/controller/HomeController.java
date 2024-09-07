@@ -16,8 +16,8 @@ import java.util.List;
 
 @WebServlet(value = "")
 public class HomeController extends HttpServlet {
-    BuyerService buyerService;
-    ProductService productService;
+    private transient BuyerService buyerService;
+    private transient ProductService productService;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
