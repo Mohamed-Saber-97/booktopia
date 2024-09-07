@@ -4,11 +4,14 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import model.Buyer;
+import utils.RequestAttributeUtil;
 import utils.RequestBuilderUtil;
 import utils.ValidatorUtil;
 
 import java.io.IOException;
 import java.util.Map;
+
+import static utils.RequestAttributeUtil.*;
 
 @WebFilter(urlPatterns = "/signup")
 public class SignupFilter implements Filter {
@@ -19,13 +22,13 @@ public class SignupFilter implements Filter {
         if ("POST".equalsIgnoreCase(httpRequest.getMethod())) {
             Map<String, String> errors = ValidatorUtil.validateSignup(httpRequest);
             if (!errors.isEmpty()) {
-                request.setAttribute("error", errors.get("error"));
+                request.setAttribute(ERROR, errors.get(ERROR));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
-                ((HttpServletRequest) request).getSession().setAttribute("pageTitle", "Sign up");
+                ((HttpServletRequest) request).getSession().setAttribute(PAGE_TITLE, "Sign up");
                 dispatcher.forward(request, response);
             } else {
                 Buyer buyer = RequestBuilderUtil.createBuyerFromRequest(httpRequest);
-                request.setAttribute("buyer", buyer);
+                request.setAttribute(USER, buyer);
                 chain.doFilter(request, response);
             }
         } else {

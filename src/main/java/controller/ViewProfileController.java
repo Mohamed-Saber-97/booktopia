@@ -10,6 +10,9 @@ import validator.CountryValidator;
 
 import java.io.IOException;
 
+import static utils.RequestAttributeUtil.COUNTRIES;
+import static utils.RequestAttributeUtil.PAGE_TITLE;
+
 @WebServlet(value = "/profile")
 public class ViewProfileController extends HttpServlet {
     @Override
@@ -20,9 +23,8 @@ public class ViewProfileController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("profile.jsp");
-        request.getSession().setAttribute("pageTitle", "My Profile");
-        String[] countries = CountryValidator.countryArray;
-        request.getSession().setAttribute("countries", countries);
+        request.getSession().setAttribute(PAGE_TITLE, "My Profile");
+        request.getSession().setAttribute(COUNTRIES, CountryValidator.getCountries());
         dispatcher.forward(request, response);
     }
 }

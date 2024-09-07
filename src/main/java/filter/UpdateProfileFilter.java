@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import model.Admin;
 import model.Buyer;
+import static utils.RequestAttributeUtil.*;
 import utils.RequestBuilderUtil;
 import utils.ValidatorUtil;
 
@@ -12,12 +13,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @WebFilter(urlPatterns = "/update-profile")
 public class UpdateProfileFilter implements Filter {
-    private static final String ERROR = "error";
-    private static final String BUYER = "buyer";
-    private static final String ADMIN = "admin";
-    private static final String PAGE_TITLE = "pageTitle";
 
     private Map<String, String> errors = HashMap.newHashMap(0);
 
@@ -35,10 +33,13 @@ public class UpdateProfileFilter implements Filter {
                 request.getRequestDispatcher("signup.jsp").forward(request, response);
             } else if (isBuyer) {
                 Buyer buyer = RequestBuilderUtil.updateBuyerFromRequest(request);
-                httpRequest.getSession().setAttribute("user", buyer);
-                httpRequest.getSession().setAttribute(BUYER, "Y");
+                httpRequest.getSession().setAttribute(USER, buyer);
+                httpRequest.getSession().setAttribute(BUYER, YES);
                 errors = ValidatorUtil.validateBuyerUpdateProfile(request);
-            } else {
+            } else if(isAdmin){
+                Admin admin = RequestBuilderUtil.updateAdminFromRequest(request);
+                httpRequest.getSession().setAttribute(USER, admin);
+                httpRequest.getSession().setAttribute(ADMIN, YES);
                 errors = ValidatorUtil.validateAdminUpdateProfile(request);
             }
 
@@ -51,12 +52,12 @@ public class UpdateProfileFilter implements Filter {
                 httpRequest.getSession().setAttribute(PAGE_TITLE, "My Profile");
                 if (isBuyer) {
                     Buyer buyer = RequestBuilderUtil.updateBuyerFromRequest(request);
-                    httpRequest.getSession().setAttribute("user", buyer);
-                    httpRequest.getSession().setAttribute(BUYER, "Y");
-                } else {
+                    request.setAttribute(USER, buyer);
+                    request.setAttribute(BUYER, YES);
+                } else if(isAdmin) {
                     Admin admin = RequestBuilderUtil.updateAdminFromRequest(request);
-                    httpRequest.getSession().setAttribute("user", admin);
-                    httpRequest.getSession().setAttribute(ADMIN, "Y");
+                    request.setAttribute(USER, admin);
+                    request.setAttribute(ADMIN, YES);
                 }
                 chain.doFilter(request, response);
             }

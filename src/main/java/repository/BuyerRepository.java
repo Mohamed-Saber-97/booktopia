@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static utils.RequestParameterUtil.EMAIL;
+
 public class BuyerRepository extends BaseRepository<Buyer, Long> {
     public BuyerRepository() {
         super(Buyer.class);
@@ -44,7 +46,7 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
     public Buyer findByEmail(String email) {
         String jpql = "SELECT b FROM Buyer b WHERE b.account.email = :email";
         TypedQuery<Buyer> query = entityManager.createQuery(jpql, Buyer.class);
-        query.setParameter("email", email);
+        query.setParameter(EMAIL, email);
         return query.getSingleResult();
     }
 }

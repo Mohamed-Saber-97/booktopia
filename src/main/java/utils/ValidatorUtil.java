@@ -10,25 +10,42 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+import static utils.RequestAttributeUtil.ERROR;
+import static utils.RequestAttributeUtil.USER;
+import static utils.RequestParameterUtil.*;
+
 public class ValidatorUtil {
-    private static final String ERROR = "error";
 
     private ValidatorUtil() {
     }
 
-    private static Map<String, String> commonValidation(ServletRequest request) {
+    private static Map<String, String> commonLogInValidation(ServletRequest request) {
         Map<String, String> errors = new HashMap<>();
-        String name = request.getParameter("name");
-        String birthday = request.getParameter("birthday");
-        String job = request.getParameter("job");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirmPassword");
-        String phoneNumber = request.getParameter("phoneNumber");
-        String country = request.getParameter("country");
-        String city = request.getParameter("city");
-        String street = request.getParameter("street");
-        String zipcode = request.getParameter("zipcode");
+        String email = request.getParameter(EMAIL);
+        String password = request.getParameter(PASSWORD);
+        if (!NotEmptyValidator.isValid(email, password)) {
+            errors.put(ERROR, "All fields are required");
+        } else if (!EmailValidator.isValid(email)) {
+            errors.put(ERROR, "Invalid email");
+        } else if (!MinFieldLengthValidator.isValid(6, password)) {
+            errors.put(ERROR, "Password must be at least 6 characters long");
+        }
+        return errors;
+    }
+
+    private static Map<String, String> commonSignUpValidation(ServletRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        String name = request.getParameter(NAME);
+        String birthday = request.getParameter(BIRTHDAY);
+        String job = request.getParameter(JOB);
+        String email = request.getParameter(EMAIL);
+        String password = request.getParameter(PASSWORD);
+        String confirmPassword = request.getParameter(CONFIRM_PASSWORD);
+        String phoneNumber = request.getParameter(PHONE_NUMBER);
+        String country = request.getParameter(COUNTRY);
+        String city = request.getParameter(CITY);
+        String street = request.getParameter(STREET);
+        String zipcode = request.getParameter(ZIPCODE);
         if (!NotEmptyValidator.isValid(name, birthday, job, email, password, confirmPassword, phoneNumber, country, city, street, zipcode)) {
             errors.put(ERROR, "All fields are required");
         } else if (!MaxFieldLengthValidator.isValid(100, name)) {
@@ -56,11 +73,11 @@ public class ValidatorUtil {
     }
 
     public static Map<String, String> validateSignup(ServletRequest request) {
-        Map<String, String> errors = new HashMap<>(commonValidation(request));
+        Map<String, String> errors = new HashMap<>(commonSignUpValidation(request));
 
-        String email = request.getParameter("email");
-        String creditLimit = request.getParameter("creditLimit");
-        String phoneNumber = request.getParameter("phoneNumber");
+        String email = request.getParameter(EMAIL);
+        String creditLimit = request.getParameter(CREDIT_LIMIT);
+        String phoneNumber = request.getParameter(PHONE_NUMBER);
 
         if (!UniqueEmailValidator.isValid(email)) {
             errors.put(ERROR, "Email already exists");
@@ -73,9 +90,9 @@ public class ValidatorUtil {
     }
 
     public static Map<String, String> validateBuyerUpdateProfile(ServletRequest request) {
-        Map<String, String> errors = new HashMap<>(commonValidation(request));
+        Map<String, String> errors = new HashMap<>(commonSignUpValidation(request));
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        Buyer requestedBuyer = (Buyer) httpRequest.getSession().getAttribute("user");
+        Buyer requestedBuyer = (Buyer) httpRequest.getSession().getAttribute(USER);
         if (requestedBuyer == null) {
             errors.put(ERROR, "User not found in session.");
             return errors;

@@ -14,6 +14,8 @@ import service.ProductService;
 import java.io.IOException;
 import java.util.List;
 
+import static utils.RequestAttributeUtil.*;
+
 @WebServlet(value = "")
 public class HomeController extends HttpServlet {
     private transient BuyerService buyerService;
@@ -22,14 +24,14 @@ public class HomeController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-        request.getSession().setAttribute("pageTitle", "Home");
+        request.getSession().setAttribute(PAGE_TITLE, "Home");
         List<Product> interests;
-        if (request.getSession().getAttribute("buyer") != null) {
-            interests = buyerService.findInterestsByBuyerId(((Buyer) request.getSession().getAttribute("user")).getId());
-            request.setAttribute("interests", interests);
+        if (request.getSession().getAttribute(BUYER) != null) {
+            interests = buyerService.findInterestsByBuyerId(((Buyer) request.getSession().getAttribute(USER)).getId());
+            request.setAttribute(INTERESTS, interests);
         } else {
             interests = productService.findFirstX(16);
-            request.setAttribute("interests", interests);
+            request.setAttribute(INTERESTS, interests);
         }
         dispatcher.forward(request, response);
     }

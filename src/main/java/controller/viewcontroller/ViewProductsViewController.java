@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static utils.RequestAttributeUtil.*;
+import static utils.RequestParameterUtil.*;
+
 // /products endpoint with query string parameters represents minPrice, maxPrice, and category
 @WebServlet(value = "/products")
 public class ViewProductsViewController extends HttpServlet {
@@ -26,29 +29,29 @@ public class ViewProductsViewController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String minPrice = request.getParameter("minPrice");
-        String maxPrice = request.getParameter("maxPrice");
-        String category = request.getParameter("category");
-        String name = request.getParameter("name");
+        String minPrice = request.getParameter(MINIMUM_PRICE);
+        String maxPrice = request.getParameter(MAXIMUM_PRICE);
+        String category = request.getParameter(CATEGORY);
+        String name = request.getParameter(NAME);
         Map<String, String> queryParameters = new HashMap<>();
         if (NotEmptyValidator.isValid(minPrice)) {
-            queryParameters.put("minPrice", minPrice);
+            queryParameters.put(MINIMUM_PRICE, minPrice);
         }
         if (NotEmptyValidator.isValid(maxPrice)) {
-            queryParameters.put("maxPrice", maxPrice);
+            queryParameters.put(MAXIMUM_PRICE, maxPrice);
         }
         if (NotEmptyValidator.isValid(category)) {
-            queryParameters.put("category", category);
+            queryParameters.put(CATEGORY, category);
         }
         if (NotEmptyValidator.isValid(name)) {
-            queryParameters.put("name", name);
+            queryParameters.put(NAME, name);
         }
         List<Product> products = productController.search(queryParameters);
         List<Category> categories = categoryController.findAll();
         RequestDispatcher dispatcher = request.getRequestDispatcher("products.jsp");
-        request.getSession().setAttribute("pageTitle", "Books");
-        request.getSession().setAttribute("products", products);
-        request.getSession().setAttribute("categories", categories);
+        request.getSession().setAttribute(PAGE_TITLE, "Books");
+        request.getSession().setAttribute(PRODUCTS, products);
+        request.getSession().setAttribute(CATEGORIES, categories);
         dispatcher.forward(request, response);
     }
 
