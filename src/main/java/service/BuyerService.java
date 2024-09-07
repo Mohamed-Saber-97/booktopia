@@ -43,4 +43,25 @@ public class BuyerService {
     public Buyer findByEmail(String email) {
         return buyerRepository.findByEmail(email);
     }
+
+    public void addProductToBuyerCart(Buyer buyer, Product product, int quantity) {
+        buyerRepository.addProductToCart(buyer, product, quantity);
+    }
+
+    public void removeProductFromBuyerCart(Buyer buyer, Product product) {
+        buyerRepository.removeProductFromCart(buyer, product);
+    }
+
+    public void incrementBuyerCartProductQuantity(Buyer buyer, Product product) {
+        buyerRepository.incrementProductQuantity(buyer, product);
+    }
+
+    public void decrementBuyerCartProductQuantity(Buyer buyer, Product product) {
+        buyerRepository.decrementProductQuantity(buyer, product);
+    }
+
+    public void clearBuyerCart(Buyer buyer){
+        buyerRepository.clearCart(buyer);
+    }
+
 }
