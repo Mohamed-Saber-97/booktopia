@@ -96,7 +96,7 @@
 							</div>
 						</div>
 					</div>
-					<form action="user-login" method="GET" id="loginForm"></form>
+					<form action="login" method="GET" id="loginForm"></form>
 					<c:if test="${sessionScope.buyer != null}">
 						<div class="flex-w flex-m p-l-100 p-t-40 respon7">
 							<div class="flex-m p-r-10 m-r-11">
