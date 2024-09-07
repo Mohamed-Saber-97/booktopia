@@ -30,11 +30,15 @@ public class SignupController extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Buyer buyer = (Buyer) request.getAttribute(USER);
         Buyer savedBuyer = buyerController.save(buyer);
-        HttpSession session = request.getSession(true);
-        session.setAttribute(USER, savedBuyer);
-        session.setAttribute(BUYER, YES);
-        session.setAttribute(PAGE_TITLE, "Home");
-        response.sendRedirect(request.getContextPath() + "/");
+        if (savedBuyer == null) {
+            response.sendRedirect("/signup");
+        } else {
+            HttpSession session = request.getSession(true);
+            session.setAttribute(USER, savedBuyer);
+            session.setAttribute(BUYER, YES);
+            session.setAttribute(PAGE_TITLE, "Home");
+            response.sendRedirect(request.getContextPath() + "/");
+        }
     }
 
     @Override
