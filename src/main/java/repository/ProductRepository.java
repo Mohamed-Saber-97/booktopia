@@ -1,6 +1,7 @@
 package repository;
 
 import base.BaseRepository;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -38,5 +39,18 @@ public class ProductRepository extends BaseRepository<Product, Long> {
         query.select(productRoot).where(predicate);
         return entityManager.createQuery(query).setFirstResult(pageNumber * pageSize).setMaxResults(pageSize).getResultList();
 //        return entityManager.createQuery(query).getResultList();
+    }
+
+    public List<Product> findAllAvailable() {
+        String jpql = "SELECT p FROM Product p WHERE p.isDeleted = false AND p.quantity > 0";
+        TypedQuery<Product> query = entityManager.createQuery(jpql, Product.class);
+        return query.getResultList();
+    }
+
+    public Product findAvailableProductById(Long id) {
+        String jpql = "SELECT p FROM Product p WHERE p.id = :id AND p.isDeleted = false AND p.quantity > 0";
+        TypedQuery<Product> query = entityManager.createQuery(jpql, Product.class);
+        query.setParameter("id", id);
+        return query.getSingleResult();
     }
 }

@@ -72,23 +72,23 @@ public class BuyerService {
         buyerRepository.removeProductFromCart(buyer, product);
     }
 
-    public void incrementBuyerCartProductQuantity(Buyer buyer, Product product) {
-        buyerRepository.incrementProductQuantity(buyer, product);
+    public int incrementBuyerCartProductQuantity(Buyer buyer, Product product) {
+        return buyerRepository.incrementProductQuantity(buyer, product);
     }
 
-    public void decrementBuyerCartProductQuantity(Buyer buyer, Product product) {
-        buyerRepository.decrementProductQuantity(buyer, product);
+    public int decrementBuyerCartProductQuantity(Buyer buyer, Product product) {
+        return buyerRepository.decrementProductQuantity(buyer, product);
     }
 
-    public void clearBuyerCart(Buyer buyer){
+    public void clearBuyerCart(Buyer buyer) {
         buyerRepository.clearCart(buyer);
     }
 
-    public Map<Product, Integer> retreiveBuyerCart(Buyer buyer){
+    public Map<Product, Integer> retreiveBuyerCart(Buyer buyer) {
         return buyer.getCart();
     }
 
-    public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity){
+    public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity) {
         buyerRepository.setProductQuantity(buyer, product, quantity);
     }
 }

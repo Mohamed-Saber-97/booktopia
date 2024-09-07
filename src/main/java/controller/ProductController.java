@@ -20,4 +20,12 @@ public class ProductController {
     public List<Product> search(Map<String, String> queryParameters, int pageNumber, int pageSize) {
         return productService.search(queryParameters, pageNumber, pageSize);
     }
+
+    public Product findAvailableProductById(Long id) {
+        return productService.findAvailableProductById(id);
+    }
+
+    public List<Product> findAllAvailable() {
+        return productService.findAllAvailable();
+    }
 }

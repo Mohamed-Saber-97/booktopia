@@ -25,22 +25,27 @@
 												</div>
 											</td>
 											<td class="column-2">${item.key.getName()}</td>
-											<td class="column-3">${item.key.getPrice()}</td>
+											<td class="column-3 price" data-product-id="${item.key.getId()}">
+												${item.key.getPrice()}</td>
 											<td class="column-4">
 												<div class="wrap-num-product flex-w m-l-auto m-r-0">
-													<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+													<div class="btn-num-product-down decrement-quantity cl8 hov-btn3 trans-04 flex-c-m"
+														data-product-id="${item.key.getId()}">
 														<i class="fs-16 zmdi zmdi-minus"></i>
 													</div>
-													<input type="hidden" name="id" value="${item.key.getId()}">
-													<input class="mtext-104 cl3 txt-center num-product" type="number"
-														name="quantity" value="${item.value}">
+													<input class="mtext-104 cl3 txt-center num-product quantity"
+														type="number" data-product-id="${item.key.getId()}"
+														name="quantity[]" value="${item.value}">
 
-													<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+													<div class="btn-num-product-up increment-quantity cl8 hov-btn3 trans-04 flex-c-m"
+														data-product-id="${item.key.getId()}">
 														<i class="fs-16 zmdi zmdi-plus"></i>
 													</div>
 												</div>
 											</td>
-											<td class="column-5 totals">$ ${item.key.getPrice() * item.value}</td>
+											<td class="column-5 totals" data-product-id="${item.key.getId()}">$
+												${item.key.getPrice() * item.value}</td>
+											<input type="hidden" name="id[]" value="${item.key.getId()}">
 										</tr>
 									</c:forEach>
 								</table>
@@ -51,10 +56,10 @@
 									class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
 									Update Cart
 								</div> -->
-								<button id="updateCart"
+								<!-- <button id="updateCart"
 									class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
 									Update Cart
-								</button>
+								</button> -->
 							</div>
 						</div>
 					</div>
@@ -123,7 +128,64 @@
 		$('.totals').each(function () {
 			grandTotal += parseFloat($(this).text().replace('$', ''));
 		});
-		$('.grand-total').text('$' + grandTotal);
+		$('.grand-total').text('$' + grandTotal.toFixed(2));
+
+		$('.decrement-quantity').click(function (event) {
+			event.preventDefault();
+			let productId = $(this).data('product-id');
+			$.ajax({
+				url: 'decrement-cart-item',
+				type: 'POST',
+				data: {
+					id: productId,
+				},
+				success: function (response) {
+					response = response.trim();
+					$('.quantity[data-product-id=' + productId + ']').val(response);
+					let price = $('.price[data-product-id=' + productId + ']').text().replace(
+						'$', '').trim();
+					let quantity = $('.quantity[data-product-id=' + productId + ']').val()
+						.trim();
+					$(`.totals[data-product-id=` + productId + `]`).text(
+						'$' + (parseFloat(price) * parseInt(quantity)).toFixed(2)
+					);
+					grandTotal = 0;
+					$('.totals').each(function () {
+						grandTotal += parseFloat($(this).text().replace('$', ''));
+					});
+					$('.grand-total').text('$' + grandTotal.toFixed(2));
+				}
+			});
+		});
+
+		$('.increment-quantity').click(function (event) {
+			event.preventDefault();
+			let productId = $(this).data('product-id');
+			$.ajax({
+				url: 'increment-cart-item',
+				type: 'POST',
+				data: {
+					id: productId,
+				},
+				success: function (response) {
+					response = response.trim();
+					$('.quantity[data-product-id=' + productId + ']').val(response);
+					let price = $('.price[data-product-id=' + productId + ']').text().replace(
+						'$', '').trim();
+					let quantity = $('.quantity[data-product-id=' + productId + ']').val()
+						.trim();
+					$(`.totals[data-product-id=` + productId + `]`).text(
+						'$' + (parseFloat(price) * parseInt(quantity)).toFixed(2)
+					);
+					grandTotal = 0;
+					$('.totals').each(function () {
+						grandTotal += parseFloat($(this).text().replace('$', ''));
+					});
+					$('.grand-total').text('$' + grandTotal.toFixed(2));
+				}
+			});
+		});
+
 	});
 </script>
 

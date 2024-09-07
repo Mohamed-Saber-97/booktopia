@@ -30,4 +30,12 @@ public class BuyerController {
     public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity) {
         buyerService.setBuyerCartProductQuantity(buyer, product, quantity);
     }
+
+    public int incrementProductQuantity(Buyer buyer, Product product) {
+        return buyerService.incrementBuyerCartProductQuantity(buyer, product);
+    }
+
+    public int decrementProductQuantity(Buyer buyer, Product product) {
+        return buyerService.decrementBuyerCartProductQuantity(buyer, product);
+    }
 }

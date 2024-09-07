@@ -72,15 +72,17 @@ public class Buyer extends BaseEntity<Long> {
         return Collections.unmodifiableSet(this.wishlist);
     }
 
-    public void addToCart(Product product, int quantity) {
-        this.cart.merge(product, quantity, Integer::sum);
+    public int addToCart(Product product, int quantity) {
+        return this.cart.merge(product, quantity, Integer::sum);
     }
 
     public void removeFromCart(Product product) {
         this.cart.remove(product);
     }
 
-    public void clearCart() {this.cart.clear(); }
+    public void clearCart() {
+        this.cart.clear();
+    }
 
     public Map<Product, Integer> getCart() {
         return Collections.unmodifiableMap(this.cart);

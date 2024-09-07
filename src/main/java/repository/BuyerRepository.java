@@ -83,13 +83,14 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         }
     }
 
-    public void incrementProductQuantity(Buyer buyer, Product product) {
+    public int incrementProductQuantity(Buyer buyer, Product product) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            buyer.addToCart(product, 1);
+            int qty = buyer.addToCart(product, 1);
             buyer = entityManager.merge(buyer);
             transaction.commit();
+            return qty;
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -98,16 +99,18 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         }
     }
 
-    public void decrementProductQuantity(Buyer buyer, Product product) {
+    public int decrementProductQuantity(Buyer buyer, Product product) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
             int currentQuantity = buyer.getCart().getOrDefault(product, 0);
+            int qty = 1;
             if (currentQuantity > 1) {
-                buyer.addToCart(product, -1);
+                qty = buyer.addToCart(product, -1);
                 buyer = entityManager.merge(buyer);
             }
             transaction.commit();
+            return qty;
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

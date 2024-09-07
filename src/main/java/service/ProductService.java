@@ -22,7 +22,7 @@ public class ProductService {
     }
 
     public List<Product> findFirstX(int x) {
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAllAvailable();
         return products.subList(0, Math.min(products.size(), x));
     }
 
@@ -31,5 +31,13 @@ public class ProductService {
             return productRepository.search(queryParameters, pageNumber, pageSize);
         }
         return productRepository.search(queryParameters, pageNumber, pageSize);
+    }
+
+    public List<Product> findAllAvailable() {
+        return productRepository.findAllAvailable();
+    }
+
+    public Product findAvailableProductById(Long id) {
+        return productRepository.findAvailableProductById(id);
     }
 }
