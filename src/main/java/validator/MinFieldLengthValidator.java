@@ -1,13 +1,16 @@
 package validator;
 
+import java.util.Arrays;
+
 public class MinFieldLengthValidator {
-    public static final String ERROR_MESSAGE = "Password must be at least 6 characters long";
+    private static int length = 6;
+    public static final String ERROR_MESSAGE = "Password must be at least %d characters long".formatted(length);
+
+    private MinFieldLengthValidator() {
+    }
+
     public static boolean isValid(int length, String... fields) {
-        for (String field : fields) {
-            if (field.length() < length) {
-                return false;
-            }
-        }
-        return true;
+        MinFieldLengthValidator.length = length;
+        return Arrays.stream(fields).allMatch(field -> field.length() >= length);
     }
 }
