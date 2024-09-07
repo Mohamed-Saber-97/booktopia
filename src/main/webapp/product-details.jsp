@@ -154,8 +154,7 @@
 				type: "POST",
 				data: {
 					productId: productId,
-					quantity: numProduct,
-					buyer: 'Y'
+					quantity: numProduct
 				},
 				success: function (response) {
 					console.log("success.");
