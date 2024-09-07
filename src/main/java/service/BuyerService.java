@@ -60,6 +60,14 @@ public class BuyerService {
         return buyer;
     }
 
+    public boolean checkValidLoginCredentials(String email, String password) {
+        Buyer buyer = findByEmail(email);
+        if (buyer == null) {
+            return false;
+        }
+        return buyer.getAccount().getPassword().equals(password);
+    }
+
     public Buyer findById(Long id) {
         return buyerRepository.findById(id).orElse(null);
     }
@@ -80,15 +88,15 @@ public class BuyerService {
         buyerRepository.decrementProductQuantity(buyer, product);
     }
 
-    public void clearBuyerCart(Buyer buyer){
+    public void clearBuyerCart(Buyer buyer) {
         buyerRepository.clearCart(buyer);
     }
 
-    public Map<Product, Integer> retreiveBuyerCart(Buyer buyer){
+    public Map<Product, Integer> retreiveBuyerCart(Buyer buyer) {
         return buyer.getCart();
     }
 
-    public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity){
+    public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity) {
         buyerRepository.setProductQuantity(buyer, product, quantity);
     }
 
