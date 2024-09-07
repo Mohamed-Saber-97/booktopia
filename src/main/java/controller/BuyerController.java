@@ -1,6 +1,7 @@
 package controller;
 
 import model.Buyer;
+import model.Product;
 import service.BuyerService;
 
 public class BuyerController {
@@ -16,5 +17,13 @@ public class BuyerController {
 
     public Buyer update(Buyer buyer) {
         return buyerService.update(buyer);
+    }
+
+    public void removeProductFromCart(Buyer buyer, Product product) {
+        buyerService.removeProductFromBuyerCart(buyer, product);
+    }
+
+    public void addProductToBuyerCart(Buyer buyer, Product product, int quantity) {
+        buyerService.addProductToBuyerCart(buyer, product, quantity);
     }
 }
