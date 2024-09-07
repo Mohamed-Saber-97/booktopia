@@ -162,7 +162,7 @@
 				},
 				success: function (response) {
 					if (response.trim() == "Product added to cart") {
-						$('#cart').attr('data-notify', parseInt($('#cart').attr(
+						$('.cart').attr('data-notify', parseInt($('.cart').attr(
 								'data-notify')) +
 							1);
 						$('#addToCart').text('Remove from cart');
@@ -176,7 +176,7 @@
 								.hide();
 						}, 7000);
 					} else if (response.trim() === 'Product removed from cart') {
-						$('#cart').attr('data-notify', parseInt($('#cart').attr(
+						$('.cart').attr('data-notify', parseInt($('.cart').attr(
 								'data-notify')) -
 							1);
 						$('#addToCart').text('Add to cart');
