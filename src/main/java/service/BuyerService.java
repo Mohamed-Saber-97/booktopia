@@ -91,5 +91,4 @@ public class BuyerService {
     public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity){
         buyerRepository.setProductQuantity(buyer, product, quantity);
     }
-
 }

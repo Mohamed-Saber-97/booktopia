@@ -26,4 +26,8 @@ public class BuyerController {
     public void addProductToBuyerCart(Buyer buyer, Product product, int quantity) {
         buyerService.addProductToBuyerCart(buyer, product, quantity);
     }
+
+    public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity) {
+        buyerService.setBuyerCartProductQuantity(buyer, product, quantity);
+    }
 }
