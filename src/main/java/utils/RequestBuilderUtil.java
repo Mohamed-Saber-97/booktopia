@@ -1,7 +1,6 @@
 package utils;
 
 import jakarta.servlet.ServletRequest;
-import jakarta.servlet.http.HttpServletRequest;
 import model.Account;
 import model.Address;
 import model.Admin;
@@ -26,10 +25,9 @@ public class RequestBuilderUtil {
         buyer.setCreditLimit(BigDecimal.valueOf(Double.parseDouble(request.getParameter(CREDIT_LIMIT))));
         return buyer;
     }
-
+    
     public static Buyer updateBuyerFromRequest(ServletRequest request) {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        Buyer buyer = (Buyer) httpRequest.getSession().getAttribute(USER);
+        Buyer buyer = (Buyer) request.getAttribute(USER);
         Account account = buildAccountFromRequest(request);
         buyer.setAccount(account);
         buyer.setCreditLimit(BigDecimal.valueOf(Double.parseDouble(request.getParameter(CREDIT_LIMIT))));
@@ -37,8 +35,7 @@ public class RequestBuilderUtil {
     }
 
     public static Admin updateAdminFromRequest(ServletRequest request) {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        Admin admin = (Admin) httpRequest.getSession().getAttribute(USER);
+        Admin admin = (Admin) request.getAttribute(USER);
         Account account = buildAccountFromRequest(request);
         admin.setAccount(account);
         return admin;
