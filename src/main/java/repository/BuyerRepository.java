@@ -148,4 +148,34 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         }
     }
 
+    public void addToWishlist(Buyer buyer, Product product) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            buyer.addToWishlist(product);
+            buyer = entityManager.merge(buyer);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public void removeFromWishlist(Buyer buyer, Product product) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            buyer.removeFromWishlist(product);
+            buyer = entityManager.merge(buyer);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
 }
