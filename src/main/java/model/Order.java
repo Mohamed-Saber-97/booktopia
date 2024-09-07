@@ -8,6 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "orders")
@@ -26,12 +30,17 @@ public class Order extends BaseEntity<Long> {
     @JoinColumn(name = "buyer_id", nullable = false)
     private Buyer buyer;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderProduct> orderProducts = new HashSet<>();
+
     public Order(Buyer buyer) {
         if (buyer == null) {
             throw new IllegalArgumentException("Buyer cannot be null");
         }
         this.buyer = buyer;
     }
+
+
 
     public void updateStatus(OrderStatus newStatus) {
         if (newStatus == null) {
