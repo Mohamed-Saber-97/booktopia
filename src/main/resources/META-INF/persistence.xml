@@ -4,11 +4,11 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <!-- Jakarta properties -->
-            <property name="jakarta.persistence.jdbc.url" value="${DB_URL}"/>
-            <property name="jakarta.persistence.jdbc.user" value="${DB_USERNAME}"/>
-            <property name="jakarta.persistence.jdbc.password" value="${DB_PASSWORD}"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/booktopia"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="root"/>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+
 
             <!-- Hibernate properties -->
             <property name="hibernate.show_sql" value="true"/>
