@@ -6,7 +6,7 @@ import service.CategoryService;
 import java.util.List;
 
 public class CategoryController {
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public CategoryController() {
         this.categoryService = new CategoryService();

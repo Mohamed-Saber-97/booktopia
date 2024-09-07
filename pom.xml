@@ -60,7 +60,12 @@
             <artifactId>hibernate-validator</artifactId>
             <version>8.0.1.Final</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.glassfish.expressly/expressly -->
+        <dependency>
+            <groupId>org.glassfish.expressly</groupId>
+            <artifactId>expressly</artifactId>
+            <version>6.0.0-M1</version>
+        </dependency>
 
         <!--        The following three (3) dependencies manage servlets and JSP-->
         <dependency>

@@ -6,7 +6,7 @@ import repository.CategoryRepository;
 import java.util.List;
 
 public class CategoryService {
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public CategoryService() {
         categoryRepository = new CategoryRepository();

@@ -4,7 +4,7 @@ import model.Buyer;
 import service.BuyerService;
 
 public class BuyerController {
-    private BuyerService buyerService;
+    private final BuyerService buyerService;
 
     public BuyerController() {
         this.buyerService = new BuyerService();
@@ -13,6 +13,7 @@ public class BuyerController {
     public Buyer save(Buyer buyer) {
         return buyerService.save(buyer);
     }
+
     public Buyer update(Buyer buyer) {
         return buyerService.update(buyer);
     }
