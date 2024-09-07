@@ -128,4 +128,24 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
             throw e;
         }
     }
+
+    public void setProductQuantity(Buyer buyer, Product product, int quantity) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            if (quantity > 0) {
+                buyer.getCart().put(product, quantity);
+            } else {
+                buyer.getCart().remove(product);
+            }
+            update(buyer);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
 }

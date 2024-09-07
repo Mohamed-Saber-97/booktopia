@@ -69,4 +69,8 @@ public class BuyerService {
         return buyer.getCart();
     }
 
+    public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity){
+        buyerRepository.setProductQuantity(buyer, product, quantity);
+    }
+
 }
