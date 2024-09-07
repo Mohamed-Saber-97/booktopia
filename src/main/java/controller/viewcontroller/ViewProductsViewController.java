@@ -24,8 +24,8 @@ import static utils.RequestParameterUtil.*;
 // /products endpoint with query string parameters represents minPrice, maxPrice, and category
 @WebServlet(value = "/products")
 public class ViewProductsViewController extends HttpServlet {
-    private ProductController productController;
-    private CategoryController categoryController;
+    private transient ProductController productController;
+    private transient CategoryController categoryController;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

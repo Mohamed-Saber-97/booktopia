@@ -11,10 +11,12 @@ import model.Buyer;
 import validator.CountryValidator;
 
 import java.io.IOException;
+
 import static utils.RequestAttributeUtil.*;
+
 @WebServlet(value = "/signup")
 public class SignupController extends HttpServlet {
-    private BuyerController buyerController;
+    private transient BuyerController buyerController;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

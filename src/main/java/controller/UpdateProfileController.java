@@ -18,8 +18,8 @@ import static utils.RequestAttributeUtil.*;
 @WebServlet(value = "/update-profile")
 public class UpdateProfileController extends HttpServlet {
 
-    private BuyerController buyerController;
-    private AdminController adminController;
+    private transient BuyerController buyerController;
+    private transient AdminController adminController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
