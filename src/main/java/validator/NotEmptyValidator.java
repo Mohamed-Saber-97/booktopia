@@ -9,4 +9,5 @@ public class NotEmptyValidator {
         }
         return true;
     }
+    public static final String ERROR_MESSAGE = "All fields are required";
 }
