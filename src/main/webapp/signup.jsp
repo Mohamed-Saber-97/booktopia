@@ -51,7 +51,7 @@
                         form="signupForm" placeholder="Phone Number">
                 </div>
                 <div class="bor8 m-b-20">
-                    <select class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" id="countries" name="country"
+                    <select class="bor8 m-b-20 stext-111 cl2 plh3 size-116 p-l-62 p-r-30" id="countries" name="country"
                         form="signupForm">
                         <option value="" disabled selected>Country</option>
                         <c:forEach items="${countries}" var="country">
