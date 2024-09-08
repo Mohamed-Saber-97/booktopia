@@ -91,4 +91,8 @@ public class BuyerService {
     public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity) {
         buyerRepository.setProductQuantity(buyer, product, quantity);
     }
+
+    public void removeProductFromCart(Buyer buyer, Product product) {
+        buyerRepository.removeProductFromCart(buyer, product);
+    }
 }

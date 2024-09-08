@@ -1,5 +1,12 @@
 <%@include file="header.jsp" %>
-
+<style>
+	.how-itemcart1::after {
+		pointer-events: none;
+	}
+</style>
+<form action="remove-cart-item" method="POST" id="removeFromCart">
+	<input type="hidden" name="productId" id="productId">
+</form>
 <!-- Shoping Cart -->
 <c:choose>
 	<c:when test="${sessionScope.user.getCart().size() > 0}">
@@ -21,7 +28,8 @@
 										<tr class="table_row">
 											<td class="column-1">
 												<div class="how-itemcart1">
-													<img src="${item.key.getImagePath()}" alt="IMG">
+													<img src="${item.key.getImagePath()}" alt="IMG"
+														class="remove-cart-item" data-product-id="${item.key.getId()}">
 												</div>
 											</td>
 											<td class="column-2">${item.key.getName()}</td>
@@ -186,6 +194,38 @@
 			});
 		});
 
+		// iterate through .remove-cart-item elements and set up click event listener to grab the product id and submit the form
+		$('.remove-cart-item').each(function () {
+			$(this).click(function (event) {
+				console.log('clicked');
+				let productId = $(this).data('product-id');
+				removeCartItem(productId);
+				// $('#productId').val(productId);
+				// $('#removeFromCart').submit();
+			});
+		});
+
+		function removeCartItem(productId) {
+			$.ajax({
+				url: 'remove-cart-item',
+				type: 'POST',
+				data: {
+					productId: productId
+				},
+				success: function (response) {
+					response = response.trim();
+					if (response === 'success') {
+						$('.remove-cart-item[data-product-id=' + productId + ']').closest('.table_row')
+							.remove();
+						grandTotal = 0;
+						$('.totals').each(function () {
+							grandTotal += parseFloat($(this).text().replace('$', ''));
+						});
+						$('.grand-total').text('$' + grandTotal.toFixed(2));
+					}
+				}
+			});
+		}
 	});
 </script>
 
