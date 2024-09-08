@@ -1,5 +1,6 @@
 package validator;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,16 +20,21 @@ public class CartValidator {
         ProductController productController = new ProductController();
         BuyerController buyerController = new BuyerController();
         List<Product> availableProducts = productController.findAllAvailable();
-        for (Map.Entry entry : cart.entrySet()) {
-            if (!availableProducts.contains((Product) entry.getKey())) {
+        Iterator<Map.Entry<Product, Integer>> iterator = cart.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<Product, Integer> entry = iterator.next();
+            Product product = entry.getKey();
+
+            if (!availableProducts.contains(entry.getKey())) {
                 isValid = false;
-                cart.remove((Product) entry.getKey());
-                buyer.removeFromCart((Product) entry.getKey());
-            } else if ((Integer) entry.getValue() > availableProducts.get(availableProducts.indexOf((Product) entry.getKey())).getQuantity()) {
+                buyer.removeCartItem(product);
+            } else if (entry.getValue() > availableProducts.get(availableProducts.indexOf(product)).getQuantity()) {
                 isValid = false;
-                buyerController.setBuyerCartProductQuantity(buyer, (Product) entry.getKey(), 1);
+//                buyerController.setBuyerCartProductQuantity(buyer, product, 1);
             }
         }
+
         return isValid;
     }
 }
