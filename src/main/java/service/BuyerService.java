@@ -60,6 +60,14 @@ public class BuyerService {
         return buyer;
     }
 
+    public boolean checkValidLoginCredentials(String email, String password) {
+        Buyer buyer = findByEmail(email);
+        if (buyer == null) {
+            return false;
+        }
+        return buyer.getAccount().getPassword().equals(password);
+    }
+
     public Buyer findById(Long id) {
         return buyerRepository.findById(id).orElse(null);
     }

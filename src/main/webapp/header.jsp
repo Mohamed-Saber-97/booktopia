@@ -80,7 +80,7 @@
                             <!-- <a href="admin-login" class="flex-c-m trans-04 p-lr-25">
                         Admin Login
                         </a> -->
-                            <a href="user-login" class="flex-c-m trans-04 p-lr-25">
+                            <a href="login" class="flex-c-m trans-04 p-lr-25">
                                 Login
                             </a>
                         </c:if>
@@ -230,7 +230,7 @@
                             <!-- <a href="admin-login" class="flex-c-m p-lr-10 trans-04">
                         Admin Login
                         </a> -->
-                            <a href="user-login" class="flex-c-m p-lr-10 trans-04">
+                            <a href="login" class="flex-c-m p-lr-10 trans-04">
                                 Login
                             </a>
                         </c:if>

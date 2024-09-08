@@ -32,14 +32,14 @@ public class UpdateProfileFilter implements Filter {
                 httpRequest.getSession().setAttribute(PAGE_TITLE, "Signup");
                 request.getRequestDispatcher("signup.jsp").forward(request, response);
             } else if (isBuyer) {
-                Buyer buyer = RequestBuilderUtil.updateBuyerFromRequest(request);
-                httpRequest.getSession().setAttribute(USER, buyer);
-                httpRequest.getSession().setAttribute(BUYER, YES);
+                Buyer buyer = (Buyer) httpRequest.getSession().getAttribute(USER);
+                request.setAttribute(USER, buyer);
+                request.setAttribute(BUYER, YES);
                 errors = ValidatorUtil.validateBuyerUpdateProfile(request);
             } else if(isAdmin){
-                Admin admin = RequestBuilderUtil.updateAdminFromRequest(request);
-                httpRequest.getSession().setAttribute(USER, admin);
-                httpRequest.getSession().setAttribute(ADMIN, YES);
+                Admin admin = (Admin) httpRequest.getSession().getAttribute(USER);
+                request.setAttribute(USER, admin);
+                request.setAttribute(ADMIN, YES);
                 errors = ValidatorUtil.validateAdminUpdateProfile(request);
             }
 

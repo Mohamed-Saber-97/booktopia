@@ -45,7 +45,7 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
     }
 
     public Buyer findByEmail(String email) {
-        String jpql = "SELECT b FROM Buyer b WHERE b.account.email = :email";
+        String jpql = "SELECT b FROM Buyer b WHERE b.account.email = :email and b.isDeleted = false";
         TypedQuery<Buyer> query = entityManager.createQuery(jpql, Buyer.class);
         query.setParameter(EMAIL, email);
         return query.getSingleResult();

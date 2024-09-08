@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import static utils.RequestAttributeUtil.BUYER;
 
-@WebFilter(urlPatterns = {"/orders", "/addToCart", "/cart", "/update-cart", "/remove-cart-item", "/increment-cart-item", "/decrement-cart-item"})
+@WebFilter(urlPatterns = {"/login", "/orders", "/addToCart", "/cart", "/update-cart", "/remove-cart-item", "/increment-cart-item", "/decrement-cart-item"})
 public class BuyerFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
