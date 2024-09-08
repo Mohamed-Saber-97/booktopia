@@ -100,15 +100,11 @@ public class BuyerService {
         buyerRepository.setProductQuantity(buyer, product, quantity);
     }
 
-    public void removeProductFromCart(Buyer buyer, Product product) {
-        buyerRepository.removeProductFromCart(buyer, product);
-    }
-    public void addProductToBuyerWishlist(Buyer buyer, Product product){
+    public void addProductToBuyerWishlist(Buyer buyer, Product product) {
         buyerRepository.addToWishlist(buyer, product);
     }
 
-    public void removeProductFromBuyerWishlist(Buyer buyer, Product product){
+    public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
         buyerRepository.removeFromWishlist(buyer, product);
     }
-
 }

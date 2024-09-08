@@ -87,7 +87,18 @@
 										</c:if>
 									</button>
 								</c:if>
-								<c:if test="${sessionScope.buyer == null}">
+								<c:if test="${sessionScope.buyer != null}">
+									<button id="addToWishlist" data-product-id="${product.getId()}"
+										class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 m-t-10">
+										<c:if test="${!sessionScope.user.getWishlist().contains(product)}">
+											Add to wishlist
+										</c:if>
+										<c:if test="${sessionScope.user.getWishlist().contains(product)}">
+											Remove from wishlist
+										</c:if>
+									</button>
+								</c:if>
+								<c:if test="${sessionScope.user == null}">
 									<button form="loginForm"
 										class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
 										Login to add to cart
@@ -97,7 +108,7 @@
 						</div>
 					</div>
 					<form action="login" method="GET" id="loginForm"></form>
-					<c:if test="${sessionScope.buyer != null}">
+					<!-- <c:if test="${sessionScope.buyer != null}">
 						<div class="flex-w flex-m p-l-100 p-t-40 respon7">
 							<div class="flex-m p-r-10 m-r-11">
 								<a href="#"
@@ -107,7 +118,7 @@
 								</a>
 							</div>
 						</div>
-					</c:if>
+					</c:if> -->
 				</div>
 			</div>
 		</div>
@@ -116,42 +127,10 @@
 
 <script>
 	window.addEventListener('load', function () {
-		// document.getElementById('addToCart').addEventListener('click', function () {
-		// 	const productId = this.getAttribute('data-product-id');
-		// 	const numProduct = document.querySelector('.num-product').value;
-		// 	fetch(`cart?productId=${productId}&numProduct=${numProduct}`, {
-		// 		method: 'POST'
-		// 	}).then(response => {
-		// 		if (response.ok) {
-		// 			alert('Product added to cart');
-		// 		} else {
-		// 			alert('Error adding product to cart');
-		// 		}
-		// 	});
-		// });
 		$("#addToCart").click(function (event) {
 			event.preventDefault();
 			const productId = $(this).attr('data-product-id');
 			const numProduct = $('.num-product').val();
-			// $.post('addToCart', {
-			// 	productId: productId,
-			// 	quantity: numProduct
-			// }, function (data, status) {
-			// 	if (status === 'success') {
-			// 		if (data === 'added') {
-			// 			$('#cart').attr('data-notify', parseInt($('#cart').attr('data-notify')) +
-			// 				1);
-			// 			$('#addToCart').text('Remove from cart');
-			// 		} else {
-			// 			$('#cart').attr('data-notify', parseInt($('#cart').attr('data-notify')) -
-			// 				1);
-			// 			$('#addToCart').text('Add to cart');
-			// 		}
-			// 	} else {
-			// 		alert('Error adding product to cart');
-			// 	}
-			// });
-
 
 			$.ajax({
 				url: "/addToCart",
@@ -199,6 +178,63 @@
 						}, 7000);
 					} else if (response.trim() === 'Invalid quantity') {
 						$('.alert').text('Invalid quantity').show();
+						setTimeout(function () {
+							$('.alert').text('').hide();
+						}, 7000);
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error("Error fetching next products." + error);
+				},
+				complete: function () {
+					console.log("Request completed.");
+				}
+			});
+		});
+
+		$("#addToWishlist").click(function (event) {
+			event.preventDefault();
+			const productId = $(this).attr('data-product-id');
+			$.ajax({
+				url: "/addToWishlist",
+				type: "POST",
+				data: {
+					productId: productId
+				},
+				success: function (response) {
+					if (response.trim() == "Product added to wishlist") {
+						$('.wishlist').attr('data-notify', parseInt($('.wishlist').attr(
+								'data-notify')) +
+							1);
+						$('#addToWishlist').text('Remove from wishlist');
+						$('.alert').text(response)
+							.removeClass('alert-danger')
+							.addClass('alert-info').show();
+
+						setTimeout(function () {
+							$('.alert').text('').removeClass('alert-info').addClass(
+									'alert-danger')
+								.hide();
+						}, 7000);
+					} else if (response.trim() === 'Product removed from wishlist') {
+						$('.wishlist').attr('data-notify', parseInt($('.wishlist').attr(
+								'data-notify')) -
+							1);
+						$('#addToWishlist').text('Add to wishlist');
+						$('.alert').text(response).removeClass('alert-danger').addClass(
+							'alert-info').show();
+						setTimeout(function () {
+							$('.alert').text('').removeClass('alert-info').addClass(
+									'alert-danger')
+								.hide();
+						}, 7000);
+					} else if (response.trim() === 'Invalid input') {
+						$('.alert').text('Invalid input').show();
+						setTimeout(function () {
+							$('.alert').text('').hide();
+						}, 7000);
+					} else if (response.trim() === 'Product not found') {
+						$('.alert').text('Product not found').show();
 						setTimeout(function () {
 							$('.alert').text('').hide();
 						}, 7000);

@@ -16,14 +16,15 @@ import java.io.PrintWriter;
 
 import static utils.RequestAttributeUtil.USER;
 
-@WebServlet(value = "/increment-cart-item")
-public class IncrementCartItemController extends HttpServlet {
+@WebServlet(value = "/cartSingleOperation")
+public class CartSingleOperationController extends HttpServlet {
     private ProductController productController;
     private BuyerController buyerController;
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String productId = request.getParameter("id");
+        String operation = request.getParameter("operation");
         PrintWriter out = response.getWriter();
         if (!NotEmptyValidator.isValid(productId) || !productId.matches("\\d+")) {
             out.print("Invalid operation");
@@ -32,7 +33,12 @@ public class IncrementCartItemController extends HttpServlet {
             Product product = productController.findAvailableProductById(id);
             if (product != null) {
                 Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
-                int qty = buyerController.incrementProductQuantity(buyer, product);
+                int qty;
+                if (operation.equals("increment")) {
+                    qty = buyerController.incrementProductQuantity(buyer, product);
+                } else {
+                    qty = buyerController.decrementProductQuantity(buyer, product);
+                }
                 out.print(qty);
             } else {
                 out.print("Product not found");

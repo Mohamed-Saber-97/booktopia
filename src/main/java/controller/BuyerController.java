@@ -38,4 +38,12 @@ public class BuyerController {
     public int decrementProductQuantity(Buyer buyer, Product product) {
         return buyerService.decrementBuyerCartProductQuantity(buyer, product);
     }
+
+    public void addProductToBuyerWishlist(Buyer buyer, Product product) {
+        buyerService.addProductToBuyerWishlist(buyer, product);
+    }
+
+    public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
+        buyerService.removeProductFromBuyerWishlist(buyer, product);
+    }
 }

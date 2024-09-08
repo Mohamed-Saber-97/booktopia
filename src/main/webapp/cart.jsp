@@ -37,16 +37,18 @@
 												${item.key.getPrice()}</td>
 											<td class="column-4">
 												<div class="wrap-num-product flex-w m-l-auto m-r-0">
-													<div class="btn-num-product-down decrement-quantity cl8 hov-btn3 trans-04 flex-c-m"
-														data-product-id="${item.key.getId()}">
+													<div class="btn-num-product-down cart-single-operation cl8 hov-btn3 trans-04 flex-c-m"
+														data-product-id="${item.key.getId()}"
+														data-operation="decrement">
 														<i class="fs-16 zmdi zmdi-minus"></i>
 													</div>
 													<input class="mtext-104 cl3 txt-center num-product quantity"
 														type="number" data-product-id="${item.key.getId()}"
 														name="quantity[]" value="${item.value}">
 
-													<div class="btn-num-product-up increment-quantity cl8 hov-btn3 trans-04 flex-c-m"
-														data-product-id="${item.key.getId()}">
+													<div class="btn-num-product-up cart-single-operation cl8 hov-btn3 trans-04 flex-c-m"
+														data-product-id="${item.key.getId()}"
+														data-operation="increment">
 														<i class="fs-16 zmdi zmdi-plus"></i>
 													</div>
 												</div>
@@ -138,42 +140,16 @@
 		});
 		$('.grand-total').text('$' + grandTotal.toFixed(2));
 
-		$('.decrement-quantity').click(function (event) {
+		$('.cart-single-operation').click(function (event) {
 			event.preventDefault();
 			let productId = $(this).data('product-id');
+			let operation = $(this).data('operation');
 			$.ajax({
-				url: 'decrement-cart-item',
+				url: 'cartSingleOperation',
 				type: 'POST',
 				data: {
 					id: productId,
-				},
-				success: function (response) {
-					response = response.trim();
-					$('.quantity[data-product-id=' + productId + ']').val(response);
-					let price = $('.price[data-product-id=' + productId + ']').text().replace(
-						'$', '').trim();
-					let quantity = $('.quantity[data-product-id=' + productId + ']').val()
-						.trim();
-					$(`.totals[data-product-id=` + productId + `]`).text(
-						'$' + (parseFloat(price) * parseInt(quantity)).toFixed(2)
-					);
-					grandTotal = 0;
-					$('.totals').each(function () {
-						grandTotal += parseFloat($(this).text().replace('$', ''));
-					});
-					$('.grand-total').text('$' + grandTotal.toFixed(2));
-				}
-			});
-		});
-
-		$('.increment-quantity').click(function (event) {
-			event.preventDefault();
-			let productId = $(this).data('product-id');
-			$.ajax({
-				url: 'increment-cart-item',
-				type: 'POST',
-				data: {
-					id: productId,
+					operation: operation
 				},
 				success: function (response) {
 					response = response.trim();

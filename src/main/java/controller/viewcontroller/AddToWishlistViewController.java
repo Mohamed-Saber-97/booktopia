@@ -14,28 +14,29 @@ import validator.NotEmptyValidator;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static utils.RequestAttributeUtil.USER;
-
-@WebServlet(value = "/decrement-cart-item")
-public class DecrementCartItemController extends HttpServlet {
+@WebServlet(value = "/addToWishlist")
+public class AddToWishlistViewController extends HttpServlet {
     private ProductController productController;
     private BuyerController buyerController;
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String productId = request.getParameter("id");
+        String productId = request.getParameter("productId");
         PrintWriter out = response.getWriter();
-        if (!NotEmptyValidator.isValid(productId) || !productId.matches("\\d+")) {
-            out.print("Invalid operation");
+        Buyer buyer = (Buyer) request.getSession().getAttribute("user");
+        if (!NotEmptyValidator.isValid(productId)) {
+            out.println("Invalid input");
         } else {
             Long id = Long.parseLong(productId);
-            Product product = productController.findAvailableProductById(id);
-            if (product != null) {
-                Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
-                int qty = buyerController.decrementProductQuantity(buyer, product);
-                out.print(qty);
+            Product product = productController.findById(id);
+            if (product == null) {
+                out.println("Product not found");
+            } else if (buyer.getWishlist().contains(product)) {
+                buyerController.removeProductFromBuyerWishlist(buyer, product);
+                out.println("Product removed from wishlist");
             } else {
-                out.print("Product not found");
+                buyerController.addProductToBuyerWishlist(buyer, product);
+                out.println("Product added to wishlist");
             }
         }
     }
