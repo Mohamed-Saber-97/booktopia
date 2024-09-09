@@ -19,4 +19,8 @@ public class CategoryController {
     public Category save(Category category) {
         return categoryService.save(category);
     }
+
+    public Category findById(Long id) {
+        return categoryService.findById(id);
+    }
 }

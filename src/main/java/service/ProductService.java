@@ -40,4 +40,8 @@ public class ProductService {
     public Product findAvailableProductById(Long id) {
         return productRepository.findAvailableProductById(id);
     }
+
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
 }

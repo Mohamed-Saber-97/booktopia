@@ -1,11 +1,14 @@
 package utils;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 import model.Buyer;
 import service.BuyerService;
 import validator.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,7 +85,7 @@ public class ValidatorUtil {
         if (!UniqueEmailValidator.isValid(email)) {
             errors.put(ERROR, UniqueEmailValidator.ERROR_MESSAGE);
         } else if (!CreditLimitValidator.isValid(creditLimit)) {
-            errors.put(ERROR,CreditLimitValidator.ERROR_MESSAGE);
+            errors.put(ERROR, CreditLimitValidator.ERROR_MESSAGE);
         } else if (!UniquePhoneNumberValidator.isValid(phoneNumber)) {
             errors.put(ERROR, UniquePhoneNumberValidator.ERROR_MESSAGE);
         }
@@ -128,10 +131,47 @@ public class ValidatorUtil {
     public static Map<String, String> validateAdminUpdateProfile(ServletRequest request) {
         return commonSignUpValidation(request);
     }
+
     public static Map<String, String> validateAdminLogin(ServletRequest request) {
         return commonLogInValidation(request);
     }
+
     public static Map<String, String> validateBuyerLogin(ServletRequest request) {
         return commonLogInValidation(request);
+    }
+
+    public static Map<String, String> validateAddBook(ServletRequest request) throws ServletException, IOException {
+        Map<String, String> errors = new HashMap<>();
+        String price = request.getParameter(PRICE);
+        String quantity = request.getParameter(QUANTITY);
+        String releaseDate = request.getParameter(RELEASE_DATE);
+        String categoryId = request.getParameter(CATEGORY_ID);
+        String isbn = request.getParameter(ISBN);
+        String author = request.getParameter(AUTHOR);
+        String name = request.getParameter(NAME);
+        String description = request.getParameter(DESCRIPTION);
+        Part imagePath = ((HttpServletRequest) request).getPart("imagePath");
+        if (!NotEmptyValidator.isValid(price, quantity, releaseDate, categoryId, isbn, author, name, description)) {
+            errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);
+        } else if (!PriceValidator.isValid(price)) {
+            errors.put(ERROR, PriceValidator.ERROR_MESSAGE);
+        } else if (!NumberValidator.isValid(quantity)) {
+            errors.put(ERROR, NumberValidator.ERROR_MESSAGE);
+        } else if (!DateValidator.isValid(releaseDate)) {
+            errors.put(ERROR, DateValidator.ERROR_MESSAGE);
+        } else if (!CategoryValidator.isValid(categoryId)) {
+            errors.put(ERROR, CategoryValidator.ERROR_MESSAGE);
+        } else if (!MaxFieldLengthValidator.isValid(100, name)) {
+            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);
+        } else if (!MaxFieldLengthValidator.isValid(100, author)) {
+            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);
+        } else if (!MaxFieldLengthValidator.isValid(13, isbn)) {
+            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);
+        } else if (!MaxFieldLengthValidator.isValid(500, description)) {
+            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);
+        } else if (!ObjectNotNullValidator.isValid(imagePath)) {
+            errors.put(ERROR, ObjectNotNullValidator.ERROR_MESSAGE);
+        }
+        return errors;
     }
 }

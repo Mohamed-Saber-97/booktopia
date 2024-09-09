@@ -24,6 +24,7 @@ public class AddToCartViewController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String productId = request.getParameter("productId");
         String quantity = request.getParameter("quantity");
+        System.out.println("Product ID: " + productId);
         PrintWriter out = response.getWriter();
         Buyer buyer = (Buyer) request.getSession().getAttribute("user");
         if (!NotEmptyValidator.isValid(productId, quantity)) {

@@ -1,10 +1,7 @@
 package utils;
 
 import jakarta.servlet.ServletRequest;
-import model.Account;
-import model.Address;
-import model.Admin;
-import model.Buyer;
+import model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,7 +22,7 @@ public class RequestBuilderUtil {
         buyer.setCreditLimit(BigDecimal.valueOf(Double.parseDouble(request.getParameter(CREDIT_LIMIT))));
         return buyer;
     }
-    
+
     public static Buyer updateBuyerFromRequest(ServletRequest request) {
         Buyer buyer = (Buyer) request.getAttribute(USER);
         Account account = buildAccountFromRequest(request);
@@ -59,5 +56,17 @@ public class RequestBuilderUtil {
 
         account.setAddress(address);
         return account;
+    }
+
+    public static Product createProductFromRequest(ServletRequest request) {
+        Product product = new Product();
+        product.setPrice(BigDecimal.valueOf(Double.parseDouble(request.getParameter(PRICE))));
+        product.setQuantity(Integer.parseInt(request.getParameter(QUANTITY)));
+        product.setReleaseDate(LocalDate.parse(request.getParameter(RELEASE_DATE)));
+        product.setIsbn(request.getParameter(ISBN));
+        product.setAuthor(request.getParameter(AUTHOR));
+        product.setName(request.getParameter(NAME));
+        product.setDescription(request.getParameter(DESCRIPTION));
+        return product;
     }
 }
