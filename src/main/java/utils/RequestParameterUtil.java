@@ -17,6 +17,15 @@ public class RequestParameterUtil {
     public static final String MAXIMUM_PRICE = "maxPrice";
     public static final String CATEGORY = "category";
     public static final String PRICE = "price";
+
+    public static final String QUANTITY = "quantity";
+    public static final String RELEASE_DATE = "releaseDate";
+    public static final String CATEGORY_ID = "categoryId";
+    public static final String ISBN = "isbn";
+    public static final String AUTHOR = "author";
+    public static final String DESCRIPTION = "description";
+    public static final String IMAGE_PATH = "imagePath";
+
     private RequestParameterUtil() {
     }
 }

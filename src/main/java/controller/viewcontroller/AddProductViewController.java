@@ -1,7 +1,7 @@
 package controller.viewcontroller;
 
-import com.mysql.cj.protocol.a.authentication.Sha256PasswordPlugin;
 import controller.CategoryController;
+import controller.ProductController;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -9,14 +9,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import jakarta.servlet.http.HttpSession;
 import model.Category;
+import model.Product;
+import utils.SaveUploadedImage;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import static utils.RequestAttributeUtil.PAGE_TITLE;
+import static utils.RequestAttributeUtil.PRODUCT;
+import static utils.RequestParameterUtil.CATEGORY_ID;
 
 @WebServlet(value = "/add-book")
 @MultipartConfig(
@@ -24,8 +28,9 @@ import static utils.RequestAttributeUtil.PAGE_TITLE;
         maxFileSize = 1024 * 1024 * 10,
         maxRequestSize = 1024 * 1024 * 50
 )
-public class AddBookViewController extends HttpServlet {
+public class AddProductViewController extends HttpServlet {
     private CategoryController categoryController;
+    private ProductController productController;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,28 +44,25 @@ public class AddBookViewController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String uploadPath = getServletContext().getRealPath("") + File.separator + "images";
-        System.out.println("Upload path: " + uploadPath);
-
-        File uploadDir = new File(uploadPath);
-        System.out.println("Upload dir: " + uploadDir);
-
-        Part filePart = request.getPart("imagePath");
-        System.out.println("File part: " + filePart);
-
-        String fileName = filePart.hashCode() + "-" + System.currentTimeMillis() + filePart.getSubmittedFileName().substring(filePart.getSubmittedFileName().lastIndexOf("."));
-        System.out.println("File name: " + fileName);
-        String imagePath = fileName.substring(fileName.lastIndexOf(File.separator) + 1);
-
-        // Write the file to the server directory
-        filePart.write(uploadPath + File.separator + fileName);
-
-        // Response to the client
-        response.getWriter().println("File " + fileName + " uploaded successfully to " + uploadPath);
-        System.out.println("File " + fileName + " uploaded successfully to " + uploadPath);
+        Product product = (Product) request.getAttribute(PRODUCT);
+        if (product == null) {
+            response.sendRedirect("/add-book");
+        } else {
+            String imagePath = SaveUploadedImage.saveImage(request, uploadPath);
+            System.out.println("Image path:(inview controller)  " + imagePath);
+            product.setImagePath("images" + File.separator + imagePath);
+            Category category = categoryController.findById(Long.parseLong(request.getParameter(CATEGORY_ID)));
+            product.setCategory(category);
+            productController.save(product);
+            HttpSession session = request.getSession(true);
+            session.setAttribute(PAGE_TITLE, "Home");
+            response.sendRedirect(request.getContextPath() + "/");
+        }
     }
 
     @Override
     public void init() {
         categoryController = new CategoryController();
+        productController = new ProductController();
     }
 }

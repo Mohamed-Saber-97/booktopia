@@ -28,4 +28,8 @@ public class ProductController {
     public List<Product> findAllAvailable() {
         return productService.findAllAvailable();
     }
+
+    public Product save(Product product) {
+        return productService.save(product);
+    }
 }

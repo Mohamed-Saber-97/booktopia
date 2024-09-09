@@ -72,8 +72,7 @@
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="releaseDate"
                             onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Release Date">
                     </div>
-                    <select class="bor8 m-b-20 stext-111 cl2 plh3 size-116 p-l-62 p-r-30" id="countries"
-                        name="category">
+                    <select class="bor8 m-b-20 stext-111 cl2 plh3 size-116 p-l-62 p-r-30" name="categoryId">
                         <option value="" disabled selected>Category</option>
                         <c:forEach items="${categories}" var="category">
                             <option value="${category.getId()}">${category.name}</option>
