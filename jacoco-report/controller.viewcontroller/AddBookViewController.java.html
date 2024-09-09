@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddBookViewController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Booktopia</a> &gt; <a href="index.source.html" class="el_package">controller.viewcontroller</a> &gt; <span class="el_source">AddBookViewController.java</span></div><h1>AddBookViewController.java</h1><pre class="source lang-java linenums">package controller.viewcontroller;
+
+import com.mysql.cj.protocol.a.authentication.Sha256PasswordPlugin;
+import controller.CategoryController;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import model.Category;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import static utils.RequestAttributeUtil.PAGE_TITLE;
+
+@WebServlet(value = &quot;/add-book&quot;)
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 50
+)
+<span class="nc" id="L27">public class AddBookViewController extends HttpServlet {</span>
+    private CategoryController categoryController;
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+<span class="nc" id="L32">        List&lt;Category&gt; categories = categoryController.findAll();</span>
+<span class="nc" id="L33">        RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;add-book.jsp&quot;);</span>
+<span class="nc" id="L34">        request.getSession().setAttribute(PAGE_TITLE, &quot;Add a book&quot;);</span>
+<span class="nc" id="L35">        request.getSession().setAttribute(&quot;categories&quot;, categories);</span>
+<span class="nc" id="L36">        dispatcher.forward(request, response);</span>
+<span class="nc" id="L37">    }</span>
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+<span class="nc" id="L41">        String uploadPath = getServletContext().getRealPath(&quot;&quot;) + File.separator + &quot;images&quot;;</span>
+<span class="nc" id="L42">        System.out.println(&quot;Upload path: &quot; + uploadPath);</span>
+
+<span class="nc" id="L44">        File uploadDir = new File(uploadPath);</span>
+<span class="nc" id="L45">        System.out.println(&quot;Upload dir: &quot; + uploadDir);</span>
+
+<span class="nc" id="L47">        Part filePart = request.getPart(&quot;imagePath&quot;);</span>
+<span class="nc" id="L48">        System.out.println(&quot;File part: &quot; + filePart);</span>
+
+<span class="nc" id="L50">        String fileName = filePart.hashCode() + &quot;-&quot; + System.currentTimeMillis() + filePart.getSubmittedFileName().substring(filePart.getSubmittedFileName().lastIndexOf(&quot;.&quot;));</span>
+<span class="nc" id="L51">        System.out.println(&quot;File name: &quot; + fileName);</span>
+<span class="nc" id="L52">        String imagePath = fileName.substring(fileName.lastIndexOf(File.separator) + 1);</span>
+
+        // Write the file to the server directory
+<span class="nc" id="L55">        filePart.write(uploadPath + File.separator + fileName);</span>
+
+        // Response to the client
+<span class="nc" id="L58">        response.getWriter().println(&quot;File &quot; + fileName + &quot; uploaded successfully to &quot; + uploadPath);</span>
+<span class="nc" id="L59">        System.out.println(&quot;File &quot; + fileName + &quot; uploaded successfully to &quot; + uploadPath);</span>
+<span class="nc" id="L60">    }</span>
+
+    @Override
+    public void init() {
+<span class="nc" id="L64">        categoryController = new CategoryController();</span>
+<span class="nc" id="L65">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

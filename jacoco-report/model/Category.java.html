@@ -3,23 +3,49 @@
 import base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = &quot;category&quot;, indexes = {@Index(name = &quot;idx_category_name&quot;, columnList = &quot;name&quot;)})
-@Setter
 @Getter
-<span class="nc" id="L16">public class Category extends BaseEntity&lt;Long&gt; {</span>
+@EqualsAndHashCode(callSuper = false, exclude = &quot;products&quot;)
+@ToString(exclude = &quot;products&quot;)
+@NoArgsConstructor
+public class Category extends BaseEntity&lt;Long&gt; {
 
-    @Column(name = &quot;name&quot;, unique = true)
-    @NotBlank
+    @Column(name = &quot;name&quot;, unique = true, nullable = false, length = 100)
+    @NotBlank(message = &quot;name is required&quot;)
+    @Setter
     private String name;
 
-<span class="nc" id="L22">    @OneToMany(mappedBy = &quot;category&quot;)</span>
+    @OneToMany(mappedBy = &quot;category&quot;)
     private Set&lt;Product&gt; products = new HashSet&lt;&gt;();
+
+    public Set&lt;Product&gt; getProducts() {
+<span class="nc" id="L29">        return Collections.unmodifiableSet(products);</span>
+    }
+
+    public void addProduct(Product product) {
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (product == null) {</span>
+<span class="nc" id="L34">            throw new IllegalArgumentException(&quot;Product cannot be null&quot;);</span>
+        }
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (this.getId() == null) {</span>
+<span class="nc" id="L37">            throw new IllegalStateException(&quot;Cannot add products to a new Category. The category must be persisted first.&quot;);</span>
+        }
+<span class="nc" id="L39">        products.add(product);</span>
+<span class="nc" id="L40">        product.setCategory(this);</span>
+<span class="nc" id="L41">    }</span>
+
+    public void removeProduct(Product product) {
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (product == null) {</span>
+<span class="nc" id="L45">            throw new IllegalArgumentException(&quot;Product cannot be null&quot;);</span>
+        }
+<span class="nc" id="L47">        products.remove(product);</span>
+<span class="nc" id="L48">        product.setCategory(null);</span>
+<span class="nc" id="L49">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

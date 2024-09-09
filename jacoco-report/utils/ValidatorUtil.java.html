@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidatorUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Booktopia</a> &gt; <a href="index.source.html" class="el_package">utils</a> &gt; <span class="el_source">ValidatorUtil.java</span></div><h1>ValidatorUtil.java</h1><pre class="source lang-java linenums">package utils;
+
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import model.Buyer;
+import service.BuyerService;
+import validator.*;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
+import static utils.RequestAttributeUtil.ERROR;
+import static utils.RequestAttributeUtil.USER;
+import static utils.RequestParameterUtil.*;
+
+public class ValidatorUtil {
+
+    private ValidatorUtil() {
+    }
+
+    private static Map&lt;String, String&gt; commonLogInValidation(ServletRequest request) {
+<span class="nc" id="L23">        Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L24">        String email = request.getParameter(EMAIL);</span>
+<span class="nc" id="L25">        String password = request.getParameter(PASSWORD);</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (!NotEmptyValidator.isValid(email, password)) {</span>
+<span class="nc" id="L27">            errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        } else if (!EmailValidator.isValid(email)) {</span>
+<span class="nc" id="L29">            errors.put(ERROR, EmailValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        } else if (!MinFieldLengthValidator.isValid(6, password)) {</span>
+<span class="nc" id="L31">            errors.put(ERROR, MinFieldLengthValidator.ERROR_MESSAGE);</span>
+        }
+<span class="nc" id="L33">        return errors;</span>
+    }
+
+    private static Map&lt;String, String&gt; commonSignUpValidation(ServletRequest request) {
+<span class="nc" id="L37">        Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L38">        String name = request.getParameter(NAME);</span>
+<span class="nc" id="L39">        String birthday = request.getParameter(BIRTHDAY);</span>
+<span class="nc" id="L40">        String job = request.getParameter(JOB);</span>
+<span class="nc" id="L41">        String email = request.getParameter(EMAIL);</span>
+<span class="nc" id="L42">        String password = request.getParameter(PASSWORD);</span>
+<span class="nc" id="L43">        String confirmPassword = request.getParameter(CONFIRM_PASSWORD);</span>
+<span class="nc" id="L44">        String phoneNumber = request.getParameter(PHONE_NUMBER);</span>
+<span class="nc" id="L45">        String country = request.getParameter(COUNTRY);</span>
+<span class="nc" id="L46">        String city = request.getParameter(CITY);</span>
+<span class="nc" id="L47">        String street = request.getParameter(STREET);</span>
+<span class="nc" id="L48">        String zipcode = request.getParameter(ZIPCODE);</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (!NotEmptyValidator.isValid(name, birthday, job, email, password, confirmPassword, phoneNumber, country, city, street, zipcode)) {</span>
+<span class="nc" id="L50">            errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        } else if (!MaxFieldLengthValidator.isValid(100, name)) {</span>
+<span class="nc" id="L52">            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        } else if (!EmailValidator.isValid(email)) {</span>
+<span class="nc" id="L54">            errors.put(ERROR, EmailValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        } else if (!MinFieldLengthValidator.isValid(6, password)) {</span>
+<span class="nc" id="L56">            errors.put(ERROR, MinFieldLengthValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        } else if (!PasswordConfirmationValidator.isValid(password, confirmPassword)) {</span>
+<span class="nc" id="L58">            errors.put(ERROR, PasswordConfirmationValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        } else if (!PhoneNumberValidator.isValid(phoneNumber)) {</span>
+<span class="nc" id="L60">            errors.put(ERROR, PhoneNumberValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        } else if (!CountryValidator.isValid(country)) {</span>
+<span class="nc" id="L62">            errors.put(ERROR, CountryValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        } else if (!MaxFieldLengthValidator.isValid(255, street)) {</span>
+<span class="nc" id="L64">            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        } else if (!MaxFieldLengthValidator.isValid(100, city)) {</span>
+<span class="nc" id="L66">            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        } else if (!BirthdayValidator.isValid(LocalDate.parse(birthday))) {</span>
+<span class="nc" id="L68">            errors.put(ERROR, BirthdayValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        } else if (!MaxFieldLengthValidator.isValid(15, zipcode)) {</span>
+<span class="nc" id="L70">            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);</span>
+        }
+<span class="nc" id="L72">        return errors;</span>
+    }
+
+    public static Map&lt;String, String&gt; validateSignup(ServletRequest request) {
+<span class="nc" id="L76">        Map&lt;String, String&gt; errors = new HashMap&lt;&gt;(commonSignUpValidation(request));</span>
+
+<span class="nc" id="L78">        String email = request.getParameter(EMAIL);</span>
+<span class="nc" id="L79">        String creditLimit = request.getParameter(CREDIT_LIMIT);</span>
+<span class="nc" id="L80">        String phoneNumber = request.getParameter(PHONE_NUMBER);</span>
+
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (!UniqueEmailValidator.isValid(email)) {</span>
+<span class="nc" id="L83">            errors.put(ERROR, UniqueEmailValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        } else if (!CreditLimitValidator.isValid(creditLimit)) {</span>
+<span class="nc" id="L85">            errors.put(ERROR,CreditLimitValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        } else if (!UniquePhoneNumberValidator.isValid(phoneNumber)) {</span>
+<span class="nc" id="L87">            errors.put(ERROR, UniquePhoneNumberValidator.ERROR_MESSAGE);</span>
+        }
+<span class="nc" id="L89">        return errors;</span>
+    }
+
+    public static Map&lt;String, String&gt; validateBuyerUpdateProfile(ServletRequest request) {
+<span class="nc" id="L93">        Map&lt;String, String&gt; errors = new HashMap&lt;&gt;(commonSignUpValidation(request));</span>
+<span class="nc" id="L94">        HttpServletRequest httpRequest = (HttpServletRequest) request;</span>
+<span class="nc" id="L95">        Buyer requestedBuyer = (Buyer) httpRequest.getSession().getAttribute(USER);</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (requestedBuyer == null) {</span>
+<span class="nc" id="L97">            errors.put(ERROR, &quot;User not found in session.&quot;);</span>
+<span class="nc" id="L98">            return errors;</span>
+        }
+<span class="nc" id="L100">        Buyer savedBuyer = new BuyerService().findById(requestedBuyer.getId());</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (savedBuyer == null) {</span>
+<span class="nc" id="L102">            errors.put(ERROR, &quot;Buyer not found in the database.&quot;);</span>
+<span class="nc" id="L103">            return errors;</span>
+        }
+<span class="nc" id="L105">        String newEmail = requestedBuyer.getAccount().getEmail();</span>
+<span class="nc" id="L106">        String newPhoneNumber = requestedBuyer.getAccount().getPhoneNumber();</span>
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (!EmailValidator.isValid(newEmail)) {</span>
+<span class="nc" id="L109">            errors.put(ERROR, EmailValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">        } else if (!newEmail.equals(savedBuyer.getAccount().getEmail()) &amp;&amp; new BuyerService().existsByEmail(newEmail)) {</span>
+<span class="nc" id="L111">            errors.put(ERROR, &quot;Email is already taken by someone else.&quot;);</span>
+        }
+
+<span class="nc bnc" id="L114" title="All 4 branches missed.">        if (newPhoneNumber != null &amp;&amp; !newPhoneNumber.isEmpty()) {</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (!PhoneNumberValidator.isValid(newPhoneNumber)) {</span>
+<span class="nc" id="L116">                errors.put(ERROR, PhoneNumberValidator.ERROR_MESSAGE);</span>
+<span class="nc bnc" id="L117" title="All 4 branches missed.">            } else if (!newPhoneNumber.equals(savedBuyer.getAccount().getPhoneNumber()) &amp;&amp; new BuyerService().existsByPhoneNumber(newPhoneNumber)) {</span>
+<span class="nc" id="L118">                errors.put(ERROR, &quot;Phone number is already taken by someone else.&quot;);</span>
+            }
+        }
+<span class="nc" id="L121">        String creditLimit = request.getParameter(&quot;creditLimit&quot;);</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (!CreditLimitValidator.isValid(creditLimit)) {</span>
+<span class="nc" id="L123">            errors.put(ERROR, CreditLimitValidator.ERROR_MESSAGE);</span>
+        }
+<span class="nc" id="L125">        return errors;</span>
+    }
+
+    public static Map&lt;String, String&gt; validateAdminUpdateProfile(ServletRequest request) {
+<span class="nc" id="L129">        return commonSignUpValidation(request);</span>
+    }
+    public static Map&lt;String, String&gt; validateAdminLogin(ServletRequest request) {
+<span class="nc" id="L132">        return commonLogInValidation(request);</span>
+    }
+    public static Map&lt;String, String&gt; validateBuyerLogin(ServletRequest request) {
+<span class="nc" id="L135">        return commonLogInValidation(request);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

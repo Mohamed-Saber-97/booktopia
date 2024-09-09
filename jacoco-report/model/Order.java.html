@@ -3,22 +3,25 @@
 import base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
 @Table(name = &quot;orders&quot;)
 @Getter
-@Setter
-<span class="nc" id="L18">public class Order extends BaseEntity&lt;Long&gt; {</span>
+@EqualsAndHashCode(callSuper = true, exclude = &quot;buyer&quot;)
+@ToString(exclude = &quot;buyer&quot;)
+@NoArgsConstructor
+public class Order extends BaseEntity&lt;Long&gt; {
 
-<span class="nc" id="L20">    @Column(name = &quot;status&quot;,nullable = false)</span>
-    @NotNull
+<span class="nc" id="L23">    @Column(name = &quot;status&quot;, nullable = false)</span>
+    @NotNull(message = &quot;Order Status is required&quot;)
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.UNSHIPPED;
 
@@ -26,8 +29,25 @@ import java.time.Instant;
     @JoinColumn(name = &quot;buyer_id&quot;, nullable = false)
     private Buyer buyer;
 
-<span class="nc" id="L29">    public enum OrderStatus {</span>
-<span class="nc" id="L30">        UNSHIPPED, SHIPPED, CANCELLED</span>
+<span class="nc" id="L32">    @OneToMany(mappedBy = &quot;order&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</span>
+    private Set&lt;OrderProduct&gt; orderProducts = new HashSet&lt;&gt;();
+
+<span class="nc" id="L35">    public Order(Buyer buyer) {</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (buyer == null) {</span>
+<span class="nc" id="L37">            throw new IllegalArgumentException(&quot;Buyer cannot be null&quot;);</span>
+        }
+<span class="nc" id="L39">        this.buyer = buyer;</span>
+<span class="nc" id="L40">    }</span>
+
+    public void updateStatus(OrderStatus newStatus) {
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (newStatus == null) {</span>
+<span class="nc" id="L44">            throw new IllegalArgumentException(&quot;New status cannot be null&quot;);</span>
+        }
+<span class="nc" id="L46">        this.status = newStatus;</span>
+<span class="nc" id="L47">    }</span>
+
+<span class="nc" id="L49">    public enum OrderStatus {</span>
+<span class="nc" id="L50">        UNSHIPPED, SHIPPED, CANCELLED</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

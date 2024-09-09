@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RequestBuilderUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Booktopia</a> &gt; <a href="index.source.html" class="el_package">utils</a> &gt; <span class="el_source">RequestBuilderUtil.java</span></div><h1>RequestBuilderUtil.java</h1><pre class="source lang-java linenums">package utils;
+
+import jakarta.servlet.ServletRequest;
+import model.Account;
+import model.Address;
+import model.Admin;
+import model.Buyer;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import static utils.RequestAttributeUtil.USER;
+import static utils.RequestParameterUtil.*;
+
+public class RequestBuilderUtil {
+
+    private RequestBuilderUtil() {
+
+    }
+
+    public static Buyer createBuyerFromRequest(ServletRequest request) {
+<span class="nc" id="L22">        Buyer buyer = new Buyer();</span>
+<span class="nc" id="L23">        Account account = buildAccountFromRequest(request);</span>
+<span class="nc" id="L24">        buyer.setAccount(account);</span>
+<span class="nc" id="L25">        buyer.setCreditLimit(BigDecimal.valueOf(Double.parseDouble(request.getParameter(CREDIT_LIMIT))));</span>
+<span class="nc" id="L26">        return buyer;</span>
+    }
+    
+    public static Buyer updateBuyerFromRequest(ServletRequest request) {
+<span class="nc" id="L30">        Buyer buyer = (Buyer) request.getAttribute(USER);</span>
+<span class="nc" id="L31">        Account account = buildAccountFromRequest(request);</span>
+<span class="nc" id="L32">        buyer.setAccount(account);</span>
+<span class="nc" id="L33">        buyer.setCreditLimit(BigDecimal.valueOf(Double.parseDouble(request.getParameter(CREDIT_LIMIT))));</span>
+<span class="nc" id="L34">        return buyer;</span>
+    }
+
+    public static Admin updateAdminFromRequest(ServletRequest request) {
+<span class="nc" id="L38">        Admin admin = (Admin) request.getAttribute(USER);</span>
+<span class="nc" id="L39">        Account account = buildAccountFromRequest(request);</span>
+<span class="nc" id="L40">        admin.setAccount(account);</span>
+<span class="nc" id="L41">        return admin;</span>
+    }
+
+    private static Account buildAccountFromRequest(ServletRequest request) {
+<span class="nc" id="L45">        Account account = new Account();</span>
+<span class="nc" id="L46">        Address address = new Address();</span>
+
+<span class="nc" id="L48">        account.setName(request.getParameter(NAME));</span>
+<span class="nc" id="L49">        account.setBirthday(LocalDate.parse(request.getParameter(BIRTHDAY)));</span>
+<span class="nc" id="L50">        account.setJob(request.getParameter(JOB));</span>
+<span class="nc" id="L51">        account.setEmail(request.getParameter(EMAIL));</span>
+<span class="nc" id="L52">        account.setPassword(request.getParameter(PASSWORD));</span>
+<span class="nc" id="L53">        account.setPhoneNumber(request.getParameter(PHONE_NUMBER));</span>
+
+<span class="nc" id="L55">        address.setCountry(request.getParameter(COUNTRY));</span>
+<span class="nc" id="L56">        address.setCity(request.getParameter(CITY));</span>
+<span class="nc" id="L57">        address.setStreet(request.getParameter(STREET));</span>
+<span class="nc" id="L58">        address.setZipcode(request.getParameter(ZIPCODE));</span>
+
+<span class="nc" id="L60">        account.setAddress(address);</span>
+<span class="nc" id="L61">        return account;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

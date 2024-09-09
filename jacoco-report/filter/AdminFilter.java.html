@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Booktopia</a> &gt; <a href="index.source.html" class="el_package">filter</a> &gt; <span class="el_source">AdminFilter.java</span></div><h1>AdminFilter.java</h1><pre class="source lang-java linenums">package filter;
+
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+
+import static utils.RequestAttributeUtil.ADMIN;
+
+@WebFilter(urlPatterns = {&quot;/books&quot;, &quot;/add-book&quot;, &quot;/edit-book&quot;, &quot;/delete-book&quot;, &quot;/categories&quot;, &quot;/add-category&quot;, &quot;/edit-category&quot;, &quot;/delete-category&quot;, &quot;/users&quot;})
+<span class="nc" id="L13">public class AdminFilter implements Filter {</span>
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+<span class="nc" id="L16">        HttpServletRequest httpRequest = (HttpServletRequest) request;</span>
+<span class="nc bnc" id="L17" title="All 2 branches missed.">        if (httpRequest.getSession().getAttribute(ADMIN) == null) {</span>
+<span class="nc" id="L18">            ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+        } else {
+<span class="nc" id="L20">            chain.doFilter(request, response);</span>
+        }
+<span class="nc" id="L22">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

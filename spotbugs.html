@@ -81,9 +81,9 @@
          <br/>
       </p>
       <h2>Metrics</h2>
-      <p>353 lines of code analyzed,
-	in 14 classes, 
-	in 4 packages.</p>
+      <p>1751 lines of code analyzed,
+	in 80 classes, 
+	in 12 packages.</p>
       <table width="500" cellpadding="5" cellspacing="2">
          <tr class="tableheader">
             <th align="left">Metric</th>
@@ -92,23 +92,23 @@
          </tr>
          <tr class="tablerow0">
             <td>High Priority Warnings</td>
-            <td align="right"/>
-            <td align="right">0.00</td>
+            <td align="right">7</td>
+            <td align="right">4.00</td>
          </tr>
          <tr class="tablerow1">
             <td>Medium Priority Warnings</td>
-            <td align="right">26</td>
-            <td align="right">73.65</td>
+            <td align="right">42</td>
+            <td align="right">23.99</td>
          </tr>
          <tr class="$totalClass">
             <td>
                <b>Total Warnings</b>
             </td>
             <td align="right">
-               <b>26</b>
+               <b>49</b>
             </td>
             <td align="right">
-               <b>73.65</b>
+               <b>27.98</b>
             </td>
          </tr>
       </table>
@@ -128,6 +128,15 @@
             <a href="#Warnings_MALICIOUS_CODE">Malicious code vulnerability Warnings</a>
          </li>
          <li>
+            <a href="#Warnings_MT_CORRECTNESS">Multithreaded correctness Warnings</a>
+         </li>
+         <li>
+            <a href="#Warnings_PERFORMANCE">Performance Warnings</a>
+         </li>
+         <li>
+            <a href="#Warnings_STYLE">Dodgy code Warnings</a>
+         </li>
+         <li>
             <a href="#Details">Details</a>
          </li>
       </ul>
@@ -141,20 +150,38 @@
             <td>
                <a href="#Warnings_BAD_PRACTICE">Bad practice Warnings</a>
             </td>
-            <td align="right">2</td>
+            <td align="right">18</td>
          </tr>
          <tr class="tablerow1">
             <td>
                <a href="#Warnings_MALICIOUS_CODE">Malicious code vulnerability Warnings</a>
             </td>
-            <td align="right">24</td>
+            <td align="right">21</td>
          </tr>
          <tr class="tablerow0">
+            <td>
+               <a href="#Warnings_MT_CORRECTNESS">Multithreaded correctness Warnings</a>
+            </td>
+            <td align="right">1</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>
+               <a href="#Warnings_PERFORMANCE">Performance Warnings</a>
+            </td>
+            <td align="right">1</td>
+         </tr>
+         <tr class="tablerow0">
+            <td>
+               <a href="#Warnings_STYLE">Dodgy code Warnings</a>
+            </td>
+            <td align="right">8</td>
+         </tr>
+         <tr class="tablerow1">
             <td>
                <b>Total</b>
             </td>
             <td align="right">
-               <b>26</b>
+               <b>49</b>
             </td>
          </tr>
       </table>
@@ -168,32 +195,256 @@
             <th align="left">Code</th>
             <th align="left">Warning</th>
          </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e86');">
+         <tr class="tablerow1" onclick="toggleRow('d1e549');">
             <td>
-               <span class="priority-2">Se</span>
+               <span class="priority-2">CT</span>
             </td>
-            <td>Class model.Admin defines non-transient non-serializable instance field account</td>
+            <td>Exception thrown in class model.Order at new model.Order(Buyer) will leave the constructor. The object under construction remains partially initialized and may be vulnerable to Finalizer attacks.</td>
          </tr>
          <tr class="detailrow1">
             <td/>
             <td>
-               <p id="d1e86" style="display: none;">
-                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
-                  <br/>In class model.Admin<br/>Field model.Admin.account<br/>Actual type model.Account<br/>In Admin.java</p>
+               <p id="d1e549" style="display: none;">
+                  <a href="#CT_CONSTRUCTOR_THROW">Bug type CT_CONSTRUCTOR_THROW (click for details)</a>
+                  <br/>In class model.Order<br/>In method new model.Order(Buyer)<br/>At Order.java:[line 37]<br/>At Order.java:[line 37]</p>
             </td>
          </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e274');">
+         <tr class="tablerow0" onclick="toggleRow('d1e98');">
             <td>
                <span class="priority-2">Se</span>
             </td>
-            <td>Class model.Buyer defines non-transient non-serializable instance field account</td>
+            <td>Class controller.viewcontroller.AddBookViewController defines non-transient non-serializable instance field categoryController</td>
          </tr>
          <tr class="detailrow0">
             <td/>
             <td>
-               <p id="d1e274" style="display: none;">
+               <p id="d1e98" style="display: none;">
                   <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
-                  <br/>In class model.Buyer<br/>Field model.Buyer.account<br/>Actual type model.Account<br/>In Buyer.java</p>
+                  <br/>In class controller.viewcontroller.AddBookViewController<br/>Field controller.viewcontroller.AddBookViewController.categoryController<br/>Actual type controller.CategoryController<br/>In AddBookViewController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e115');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.AddToCartViewController defines non-transient non-serializable instance field buyerController</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e115" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.AddToCartViewController<br/>Field controller.viewcontroller.AddToCartViewController.buyerController<br/>Actual type controller.BuyerController<br/>In AddToCartViewController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e132');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.AddToCartViewController defines non-transient non-serializable instance field productController</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e132" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.AddToCartViewController<br/>Field controller.viewcontroller.AddToCartViewController.productController<br/>Actual type controller.ProductController<br/>In AddToCartViewController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e149');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.AddToWishlistViewController defines non-transient non-serializable instance field buyerController</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e149" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.AddToWishlistViewController<br/>Field controller.viewcontroller.AddToWishlistViewController.buyerController<br/>Actual type controller.BuyerController<br/>In AddToWishlistViewController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e166');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.AddToWishlistViewController defines non-transient non-serializable instance field productController</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e166" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.AddToWishlistViewController<br/>Field controller.viewcontroller.AddToWishlistViewController.productController<br/>Actual type controller.ProductController<br/>In AddToWishlistViewController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e183');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.CartSingleOperationController defines non-transient non-serializable instance field buyerController</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e183" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.CartSingleOperationController<br/>Field controller.viewcontroller.CartSingleOperationController.buyerController<br/>Actual type controller.BuyerController<br/>In CartSingleOperationController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e201');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.CartSingleOperationController defines non-transient non-serializable instance field productController</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e201" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.CartSingleOperationController<br/>Field controller.viewcontroller.CartSingleOperationController.productController<br/>Actual type controller.ProductController<br/>In CartSingleOperationController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e218');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.RemoveBucketItemController defines non-transient non-serializable instance field buyerController</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e218" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.RemoveBucketItemController<br/>Field controller.viewcontroller.RemoveBucketItemController.buyerController<br/>Actual type controller.BuyerController<br/>In RemoveBucketItemController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e235');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.RemoveBucketItemController defines non-transient non-serializable instance field productController</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e235" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.RemoveBucketItemController<br/>Field controller.viewcontroller.RemoveBucketItemController.productController<br/>Actual type controller.ProductController<br/>In RemoveBucketItemController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e252');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.SingleProductViewController defines non-transient non-serializable instance field productController</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e252" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.SingleProductViewController<br/>Field controller.viewcontroller.SingleProductViewController.productController<br/>Actual type controller.ProductController<br/>In SingleProductViewController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e269');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.UpdateCartController defines non-transient non-serializable instance field buyerController</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e269" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.UpdateCartController<br/>Field controller.viewcontroller.UpdateCartController.buyerController<br/>Actual type controller.BuyerController<br/>In UpdateCartController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e286');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.UpdateCartController defines non-transient non-serializable instance field productController</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e286" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.UpdateCartController<br/>Field controller.viewcontroller.UpdateCartController.productController<br/>Actual type controller.ProductController<br/>In UpdateCartController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e303');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class controller.viewcontroller.ViewProductsViewController defines non-transient non-serializable instance field categoryController</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e303" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class controller.viewcontroller.ViewProductsViewController<br/>Field controller.viewcontroller.ViewProductsViewController.categoryController<br/>Actual type controller.CategoryController<br/>In ViewProductsViewController.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e614');">
+            <td>
+               <span class="priority-2">Se</span>
+            </td>
+            <td>Class model.Order defines non-transient non-serializable instance field orderProducts</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e614" style="display: none;">
+                  <a href="#SE_BAD_FIELD">Bug type SE_BAD_FIELD (click for details)</a>
+                  <br/>In class model.Order<br/>Field model.Order.orderProducts<br/>Actual type model.OrderProduct<br/>In Order.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e53');">
+            <td>
+               <span class="priority-2">SnVI</span>
+            </td>
+            <td>controller.HomeController is Serializable; consider declaring a serialVersionUID</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e53" style="display: none;">
+                  <a href="#SE_NO_SERIALVERSIONID">Bug type SE_NO_SERIALVERSIONID (click for details)</a>
+                  <br/>In class controller.HomeController<br/>At HomeController.java:[lines 20-43]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e62');">
+            <td>
+               <span class="priority-2">SnVI</span>
+            </td>
+            <td>controller.SignupController is Serializable; consider declaring a serialVersionUID</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e62" style="display: none;">
+                  <a href="#SE_NO_SERIALVERSIONID">Bug type SE_NO_SERIALVERSIONID (click for details)</a>
+                  <br/>In class controller.SignupController<br/>At SignupController.java:[lines 18-48]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e71');">
+            <td>
+               <span class="priority-2">SnVI</span>
+            </td>
+            <td>controller.UpdateProfileController is Serializable; consider declaring a serialVersionUID</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e71" style="display: none;">
+                  <a href="#SE_NO_SERIALVERSIONID">Bug type SE_NO_SERIALVERSIONID (click for details)</a>
+                  <br/>In class controller.UpdateProfileController<br/>At UpdateProfileController.java:[lines 19-53]</p>
             </td>
          </tr>
       </table>
@@ -205,7 +456,7 @@
             <th align="left">Code</th>
             <th align="left">Warning</th>
          </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e18');">
+         <tr class="tablerow1" onclick="toggleRow('d1e320');">
             <td>
                <span class="priority-2">EI</span>
             </td>
@@ -214,12 +465,12 @@
          <tr class="detailrow1">
             <td/>
             <td>
-               <p id="d1e18" style="display: none;">
+               <p id="d1e320" style="display: none;">
                   <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Account<br/>In method model.Account.getAddress()<br/>Field model.Account.address<br/>At Account.java:[line 36]</p>
+                  <br/>In class model.Account<br/>In method model.Account.getAddress()<br/>Field model.Account.address<br/>At Account.java:[line 52]</p>
             </td>
          </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e52');">
+         <tr class="tablerow0" onclick="toggleRow('d1e391');">
             <td>
                <span class="priority-2">EI</span>
             </td>
@@ -228,12 +479,12 @@
          <tr class="detailrow0">
             <td/>
             <td>
-               <p id="d1e52" style="display: none;">
+               <p id="d1e391" style="display: none;">
                   <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Admin<br/>In method model.Admin.getAccount()<br/>Field model.Admin.account<br/>At Admin.java:[line 12]</p>
+                  <br/>In class model.Admin<br/>In method model.Admin.getAccount()<br/>Field model.Admin.account<br/>At Admin.java:[line 18]</p>
             </td>
          </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e103');">
+         <tr class="tablerow1" onclick="toggleRow('d1e425');">
             <td>
                <span class="priority-2">EI</span>
             </td>
@@ -242,96 +493,40 @@
          <tr class="detailrow1">
             <td/>
             <td>
-               <p id="d1e103" style="display: none;">
+               <p id="d1e425" style="display: none;">
                   <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Buyer<br/>In method model.Buyer.getAccount()<br/>Field model.Buyer.account<br/>At Buyer.java:[line 22]</p>
+                  <br/>In class model.Buyer<br/>In method model.Buyer.getAccount()<br/>Field model.Buyer.account<br/>At Buyer.java:[line 26]</p>
             </td>
          </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e119');">
-            <td>
-               <span class="priority-2">EI</span>
-            </td>
-            <td>model.Buyer.getCart() may expose internal representation by returning Buyer.cart</td>
-         </tr>
-         <tr class="detailrow0">
-            <td/>
-            <td>
-               <p id="d1e119" style="display: none;">
-                  <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Buyer<br/>In method model.Buyer.getCart()<br/>Field model.Buyer.cart<br/>At Buyer.java:[line 40]</p>
-            </td>
-         </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e135');">
-            <td>
-               <span class="priority-2">EI</span>
-            </td>
-            <td>model.Buyer.getInterests() may expose internal representation by returning Buyer.interests</td>
-         </tr>
-         <tr class="detailrow1">
-            <td/>
-            <td>
-               <p id="d1e135" style="display: none;">
-                  <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Buyer<br/>In method model.Buyer.getInterests()<br/>Field model.Buyer.interests<br/>At Buyer.java:[line 30]</p>
-            </td>
-         </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e151');">
-            <td>
-               <span class="priority-2">EI</span>
-            </td>
-            <td>model.Buyer.getOrders() may expose internal representation by returning Buyer.orders</td>
-         </tr>
-         <tr class="detailrow0">
-            <td/>
-            <td>
-               <p id="d1e151" style="display: none;">
-                  <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Buyer<br/>In method model.Buyer.getOrders()<br/>Field model.Buyer.orders<br/>At Buyer.java:[line 43]</p>
-            </td>
-         </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e167');">
-            <td>
-               <span class="priority-2">EI</span>
-            </td>
-            <td>model.Buyer.getWishlist() may expose internal representation by returning Buyer.wishlist</td>
-         </tr>
-         <tr class="detailrow1">
-            <td/>
-            <td>
-               <p id="d1e167" style="display: none;">
-                  <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Buyer<br/>In method model.Buyer.getWishlist()<br/>Field model.Buyer.wishlist<br/>At Buyer.java:[line 34]</p>
-            </td>
-         </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e291');">
-            <td>
-               <span class="priority-2">EI</span>
-            </td>
-            <td>model.Category.getProducts() may expose internal representation by returning Category.products</td>
-         </tr>
-         <tr class="detailrow0">
-            <td/>
-            <td>
-               <p id="d1e291" style="display: none;">
-                  <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Category<br/>In method model.Category.getProducts()<br/>Field model.Category.products<br/>At Category.java:[line 23]</p>
-            </td>
-         </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e325');">
+         <tr class="tablerow0" onclick="toggleRow('d1e563');">
             <td>
                <span class="priority-2">EI</span>
             </td>
             <td>model.Order.getBuyer() may expose internal representation by returning Order.buyer</td>
          </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e563" style="display: none;">
+                  <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
+                  <br/>In class model.Order<br/>In method model.Order.getBuyer()<br/>Field model.Order.buyer<br/>At Order.java:[line 30]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e580');">
+            <td>
+               <span class="priority-2">EI</span>
+            </td>
+            <td>model.Order.getOrderProducts() may expose internal representation by returning Order.orderProducts</td>
+         </tr>
          <tr class="detailrow1">
             <td/>
             <td>
-               <p id="d1e325" style="display: none;">
+               <p id="d1e580" style="display: none;">
                   <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Order<br/>In method model.Order.getBuyer()<br/>Field model.Order.buyer<br/>At Order.java:[line 27]</p>
+                  <br/>In class model.Order<br/>In method model.Order.getOrderProducts()<br/>Field model.Order.orderProducts<br/>At Order.java:[line 33]</p>
             </td>
          </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e359');">
+         <tr class="tablerow0" onclick="toggleRow('d1e631');">
             <td>
                <span class="priority-2">EI</span>
             </td>
@@ -340,12 +535,12 @@
          <tr class="detailrow0">
             <td/>
             <td>
-               <p id="d1e359" style="display: none;">
+               <p id="d1e631" style="display: none;">
                   <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.OrderProduct<br/>In method model.OrderProduct.getOrder()<br/>Field model.OrderProduct.order<br/>At OrderProduct.java:[line 34]</p>
+                  <br/>In class model.OrderProduct<br/>In method model.OrderProduct.getOrder()<br/>Field model.OrderProduct.order<br/>At OrderProduct.java:[line 43]</p>
             </td>
          </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e376');">
+         <tr class="tablerow1" onclick="toggleRow('d1e647');">
             <td>
                <span class="priority-2">EI</span>
             </td>
@@ -354,12 +549,12 @@
          <tr class="detailrow1">
             <td/>
             <td>
-               <p id="d1e376" style="display: none;">
+               <p id="d1e647" style="display: none;">
                   <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.OrderProduct<br/>In method model.OrderProduct.getProduct()<br/>Field model.OrderProduct.product<br/>At OrderProduct.java:[line 38]</p>
+                  <br/>In class model.OrderProduct<br/>In method model.OrderProduct.getProduct()<br/>Field model.OrderProduct.product<br/>At OrderProduct.java:[line 49]</p>
             </td>
          </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e428');">
+         <tr class="tablerow0" onclick="toggleRow('d1e663');">
             <td>
                <span class="priority-2">EI</span>
             </td>
@@ -368,26 +563,54 @@
          <tr class="detailrow0">
             <td/>
             <td>
-               <p id="d1e428" style="display: none;">
+               <p id="d1e663" style="display: none;">
                   <a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
-                  <br/>In class model.Product<br/>In method model.Product.getCategory()<br/>Field model.Product.category<br/>At Product.java:[line 50]</p>
+                  <br/>In class model.Product<br/>In method model.Product.getCategory()<br/>Field model.Product.category<br/>At Product.java:[line 59]</p>
             </td>
          </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e34');">
+         <tr class="tablerow1" onclick="toggleRow('d1e336');">
+            <td>
+               <span class="priority-2">EI2</span>
+            </td>
+            <td>new model.Account(String, LocalDate, String, String, String, String, Address) may expose internal representation by storing an externally mutable object into Account.address</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e336" style="display: none;">
+                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+                  <br/>In class model.Account<br/>In method new model.Account(String, LocalDate, String, String, String, String, Address)<br/>Field model.Account.address<br/>Local variable named address<br/>At Account.java:[line 15]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e354');">
             <td>
                <span class="priority-2">EI2</span>
             </td>
             <td>model.Account.setAddress(Address) may expose internal representation by storing an externally mutable object into Account.address</td>
          </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e354" style="display: none;">
+                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+                  <br/>In class model.Account<br/>In method model.Account.setAddress(Address)<br/>Field model.Account.address<br/>Local variable named address<br/>At Account.java:[line 11]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e372');">
+            <td>
+               <span class="priority-2">EI2</span>
+            </td>
+            <td>model.Account$AccountBuilder.address(Address) may expose internal representation by storing an externally mutable object into Account$AccountBuilder.address</td>
+         </tr>
          <tr class="detailrow1">
             <td/>
             <td>
-               <p id="d1e34" style="display: none;">
+               <p id="d1e372" style="display: none;">
                   <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Account<br/>In method model.Account.setAddress(Address)<br/>Field model.Account.address<br/>Local variable named address<br/>At Account.java:[line 12]</p>
+                  <br/>In class model.Account$AccountBuilder<br/>In method model.Account$AccountBuilder.address(Address)<br/>Field model.Account$AccountBuilder.address<br/>Local variable named address<br/>At Account.java:[line 13]</p>
             </td>
          </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e68');">
+         <tr class="tablerow0" onclick="toggleRow('d1e407');">
             <td>
                <span class="priority-2">EI2</span>
             </td>
@@ -396,138 +619,110 @@
          <tr class="detailrow0">
             <td/>
             <td>
-               <p id="d1e68" style="display: none;">
+               <p id="d1e407" style="display: none;">
                   <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Admin<br/>In method model.Admin.setAccount(Account)<br/>Field model.Admin.account<br/>Local variable named account<br/>At Admin.java:[line 9]</p>
+                  <br/>In class model.Admin<br/>In method model.Admin.setAccount(Account)<br/>Field model.Admin.account<br/>Local variable named account<br/>At Admin.java:[line 13]</p>
             </td>
          </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e184');">
+         <tr class="tablerow1" onclick="toggleRow('d1e441');">
+            <td>
+               <span class="priority-2">EI2</span>
+            </td>
+            <td>new model.Buyer(Account, BigDecimal, Set, Set, Map, Set) may expose internal representation by storing an externally mutable object into Buyer.account</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e441" style="display: none;">
+                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+                  <br/>In class model.Buyer<br/>In method new model.Buyer(Account, BigDecimal, Set, Set, Map, Set)<br/>Field model.Buyer.account<br/>Local variable named account<br/>At Buyer.java:[line 18]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e459');">
+            <td>
+               <span class="priority-2">EI2</span>
+            </td>
+            <td>new model.Buyer(Account, BigDecimal, Set, Set, Map, Set) may expose internal representation by storing an externally mutable object into Buyer.cart</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e459" style="display: none;">
+                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+                  <br/>In class model.Buyer<br/>In method new model.Buyer(Account, BigDecimal, Set, Set, Map, Set)<br/>Field model.Buyer.cart<br/>Local variable named cart<br/>At Buyer.java:[line 18]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e477');">
+            <td>
+               <span class="priority-2">EI2</span>
+            </td>
+            <td>new model.Buyer(Account, BigDecimal, Set, Set, Map, Set) may expose internal representation by storing an externally mutable object into Buyer.interests</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e477" style="display: none;">
+                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+                  <br/>In class model.Buyer<br/>In method new model.Buyer(Account, BigDecimal, Set, Set, Map, Set)<br/>Field model.Buyer.interests<br/>Local variable named interests<br/>At Buyer.java:[line 18]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e495');">
+            <td>
+               <span class="priority-2">EI2</span>
+            </td>
+            <td>new model.Buyer(Account, BigDecimal, Set, Set, Map, Set) may expose internal representation by storing an externally mutable object into Buyer.orders</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e495" style="display: none;">
+                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+                  <br/>In class model.Buyer<br/>In method new model.Buyer(Account, BigDecimal, Set, Set, Map, Set)<br/>Field model.Buyer.orders<br/>Local variable named orders<br/>At Buyer.java:[line 18]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e513');">
+            <td>
+               <span class="priority-2">EI2</span>
+            </td>
+            <td>new model.Buyer(Account, BigDecimal, Set, Set, Map, Set) may expose internal representation by storing an externally mutable object into Buyer.wishlist</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e513" style="display: none;">
+                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+                  <br/>In class model.Buyer<br/>In method new model.Buyer(Account, BigDecimal, Set, Set, Map, Set)<br/>Field model.Buyer.wishlist<br/>Local variable named wishlist<br/>At Buyer.java:[line 18]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e531');">
             <td>
                <span class="priority-2">EI2</span>
             </td>
             <td>model.Buyer.setAccount(Account) may expose internal representation by storing an externally mutable object into Buyer.account</td>
          </tr>
-         <tr class="detailrow1">
-            <td/>
-            <td>
-               <p id="d1e184" style="display: none;">
-                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Buyer<br/>In method model.Buyer.setAccount(Account)<br/>Field model.Buyer.account<br/>Local variable named account<br/>At Buyer.java:[line 18]</p>
-            </td>
-         </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e202');">
-            <td>
-               <span class="priority-2">EI2</span>
-            </td>
-            <td>model.Buyer.setCart(Map) may expose internal representation by storing an externally mutable object into Buyer.cart</td>
-         </tr>
          <tr class="detailrow0">
             <td/>
             <td>
-               <p id="d1e202" style="display: none;">
+               <p id="d1e531" style="display: none;">
                   <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Buyer<br/>In method model.Buyer.setCart(Map)<br/>Field model.Buyer.cart<br/>Local variable named cart<br/>At Buyer.java:[line 18]</p>
+                  <br/>In class model.Buyer<br/>In method model.Buyer.setAccount(Account)<br/>Field model.Buyer.account<br/>Local variable named account<br/>At Buyer.java:[line 25]</p>
             </td>
          </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e220');">
+         <tr class="tablerow1" onclick="toggleRow('d1e596');">
             <td>
                <span class="priority-2">EI2</span>
             </td>
-            <td>model.Buyer.setInterests(Set) may expose internal representation by storing an externally mutable object into Buyer.interests</td>
+            <td>new model.Order(Buyer) may expose internal representation by storing an externally mutable object into Order.buyer</td>
          </tr>
          <tr class="detailrow1">
             <td/>
             <td>
-               <p id="d1e220" style="display: none;">
+               <p id="d1e596" style="display: none;">
                   <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Buyer<br/>In method model.Buyer.setInterests(Set)<br/>Field model.Buyer.interests<br/>Local variable named interests<br/>At Buyer.java:[line 18]</p>
+                  <br/>In class model.Order<br/>In method new model.Order(Buyer)<br/>Field model.Order.buyer<br/>Local variable named buyer<br/>At Order.java:[line 39]</p>
             </td>
          </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e238');">
-            <td>
-               <span class="priority-2">EI2</span>
-            </td>
-            <td>model.Buyer.setOrders(Set) may expose internal representation by storing an externally mutable object into Buyer.orders</td>
-         </tr>
-         <tr class="detailrow0">
-            <td/>
-            <td>
-               <p id="d1e238" style="display: none;">
-                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Buyer<br/>In method model.Buyer.setOrders(Set)<br/>Field model.Buyer.orders<br/>Local variable named orders<br/>At Buyer.java:[line 18]</p>
-            </td>
-         </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e256');">
-            <td>
-               <span class="priority-2">EI2</span>
-            </td>
-            <td>model.Buyer.setWishlist(Set) may expose internal representation by storing an externally mutable object into Buyer.wishlist</td>
-         </tr>
-         <tr class="detailrow1">
-            <td/>
-            <td>
-               <p id="d1e256" style="display: none;">
-                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Buyer<br/>In method model.Buyer.setWishlist(Set)<br/>Field model.Buyer.wishlist<br/>Local variable named wishlist<br/>At Buyer.java:[line 18]</p>
-            </td>
-         </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e307');">
-            <td>
-               <span class="priority-2">EI2</span>
-            </td>
-            <td>model.Category.setProducts(Set) may expose internal representation by storing an externally mutable object into Category.products</td>
-         </tr>
-         <tr class="detailrow0">
-            <td/>
-            <td>
-               <p id="d1e307" style="display: none;">
-                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Category<br/>In method model.Category.setProducts(Set)<br/>Field model.Category.products<br/>Local variable named products<br/>At Category.java:[line 14]</p>
-            </td>
-         </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e341');">
-            <td>
-               <span class="priority-2">EI2</span>
-            </td>
-            <td>model.Order.setBuyer(Buyer) may expose internal representation by storing an externally mutable object into Order.buyer</td>
-         </tr>
-         <tr class="detailrow1">
-            <td/>
-            <td>
-               <p id="d1e341" style="display: none;">
-                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Order<br/>In method model.Order.setBuyer(Buyer)<br/>Field model.Order.buyer<br/>Local variable named buyer<br/>At Order.java:[line 17]</p>
-            </td>
-         </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e392');">
-            <td>
-               <span class="priority-2">EI2</span>
-            </td>
-            <td>model.OrderProduct.setOrder(Order) may expose internal representation by storing an externally mutable object into OrderProduct.order</td>
-         </tr>
-         <tr class="detailrow0">
-            <td/>
-            <td>
-               <p id="d1e392" style="display: none;">
-                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.OrderProduct<br/>In method model.OrderProduct.setOrder(Order)<br/>Field model.OrderProduct.order<br/>Local variable named order<br/>At OrderProduct.java:[line 19]</p>
-            </td>
-         </tr>
-         <tr class="tablerow1" onclick="toggleRow('d1e410');">
-            <td>
-               <span class="priority-2">EI2</span>
-            </td>
-            <td>model.OrderProduct.setProduct(Product) may expose internal representation by storing an externally mutable object into OrderProduct.product</td>
-         </tr>
-         <tr class="detailrow1">
-            <td/>
-            <td>
-               <p id="d1e410" style="display: none;">
-                  <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.OrderProduct<br/>In method model.OrderProduct.setProduct(Product)<br/>Field model.OrderProduct.product<br/>Local variable named product<br/>At OrderProduct.java:[line 19]</p>
-            </td>
-         </tr>
-         <tr class="tablerow0" onclick="toggleRow('d1e444');">
+         <tr class="tablerow0" onclick="toggleRow('d1e679');">
             <td>
                <span class="priority-2">EI2</span>
             </td>
@@ -536,9 +731,190 @@
          <tr class="detailrow0">
             <td/>
             <td>
-               <p id="d1e444" style="display: none;">
+               <p id="d1e679" style="display: none;">
                   <a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
-                  <br/>In class model.Product<br/>In method model.Product.setCategory(Category)<br/>Field model.Product.category<br/>Local variable named category<br/>At Product.java:[line 18]</p>
+                  <br/>In class model.Product<br/>In method model.Product.setCategory(Category)<br/>Field model.Product.category<br/>Local variable named category<br/>At Product.java:[line 19]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e846');">
+            <td>
+               <span class="priority-2">MS</span>
+            </td>
+            <td>Public static utils.EMFactory.getEMF(String) may expose internal representation by returning EMFactory.emf</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e846" style="display: none;">
+                  <a href="#MS_EXPOSE_REP">Bug type MS_EXPOSE_REP (click for details)</a>
+                  <br/>In class utils.EMFactory<br/>In method utils.EMFactory.getEMF(String)<br/>Field utils.EMFactory.emf<br/>At EMFactory.java:[line 20]</p>
+            </td>
+         </tr>
+      </table>
+      <h2>
+         <a name="Warnings_MT_CORRECTNESS">Multithreaded correctness Warnings</a>
+      </h2>
+      <table class="warningtable" width="100%" cellspacing="0">
+         <tr class="tableheader">
+            <th align="left">Code</th>
+            <th align="left">Warning</th>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e830');">
+            <td>
+               <span class="priority-2">DC</span>
+            </td>
+            <td>Possible double-check on utils.EMFactory.emf in utils.EMFactory.getEMF(String)</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e830" style="display: none;">
+                  <a href="#DC_DOUBLECHECK">Bug type DC_DOUBLECHECK (click for details)</a>
+                  <br/>In class utils.EMFactory<br/>In method utils.EMFactory.getEMF(String)<br/>On field utils.EMFactory.emf<br/>At EMFactory.java:[lines 13-15]</p>
+            </td>
+         </tr>
+      </table>
+      <h2>
+         <a name="Warnings_PERFORMANCE">Performance Warnings</a>
+      </h2>
+      <table class="warningtable" width="100%" cellspacing="0">
+         <tr class="tableheader">
+            <th align="left">Code</th>
+            <th align="left">Warning</th>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e817');">
+            <td>
+               <span class="priority-2">UrF</span>
+            </td>
+            <td>Unread field: service.ProductService.entityManager</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e817" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class service.ProductService<br/>Field service.ProductService.entityManager<br/>At ProductService.java:[line 17]</p>
+            </td>
+         </tr>
+      </table>
+      <h2>
+         <a name="Warnings_STYLE">Dodgy code Warnings</a>
+      </h2>
+      <table class="warningtable" width="100%" cellspacing="0">
+         <tr class="tableheader">
+            <th align="left">Code</th>
+            <th align="left">Warning</th>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e80');">
+            <td>
+               <span class="priority-2">DLS</span>
+            </td>
+            <td>Dead store to imagePath in controller.viewcontroller.AddBookViewController.doPost(HttpServletRequest, HttpServletResponse)</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e80" style="display: none;">
+                  <a href="#DLS_DEAD_LOCAL_STORE">Bug type DLS_DEAD_LOCAL_STORE (click for details)</a>
+                  <br/>In class controller.viewcontroller.AddBookViewController<br/>In method controller.viewcontroller.AddBookViewController.doPost(HttpServletRequest, HttpServletResponse)<br/>Local variable named imagePath<br/>At AddBookViewController.java:[line 52]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e697');">
+            <td>
+               <span class="priority-1">DLS</span>
+            </td>
+            <td>Dead store to buyer in repository.BuyerRepository.addProductToCart(Buyer, Product, int)</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e697" style="display: none;">
+                  <a href="#DLS_DEAD_LOCAL_STORE">Bug type DLS_DEAD_LOCAL_STORE (click for details)</a>
+                  <br/>In class repository.BuyerRepository<br/>In method repository.BuyerRepository.addProductToCart(Buyer, Product, int)<br/>Local variable named buyer<br/>At BuyerRepository.java:[line 60]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e714');">
+            <td>
+               <span class="priority-1">DLS</span>
+            </td>
+            <td>Dead store to buyer in repository.BuyerRepository.addToWishlist(Buyer, Product)</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e714" style="display: none;">
+                  <a href="#DLS_DEAD_LOCAL_STORE">Bug type DLS_DEAD_LOCAL_STORE (click for details)</a>
+                  <br/>In class repository.BuyerRepository<br/>In method repository.BuyerRepository.addToWishlist(Buyer, Product)<br/>Local variable named buyer<br/>At BuyerRepository.java:[line 161]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e731');">
+            <td>
+               <span class="priority-1">DLS</span>
+            </td>
+            <td>Dead store to buyer in repository.BuyerRepository.clearCart(Buyer)</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e731" style="display: none;">
+                  <a href="#DLS_DEAD_LOCAL_STORE">Bug type DLS_DEAD_LOCAL_STORE (click for details)</a>
+                  <br/>In class repository.BuyerRepository<br/>In method repository.BuyerRepository.clearCart(Buyer)<br/>Local variable named buyer<br/>At BuyerRepository.java:[line 127]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e748');">
+            <td>
+               <span class="priority-1">DLS</span>
+            </td>
+            <td>Dead store to buyer in repository.BuyerRepository.decrementProductQuantity(Buyer, Product)</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e748" style="display: none;">
+                  <a href="#DLS_DEAD_LOCAL_STORE">Bug type DLS_DEAD_LOCAL_STORE (click for details)</a>
+                  <br/>In class repository.BuyerRepository<br/>In method repository.BuyerRepository.decrementProductQuantity(Buyer, Product)<br/>Local variable named buyer<br/>At BuyerRepository.java:[line 110]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e766');">
+            <td>
+               <span class="priority-1">DLS</span>
+            </td>
+            <td>Dead store to buyer in repository.BuyerRepository.incrementProductQuantity(Buyer, Product)</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e766" style="display: none;">
+                  <a href="#DLS_DEAD_LOCAL_STORE">Bug type DLS_DEAD_LOCAL_STORE (click for details)</a>
+                  <br/>In class repository.BuyerRepository<br/>In method repository.BuyerRepository.incrementProductQuantity(Buyer, Product)<br/>Local variable named buyer<br/>At BuyerRepository.java:[line 91]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e783');">
+            <td>
+               <span class="priority-1">DLS</span>
+            </td>
+            <td>Dead store to buyer in repository.BuyerRepository.removeFromWishlist(Buyer, Product)</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e783" style="display: none;">
+                  <a href="#DLS_DEAD_LOCAL_STORE">Bug type DLS_DEAD_LOCAL_STORE (click for details)</a>
+                  <br/>In class repository.BuyerRepository<br/>In method repository.BuyerRepository.removeFromWishlist(Buyer, Product)<br/>Local variable named buyer<br/>At BuyerRepository.java:[line 176]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e800');">
+            <td>
+               <span class="priority-1">DLS</span>
+            </td>
+            <td>Dead store to buyer in repository.BuyerRepository.removeProductFromCart(Buyer, Product)</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e800" style="display: none;">
+                  <a href="#DLS_DEAD_LOCAL_STORE">Bug type DLS_DEAD_LOCAL_STORE (click for details)</a>
+                  <br/>In class repository.BuyerRepository<br/>In method repository.BuyerRepository.removeProductFromCart(Buyer, Product)<br/>Local variable named buyer<br/>At BuyerRepository.java:[line 76]</p>
             </td>
          </tr>
       </table>
@@ -546,6 +922,44 @@
          <a name="Details">Details</a>
       </h1>
       <h2>
+         <a name="CT_CONSTRUCTOR_THROW">CT_CONSTRUCTOR_THROW: Be wary of letting constructors throw exceptions.</a>
+      </h2>
+      
+            <p>Classes that throw exceptions in their constructors are vulnerable to Finalizer attacks</p>
+
+            <p>A finalizer attack can be prevented, by declaring the class final, using an empty finalizer declared as final, or by a clever use of a private constructor.</p>
+
+            <p>See <a href="https://wiki.sei.cmu.edu/confluence/display/java/OBJ11-J.+Be+wary+of+letting+constructors+throw+exceptions"><code>SEI CERT Rule OBJ-11</code></a>
+            for more information.
+            </p>
+            
+    <h2>
+         <a name="DC_DOUBLECHECK">DC_DOUBLECHECK: Possible double-check of field</a>
+      </h2>
+
+  <p> This method may contain an instance of double-checked locking.&nbsp;
+  This idiom is not correct according to the semantics of the Java memory
+  model.&nbsp; For more information, see the web page
+  <a href="http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html"
+  >http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html</a>.</p>
+
+    <h2>
+         <a name="DLS_DEAD_LOCAL_STORE">DLS_DEAD_LOCAL_STORE: Dead store to local variable</a>
+      </h2>
+
+<p>
+This instruction assigns a value to a local variable,
+but the value is not read or used in any subsequent instruction.
+Often, this indicates an error, because the value computed is never
+used.
+</p>
+<p>
+Note that Sun's javac compiler often generates dead stores for
+final local variables. Because SpotBugs is a bytecode-based tool,
+there is no easy way to eliminate these false positives.
+</p>
+
+    <h2>
          <a name="EI_EXPOSE_REP">EI_EXPOSE_REP: May expose internal representation by returning reference to mutable object</a>
       </h2>
 
@@ -570,6 +984,16 @@
   Storing a copy of the object is better approach in many situations.</p>
 
     <h2>
+         <a name="MS_EXPOSE_REP">MS_EXPOSE_REP: Public static method may expose internal representation by returning a mutable object or array</a>
+      </h2>
+
+  <p> A public static method returns a reference to a mutable object or
+   an array that is part of the static state of the class.
+   Any code that calls this method can freely modify
+   the underlying array.
+   One fix is to return a copy of the array.</p>
+
+    <h2>
          <a name="SE_BAD_FIELD">SE_BAD_FIELD: Non-transient non-serializable instance field in serializable class</a>
       </h2>
 
@@ -579,6 +1003,29 @@ the <code>Externalizable</code> interface or the
 <code>readObject()</code> and <code>writeObject()</code> methods.&nbsp;
 Objects of this class will not be deserialized correctly if a non-Serializable
 object is stored in this field.</p>
+
+    <h2>
+         <a name="SE_NO_SERIALVERSIONID">SE_NO_SERIALVERSIONID: Class is Serializable, but doesn't define serialVersionUID</a>
+      </h2>
+
+  <p> This class implements the <code>Serializable</code> interface, but does
+  not define a <code>serialVersionUID</code> field.&nbsp;
+  A change as simple as adding a reference to a .class object
+    will add synthetic fields to the class,
+   which will unfortunately change the implicit
+   serialVersionUID (e.g., adding a reference to <code>String.class</code>
+   will generate a static field <code>class$java$lang$String</code>).
+   Also, different source code to bytecode compilers may use different
+   naming conventions for synthetic variables generated for
+   references to class objects or inner classes.
+   To ensure interoperability of Serializable across versions,
+   consider adding an explicit serialVersionUID.</p>
+
+    <h2>
+         <a name="URF_UNREAD_FIELD">URF_UNREAD_FIELD: Unread field</a>
+      </h2>
+
+  <p> This field is never read.&nbsp; Consider removing it from the class.</p>
 
     </body>
 </html>

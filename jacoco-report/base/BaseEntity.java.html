@@ -20,22 +20,33 @@ import java.time.Instant;
     @Column(name = &quot;created_at&quot;, updatable = false, nullable = false)
     @NotNull
 <span class="nc" id="L22">    private final Instant createdDate = Instant.now();</span>
-<span class="nc" id="L23">    @UpdateTimestamp</span>
+
+<span class="nc" id="L24">    @UpdateTimestamp</span>
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = &quot;last_updated_on&quot;, nullable = false)
     @NotNull
-<span class="nc" id="L27">    private final Instant lastUpdatedOn = Instant.now();</span>
+<span class="nc" id="L28">    private final Instant lastUpdatedOn = Instant.now();</span>
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = &quot;id&quot;)
+    @Column(name = &quot;id&quot;, updatable = false, nullable = false)
     private ID id;
-    @Column(name = &quot;is_deleted&quot;, nullable = false)
+
+<span class="nc" id="L35">    @Column(name = &quot;is_deleted&quot;, nullable = false)</span>
+    @NotNull
     @ColumnDefault(&quot;false&quot;)
-    private boolean isDeleted;
-    @Column(name = &quot;created_by&quot;)
-    private String createdBy;
-    @Column(name = &quot;modified_by&quot;)
-    private String modifiedBy;
+<span class="nc" id="L38">    private Boolean isDeleted = false;</span>
+
+<span class="nc" id="L40">    @Column(name = &quot;created_by&quot;, length = 100)</span>
+    private String createdBy = null;
+
+<span class="nc" id="L43">    @Column(name = &quot;modified_by&quot;, length = 100)</span>
+    private String modifiedBy = null;
+
+    public void markAsDeleted() {
+<span class="nc" id="L47">        this.isDeleted = true;</span>
+<span class="nc" id="L48">    }</span>
+
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

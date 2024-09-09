@@ -2,44 +2,109 @@
 
 import base.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = &quot;buyer&quot;, indexes = {@Index(name = &quot;idx_buyer_category&quot;, columnList = &quot;category_id&quot;), @Index(name = &quot;idx_buyer_product&quot;, columnList = &quot;product_id&quot;)})
 @Getter
-@Setter
-<span class="nc" id="L19">public class Buyer extends BaseEntity&lt;Long&gt; {</span>
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false, exclude = {&quot;interests&quot;, &quot;wishlist&quot;, &quot;cart&quot;, &quot;orders&quot;})
+@ToString(exclude = {&quot;interests&quot;, &quot;wishlist&quot;, &quot;cart&quot;, &quot;orders&quot;})
+public class Buyer extends BaseEntity&lt;Long&gt; {
 
     @Embedded
+    @Valid
+    @Setter
     private Account account;
 
-    @Column(name = &quot;credit_limit&quot;)
-    @DecimalMin(value = &quot;0.0&quot;)
+    @Column(name = &quot;credit_limit&quot;, nullable = false, precision = 65, scale = 2, columnDefinition = &quot;DECIMAL(65,2) DEFAULT 0.00&quot;)
+    @DecimalMin(value = &quot;0.0&quot;, inclusive = false, message = &quot;Credit limit must be greater than 0&quot;)
+    @NotNull(message = &quot;Credit limit is required&quot;)
+    @ColumnDefault(value = &quot;0.0&quot;)
     private BigDecimal creditLimit;
 
-<span class="nc" id="L28">    @ManyToMany(fetch = FetchType.LAZY)</span>
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = &quot;buyer_interest&quot;, joinColumns = @JoinColumn(name = &quot;buyer_id&quot;), inverseJoinColumns = @JoinColumn(name = &quot;category_id&quot;))
-    private Set&lt;Category&gt; interests = new HashSet&lt;&gt;();
+    private Set&lt;Category&gt; interests = HashSet.newHashSet(16);
 
-<span class="nc" id="L32">    @ManyToMany(fetch = FetchType.LAZY)</span>
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = &quot;buyer_wishlist&quot;, catalog = &quot;booktopia&quot;, joinColumns = @JoinColumn(name = &quot;buyer_id&quot;, nullable = false), inverseJoinColumns = @JoinColumn(name = &quot;product_id&quot;, nullable = false))
-<span class="nc" id="L34">    private Set&lt;Product&gt; wishlist = HashSet.newHashSet(16);</span>
+    private Set&lt;Product&gt; wishlist = HashSet.newHashSet(16);
 
-<span class="nc" id="L36">    @ElementCollection</span>
+    @ElementCollection
     @CollectionTable(name = &quot;cart_items&quot;, joinColumns = @JoinColumn(name = &quot;buyer_id&quot;))
     @MapKeyJoinColumn(name = &quot;product_id&quot;)
     @Column(name = &quot;quantity&quot;)
-<span class="nc" id="L40">    private Map&lt;Product, Integer&gt; cart = HashMap.newHashMap(16);</span>
+    private Map&lt;Product, Integer&gt; cart = HashMap.newHashMap(16);
 
-<span class="nc" id="L42">    @OneToMany(mappedBy = &quot;buyer&quot;, fetch = FetchType.LAZY)</span>
-<span class="nc" id="L43">    private Set&lt;Order&gt; orders = HashSet.newHashSet(16);</span>
+    @OneToMany(mappedBy = &quot;buyer&quot;, fetch = FetchType.LAZY)
+    private Set&lt;Order&gt; orders = HashSet.newHashSet(16);
+
+    public void addInterest(Category category) {
+<span class="nc" id="L52">        this.interests.add(category);</span>
+<span class="nc" id="L53">    }</span>
+
+    public void removeInterest(Category category) {
+<span class="nc" id="L56">        this.interests.remove(category);</span>
+<span class="nc" id="L57">    }</span>
+
+    public Set&lt;Category&gt; getInterests() {
+<span class="nc" id="L60">        return Collections.unmodifiableSet(this.interests);</span>
+    }
+
+    public void addToWishlist(Product product) {
+<span class="nc" id="L64">        this.wishlist.add(product);</span>
+<span class="nc" id="L65">    }</span>
+
+    public void removeFromWishlist(Product product) {
+<span class="nc" id="L68">        this.wishlist.remove(product);</span>
+<span class="nc" id="L69">    }</span>
+
+    public Set&lt;Product&gt; getWishlist() {
+<span class="nc" id="L72">        return Collections.unmodifiableSet(this.wishlist);</span>
+    }
+
+    public int addToCart(Product product, int quantity) {
+<span class="nc" id="L76">        return this.cart.merge(product, quantity, Integer::sum);</span>
+    }
+
+    public void removeFromCart(Product product) {
+<span class="nc" id="L80">        this.cart.remove(product);</span>
+<span class="nc" id="L81">    }</span>
+
+    public void clearCart() {
+<span class="nc" id="L84">        this.cart.clear();</span>
+<span class="nc" id="L85">    }</span>
+
+    public Map&lt;Product, Integer&gt; getCart() {
+<span class="nc" id="L88">        return Collections.unmodifiableMap(this.cart);</span>
+    }
+
+    public void addOrder(Order order) {
+<span class="nc" id="L92">        this.orders.add(order);</span>
+<span class="nc" id="L93">    }</span>
+
+    public void removeOrder(Order order) {
+<span class="nc" id="L96">        this.orders.remove(order);</span>
+<span class="nc" id="L97">    }</span>
+
+    public Set&lt;Order&gt; getOrders() {
+<span class="nc" id="L100">        return Collections.unmodifiableSet(this.orders);</span>
+    }
+
+    public void setCreditLimit(BigDecimal creditLimit) {
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (creditLimit.compareTo(BigDecimal.ZERO) &lt; 0) {</span>
+<span class="nc" id="L105">            throw new IllegalArgumentException(&quot;Credit limit cannot be negative&quot;);</span>
+        }
+<span class="nc" id="L107">        this.creditLimit = creditLimit;</span>
+<span class="nc" id="L108">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
