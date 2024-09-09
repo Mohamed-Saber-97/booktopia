@@ -1,6 +1,7 @@
 package filter;
 
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -8,7 +9,7 @@ import java.io.IOException;
 
 import static utils.RequestAttributeUtil.ADMIN;
 
-//@WebFilter(urlPatterns = "/admin-login")
+@WebFilter(urlPatterns = {"/books", "/add-book", "/edit-book", "/delete-book", "/categories", "/add-category", "/edit-category", "/delete-category", "/users"})
 public class AdminFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

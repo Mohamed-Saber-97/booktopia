@@ -9,8 +9,8 @@ import java.io.IOException;
 
 import static utils.RequestAttributeUtil.BUYER;
 
-@WebFilter(urlPatterns = { "/orders", "/addToCart", "/cart", "/update-cart", "/remove-cart-item",
-        "/cartSingleOperation", "/addToWishlist", "/wishlist", "/remove-wishlist-item" })
+@WebFilter(urlPatterns = {"/orders", "/addToCart", "/cart", "/update-cart", "/remove-bucket-item",
+        "/cartSingleOperation", "/addToWishlist", "/wishlist"})
 public class BuyerFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
