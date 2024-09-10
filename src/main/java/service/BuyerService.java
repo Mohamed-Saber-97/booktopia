@@ -1,11 +1,17 @@
 package service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import model.Buyer;
 import model.Product;
 import repository.BuyerRepository;
+import utils.EMFactory;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BuyerService {
     private final BuyerRepository buyerRepository;
@@ -107,4 +113,31 @@ public class BuyerService {
     public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
         buyerRepository.removeFromWishlist(buyer, product);
     }
+
+    public boolean validateAndUpdateCart(Buyer buyer) {
+        if (buyer == null || buyer.getCart() == null) return false;
+        int initialCartSize = buyer.getCart().size();
+        EntityManager entityManager = EMFactory.getEMF("booktopia").createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            Map<Product, Integer> currentCart = buyer.getCart();
+            Set<Long> productIds = currentCart.keySet().stream().map(Product::getId).collect(Collectors.toSet());
+            Map<Product, Integer> currentProducts = productService.findByIdsWithQuantities(productIds);
+            buyer.clearCart();
+            buyer.addCartItem(currentProducts);
+            buyerRepository.update(buyer);
+            entityManager.getTransaction().commit();
+            return buyer.getCart().size() == initialCartSize;
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+                return false;
+            }
+        } finally {
+            entityManager.close();
+        }
+        return false;
+    }
+
 }
