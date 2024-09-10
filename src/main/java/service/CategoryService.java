@@ -27,4 +27,8 @@ public class CategoryService {
     public boolean existsByName(String name) {
         return categoryRepository.existsByName(name);
     }
+
+    public Category update(Category category) {
+        return categoryRepository.update(category);
+    }
 }

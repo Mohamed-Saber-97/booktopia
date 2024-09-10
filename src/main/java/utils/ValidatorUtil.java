@@ -221,7 +221,7 @@ public class ValidatorUtil {
 
     public static Map<String, String> validateUpdateCategory(ServletRequest request) {
         Map<String, String> errors = new HashMap<>(commonCategoryValidation(request));
-        String oldName = ((Category) ((HttpServletRequest) request).getSession().getAttribute(CATEGORY)).getName();
+        String oldName = ((Category) request.getAttribute(CATEGORY)).getName();
         String newName = request.getParameter(NAME);
         if (!oldName.equals(newName) && !UniqueCategoryNameValidator.isValid(newName)) {
             errors.put(ERROR, UniqueCategoryNameValidator.ERROR_MESSAGE);

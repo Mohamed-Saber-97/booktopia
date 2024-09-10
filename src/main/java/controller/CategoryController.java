@@ -27,4 +27,8 @@ public class CategoryController {
     public boolean existsByName(String name) {
         return categoryService.existsByName(name);
     }
+
+    public Category update(Category category) {
+        return categoryService.update(category);
+    }
 }

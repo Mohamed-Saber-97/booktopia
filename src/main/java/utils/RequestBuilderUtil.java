@@ -81,9 +81,19 @@ public class RequestBuilderUtil {
         return product;
     }
 
+    private static void setCommonCategoryAttributes(ServletRequest request, Category category) {
+        category.setName(request.getParameter(NAME));
+    }
+
     public static Category createCategoryFromRequest(ServletRequest request) {
         Category category = new Category();
-        category.setName(request.getParameter(NAME));
+        setCommonCategoryAttributes(request, category);
+        return category;
+    }
+
+    public static Category updateCategoryFromRequest(ServletRequest request) {
+        Category category = (Category) request.getAttribute(CATEGORY);
+        setCommonCategoryAttributes(request, category);
         return category;
     }
 }
