@@ -67,6 +67,9 @@ public class Buyer extends BaseEntity<Long> {
     public void removeFromWishlist(Product product) {
         this.wishlist.remove(product);
     }
+    public void removeFromWishlist(Set<Product> products) {
+        this.wishlist.removeAll(products);
+    }
 
     public Set<Product> getWishlist() {
         return Collections.unmodifiableSet(this.wishlist);
