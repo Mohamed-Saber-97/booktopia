@@ -69,4 +69,10 @@ public class RequestBuilderUtil {
         product.setDescription(request.getParameter(DESCRIPTION));
         return product;
     }
+
+    public static Category createCategoryFromRequest(ServletRequest request) {
+        Category category = new Category();
+        category.setName(request.getParameter(NAME));
+        return category;
+    }
 }

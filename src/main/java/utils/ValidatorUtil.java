@@ -174,4 +174,17 @@ public class ValidatorUtil {
         }
         return errors;
     }
+
+    public static Map<String, String> validateAddCategory(ServletRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        String name = request.getParameter(NAME);
+        System.out.println("Name: " + name);
+        System.out.println("in validateAddCategory");
+        if (!NotEmptyValidator.isValid(name)) {
+            errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);
+        } else if (!MaxFieldLengthValidator.isValid(100, name)) {
+            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);
+        }
+        return errors;
+    }
 }

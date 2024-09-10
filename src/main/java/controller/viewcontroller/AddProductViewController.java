@@ -33,7 +33,7 @@ public class AddProductViewController extends HttpServlet {
     private ProductController productController;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Category> categories = categoryController.findAll();
         RequestDispatcher dispatcher = request.getRequestDispatcher("add-book.jsp");
         request.getSession().setAttribute(PAGE_TITLE, "Add a book");
@@ -42,18 +42,17 @@ public class AddProductViewController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String uploadPath = getServletContext().getRealPath("") + File.separator + "images";
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Product product = (Product) request.getAttribute(PRODUCT);
-        if (product == null) {
+        String uploadPath = getServletContext().getRealPath("") + File.separator + "images";
+        String imageName = SaveUploadedImage.saveImage(request, uploadPath);
+        product.setImagePath("images" + File.separator + imageName);
+        Category category = categoryController.findById(Long.parseLong(request.getParameter(CATEGORY_ID)));
+        product.setCategory(category);
+        Product savedProduct = productController.save(product);
+        if (savedProduct == null) {
             response.sendRedirect("/add-book");
         } else {
-            String imagePath = SaveUploadedImage.saveImage(request, uploadPath);
-            System.out.println("Image path:(inview controller)  " + imagePath);
-            product.setImagePath("images" + File.separator + imagePath);
-            Category category = categoryController.findById(Long.parseLong(request.getParameter(CATEGORY_ID)));
-            product.setCategory(category);
-            productController.save(product);
             HttpSession session = request.getSession(true);
             session.setAttribute(PAGE_TITLE, "Home");
             response.sendRedirect(request.getContextPath() + "/");
