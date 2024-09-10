@@ -140,4 +140,29 @@ public class BuyerService {
         return false;
     }
 
+    public boolean validateAndUpdateWishList(Buyer buyer) {
+        if (buyer == null || buyer.getWishlist() == null) return false;
+        int initialWishlistSize = buyer.getWishlist().size();
+        EntityManager entityManager = EMFactory.getEMF("booktopia").createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            Set<Product> currentWishlist = buyer.getWishlist();
+            Set<Long> productIds = currentWishlist.stream().map(Product::getId).collect(Collectors.toSet());
+            Set<Product> availableProductsInWishlist = new HashSet<>(productService.findByIds(productIds));
+            Set<Product> itemsToRemove = currentWishlist.stream().filter(item -> !availableProductsInWishlist.contains(item)).collect(Collectors.toSet());
+            buyer.removeFromWishlist(itemsToRemove);
+            buyerRepository.update(buyer);
+            transaction.commit();
+            return currentWishlist.size() == initialWishlistSize;
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+                return false;
+            }
+        } finally {
+            entityManager.close();
+        }
+        return false;
+    }
 }
