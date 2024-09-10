@@ -91,8 +91,8 @@ public class Buyer extends BaseEntity<Long> {
         this.cart.put(product, quantity);
     }
 
-    public void removeCartItem(Product product) {
-        this.cart.remove(product);
+    public void addCartItem(Map<Product, Integer> cart) {
+        this.cart.putAll(cart);
     }
 
     public Map<Product, Integer> getCart() {
