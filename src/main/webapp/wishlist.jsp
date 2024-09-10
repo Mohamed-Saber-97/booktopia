@@ -7,6 +7,11 @@
 <form action="remove-wishlist-item" method="POST" id="removeFromWishlist">
     <input type="hidden" name="productId" id="productId">
 </form>
+<c:if test="${not empty error}">
+    <div class="alert alert-danger text-center" style="width: fit-content; margin: 0 auto;">
+            ${error}
+    </div>
+</c:if>
 <!-- Shoping Wishlist -->
 <c:choose>
     <c:when test="${sessionScope.user.getWishlist().size() > 0}">
