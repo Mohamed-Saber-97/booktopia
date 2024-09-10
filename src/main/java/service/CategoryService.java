@@ -23,4 +23,8 @@ public class CategoryService {
     public Category findById(Long id) {
         return categoryRepository.findById(id).orElse(null);
     }
+
+    public boolean existsByName(String name) {
+        return categoryRepository.existsByName(name);
+    }
 }

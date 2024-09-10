@@ -5,6 +5,8 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import model.Buyer;
+import model.Category;
+import model.Product;
 import service.BuyerService;
 import validator.*;
 
@@ -13,8 +15,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-import static utils.RequestAttributeUtil.ERROR;
-import static utils.RequestAttributeUtil.USER;
+import static utils.RequestAttributeUtil.*;
 import static utils.RequestParameterUtil.*;
 
 public class ValidatorUtil {
@@ -140,7 +141,7 @@ public class ValidatorUtil {
         return commonLogInValidation(request);
     }
 
-    public static Map<String, String> validateAddBook(ServletRequest request) throws ServletException, IOException {
+    public static Map<String, String> commonBookValidation(ServletRequest request) throws ServletException, IOException {
         Map<String, String> errors = new HashMap<>();
         String price = request.getParameter(PRICE);
         String quantity = request.getParameter(QUANTITY);
@@ -171,19 +172,81 @@ public class ValidatorUtil {
             errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);
         } else if (!ObjectNotNullValidator.isValid(imagePath)) {
             errors.put(ERROR, ObjectNotNullValidator.ERROR_MESSAGE);
+        } else if (!(imagePath.getSize() > 0)) {
+            errors.put(ERROR, "Image is required");
+        }
+        return errors;
+    }
+
+    public static Map<String, String> validateAddBook(ServletRequest request) throws ServletException, IOException {
+        Map<String, String> errors = new HashMap<>(commonBookValidation(request));
+        String isbn = request.getParameter(ISBN);
+
+        if (!UniqueIsbnValidator.isValid(isbn)) {
+            errors.put(ERROR, UniqueIsbnValidator.ERROR_MESSAGE);
+        }
+        return errors;
+    }
+
+    public static Map<String, String> validateUpdateBook(ServletRequest request) throws ServletException, IOException {
+        Map<String, String> errors = new HashMap<>(commonBookValidation(request));
+        String oldIsbn = ((Product) request.getAttribute(PRODUCT)).getIsbn();
+        String newIsbn = request.getParameter(ISBN);
+
+        if (!oldIsbn.equals(newIsbn) && !UniqueIsbnValidator.isValid(newIsbn)) {
+            errors.put(ERROR, UniqueIsbnValidator.ERROR_MESSAGE);
+        }
+        return errors;
+    }
+
+    public static Map<String, String> commonCategoryValidation(ServletRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        String name = request.getParameter(NAME);
+        if (!NotEmptyValidator.isValid(name)) {
+            errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);
+        } else if (!MaxFieldLengthValidator.isValid(100, name)) {
+            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);
         }
         return errors;
     }
 
     public static Map<String, String> validateAddCategory(ServletRequest request) {
-        Map<String, String> errors = new HashMap<>();
+        Map<String, String> errors = new HashMap<>(commonCategoryValidation(request));
         String name = request.getParameter(NAME);
-        System.out.println("Name: " + name);
-        System.out.println("in validateAddCategory");
-        if (!NotEmptyValidator.isValid(name)) {
+        if (!UniqueCategoryNameValidator.isValid(name)) {
+            errors.put(ERROR, UniqueCategoryNameValidator.ERROR_MESSAGE);
+        }
+        return errors;
+    }
+
+    public static Map<String, String> validateUpdateCategory(ServletRequest request) {
+        Map<String, String> errors = new HashMap<>(commonCategoryValidation(request));
+        String oldName = ((Category) ((HttpServletRequest) request).getSession().getAttribute(CATEGORY)).getName();
+        String newName = request.getParameter(NAME);
+        if (!oldName.equals(newName) && !UniqueCategoryNameValidator.isValid(newName)) {
+            errors.put(ERROR, UniqueCategoryNameValidator.ERROR_MESSAGE);
+        }
+        return errors;
+    }
+
+    public static Map<String, String> validateEntityIdGET(ServletRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        String id = request.getParameter("p");
+        if (!NotEmptyValidator.isValid(id)) {
             errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);
-        } else if (!MaxFieldLengthValidator.isValid(100, name)) {
-            errors.put(ERROR, MaxFieldLengthValidator.ERROR_MESSAGE);
+        } else if (!NumberValidator.isValid(id)) {
+            errors.put(ERROR, NumberValidator.ERROR_MESSAGE);
+        }
+        return errors;
+    }
+
+    public static Map<String, String> validateEntityIdPOST(ServletRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        String id = request.getParameter("id");
+        if (!NotEmptyValidator.isValid(id)) {
+            errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);
+        } else if (!NumberValidator.isValid(id)) {
+            errors.put(ERROR, NumberValidator.ERROR_MESSAGE);
         }
         return errors;
     }

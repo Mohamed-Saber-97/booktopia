@@ -7,7 +7,6 @@ import model.Product;
 import utils.RequestBuilderUtil;
 import utils.ValidatorUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ public class AddProductFilter implements Filter {
             if (!errors.isEmpty()) {
                 request.setAttribute(ERROR, errors.get(ERROR));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("add-book.jsp");
-                ((HttpServletRequest) request).getSession().setAttribute(PAGE_TITLE, "Add a book");
+                httpRequest.getSession().setAttribute(PAGE_TITLE, "Add a book");
                 dispatcher.forward(request, response);
             } else {
                 Product product = RequestBuilderUtil.createProductFromRequest(httpRequest);

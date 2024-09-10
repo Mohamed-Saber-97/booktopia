@@ -24,7 +24,7 @@ public class AddCategoryFilter implements Filter {
             if (!errors.isEmpty()) {
                 request.setAttribute(ERROR, errors.get(ERROR));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("add-category.jsp");
-                ((HttpServletRequest) request).getSession().setAttribute(PAGE_TITLE, "Add a category");
+                httpRequest.getSession().setAttribute(PAGE_TITLE, "Add a category");
                 dispatcher.forward(request, response);
             } else {
                 Category category = RequestBuilderUtil.createCategoryFromRequest(httpRequest);

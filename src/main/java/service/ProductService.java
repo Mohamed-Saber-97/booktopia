@@ -44,4 +44,12 @@ public class ProductService {
     public Product save(Product product) {
         return productRepository.save(product);
     }
+
+    public Product update(Product product) {
+        return productRepository.update(product);
+    }
+
+    public boolean existsByIsbn(String isbn) {
+        return productRepository.existsByIsbn(isbn);
+    }
 }

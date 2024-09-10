@@ -53,4 +53,10 @@ public class ProductRepository extends BaseRepository<Product, Long> {
         query.setParameter("id", id);
         return query.getSingleResult();
     }
+
+    public boolean existsByIsbn(String isbn) {
+        String jpql = "SELECT COUNT(p) FROM Product p WHERE p.isbn = :isbn";
+        Long count = entityManager.createQuery(jpql, Long.class).setParameter("isbn", isbn).getSingleResult();
+        return count > 0;
+    }
 }
