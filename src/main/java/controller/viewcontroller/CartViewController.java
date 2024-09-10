@@ -16,10 +16,9 @@ import static utils.RequestAttributeUtil.*;
 @WebServlet(value = "/cart")
 public class CartViewController extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
-        if (!CartValidator.isValid(buyer.getCart(), buyer)) {
+        if (!CartValidator.isValid(buyer)) {
             request.setAttribute(ERROR, CartValidator.ERROR_MESSAGE);
             request.getSession().setAttribute(USER, buyer);
         }
