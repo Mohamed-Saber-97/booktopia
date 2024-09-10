@@ -44,6 +44,11 @@ public class ProductService {
     public Product save(Product product) {
         return productRepository.save(product);
     }
+
+    public List<Product> findByIds(Iterable<Long> ids) {
+        return productRepository.findByIds(ids);
+    }
+
     public Map<Product, Integer> findByIdsWithQuantities(Iterable<Long> ids) {
         return productRepository.findByIdsWithQuantities(ids);
     }
