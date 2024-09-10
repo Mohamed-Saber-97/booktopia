@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Buyer;
-import validator.CartValidator;
+import validator.WishlistValidator;
 
 import java.io.IOException;
 
@@ -16,11 +16,10 @@ import static utils.RequestAttributeUtil.*;
 @WebServlet(value = "/wishlist")
 public class WishlistViewController extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
-        if (!CartValidator.isValid(buyer.getCart(), buyer)) {
-            request.setAttribute(ERROR, CartValidator.ERROR_MESSAGE);
+        if (!WishlistValidator.isValid(buyer)) {
+            request.setAttribute(ERROR, WishlistValidator.ERROR_MESSAGE);
             request.getSession().setAttribute(USER, buyer);
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("wishlist.jsp");
