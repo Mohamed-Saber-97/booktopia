@@ -7,76 +7,100 @@ on:
     branches: [ "development" ]
 
 jobs:
-  build-and-analyze:
+  set-up-environment:
     runs-on: ubuntu-latest
+    outputs:
+      java-home: ${{ steps.setup-java.outputs.path }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK 22
-        uses: actions/setup-java@v3
+        id: setup-java
+        uses: actions/setup-java@v4
         with:
           java-version: '22'
           distribution: 'temurin'
-          cache: maven
-      - name: Set up environment variables
-        run: |
-          echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+      - name: Verify Java version
+        run: java -version
+      - name: Verify Maven version
+        run: mvn -version
+
+  set-up-persistence-variables:
+    needs: set-up-environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - name: Replace placeholders in persistence.xml
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           sed -i 's|\${DB_URL}|'"$DB_URL"'|g' src/main/resources/META-INF/persistence.xml
           sed -i 's|\${DB_USERNAME}|'"$DB_USERNAME"'|g' src/main/resources/META-INF/persistence.xml
           sed -i 's|\${DB_PASSWORD}|'"$DB_PASSWORD"'|g' src/main/resources/META-INF/persistence.xml
-      - name: Build with Maven
-        run: mvn clean install
-      - name: Run Application with Maven
-        run: mvn exec:java
-      - name: Run tests and generate reports
-        run: |
-          mvn test jacoco:report
-          mvn pmd:pmd
-          mvn checkstyle:checkstyle
-          mvn spotbugs:spotbugs
-      - name: List files in target directory for debugging
-        run: |
-          echo "Listing all files in the target directory:"
-          ls -R target
-      - name: Upload target directory as artifact
-        uses: actions/upload-artifact@v3
+
+  maven-life-cycles:
+    needs: [set-up-environment, set-up-persistence-variables]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 22
+        uses: actions/setup-java@v4
+        with:
+          java-version: '22'
+          distribution: 'temurin'
+      - name: Maven Clean
+        run: mvn clean -X
+      - name: Maven Install
+        run: mvn install -X
+      - name: List target directory
+        run: ls -R target
+      - name: Upload War and  Report files to target directory
+        uses: actions/upload-artifact@v4
         with:
           name: target-directory
-          path: target
+          path: |
+            target/*.war
+            target/classes/
+            target/site/
+            target/jacoco-report/
+            target/spotbugs.html
           if-no-files-found: error
 
-  upload-reports-to-report-pages:
-    needs: build-and-analyze
+  deploy-report-files:
+    needs: maven-life-cycles
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout the report-pages branch
+        uses: actions/checkout@v4
         with:
           ref: report-pages
       - name: Clean report-pages branch
         run: |
+          if [ "$(git ls-files)" ]; then 
           git rm -rf .
-          git clean -fxd
-      - name: Download target directory artifact
-        uses: actions/download-artifact@v3
+          git clean -fdx
+          else
+          echo "No files to clean"
+          fi
+      - name: Download war and report files artifact
+        uses: actions/download-artifact@v4
         with:
           name: target-directory
           path: .
-      - name: Remove unwanted directories and files
-        run: |
-          rm -rf classes maven-archiver maven-status/maven-compiler-plugin pmd/rulesets test-classes *.jar
       - name: List files for debugging
         run: |
           echo "Listing contents of the current directory:"
           ls -R
-      - name: Add and commit reports to report-pages branch
+      - name: Set up Git
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+      - name: Add and commit reports and WAR files
+        run: |
           git add .
-          git commit -m "Update reports" || echo "No changes to commit"
-          git push --force origin report-pages
+          git commit -m "Update Reports and WAR files" || echo "No changes to commit"
+      - name: Force push changes to report-pages branch
+        run: git push https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git HEAD:report-pages
