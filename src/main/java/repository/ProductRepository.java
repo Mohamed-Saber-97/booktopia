@@ -53,4 +53,8 @@ public class ProductRepository extends BaseRepository<Product, Long> {
         query.setParameter("id", id);
         return query.getSingleResult();
     }
+
+    public List<Product> findByIds(Iterable<Long> ids) {
+        return entityManager.createQuery("SELECT product FROM Product product where product.id in :productIds AND product.isDeleted = false AND product.quantity > 0", Product.class).setParameter("productIds", ids).getResultList();
+    }
 }
