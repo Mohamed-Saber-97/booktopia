@@ -36,6 +36,7 @@ public class ProductRepository extends BaseRepository<Product, Long> {
         if (queryParameters.getOrDefault(NAME, null) != null) {
             predicate = cb.and(predicate, cb.like(productRoot.get(NAME), "%" + queryParameters.get(NAME) + "%"));
         }
+        predicate = cb.and(predicate, cb.equal(productRoot.get(IS_DELETED), false));
         query.select(productRoot).where(predicate);
         return entityManager.createQuery(query).setFirstResult(pageNumber * pageSize).setMaxResults(pageSize).getResultList();
 //        return entityManager.createQuery(query).getResultList();

@@ -29,8 +29,6 @@ public class NextProductsController extends HttpServlet {
         Gson gson = new Gson();
         String jsonProducts = gson.toJson(productDtos);
 
-        System.out.println("After gson");
-        System.out.println(jsonProducts);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"products\":" + jsonProducts + "}");
