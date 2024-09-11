@@ -84,6 +84,11 @@
                                 Login
                             </a>
                         </c:if>
+                        <c:if test="${sessionScope.user != null}">
+                            <a href="logout" class="flex-c-m trans-04 p-lr-25">
+                                Logout
+                            </a>
+                        </c:if>
                     </div>
                 </div>
             </div>
