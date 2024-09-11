@@ -4,11 +4,7 @@
         pointer-events: none;
     }
 </style>
-<c:if test="${not empty error}">
-    <div class="alert alert-danger text-center" style="width: fit-content; margin: 0 auto;">
-            ${error}
-    </div>
-</c:if>
+<%@include file="notifications.jsp" %>
 <form action="remove-cart-item" method="POST" id="removeFromCart">
     <input type="hidden" name="productId" id="productId">
 </form>
