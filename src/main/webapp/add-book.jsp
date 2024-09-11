@@ -1,4 +1,4 @@
-<%@include file="header.jsp"%>
+<%@include file="header.jsp" %>
 
 <style>
     /* Make the container a flexbox to center the content */
@@ -46,12 +46,7 @@
         text-align: center;
     }
 </style>
-
-<c:if test="${not empty error}">
-    <div class="alert alert-danger text-center" style="width: fit-content; margin: 0 auto;">
-        ${error}
-    </div>
-</c:if>
+<%@include file="notifications.jsp" %>
 <section class="bg0 p-t-104 p-b-116">
     <div class="container">
         <div class="flex-w flex-tr">
@@ -62,15 +57,15 @@
                     </h4>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" name="price"
-                            placeholder="Price">
+                               placeholder="Price">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0" name="quantity"
-                            placeholder="Quantity">
+                               placeholder="Quantity">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="releaseDate"
-                            onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Release Date">
+                               onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Release Date">
                     </div>
                     <select class="bor8 m-b-20 stext-111 cl2 plh3 size-116 p-l-62 p-r-30" name="categoryId">
                         <option value="" disabled selected>Category</option>
@@ -80,19 +75,19 @@
                     </select>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="isbn"
-                            placeholder="ISBN">
+                               placeholder="ISBN">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="author"
-                            placeholder="Author">
+                               placeholder="Author">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="name"
-                            placeholder="Name">
+                               placeholder="Name">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="description"
-                            placeholder="Description">
+                               placeholder="Description">
                     </div>
 
                     <div class="file-upload-container">
@@ -146,4 +141,4 @@
 
 </section>
 
-<%@include file="footer.jsp"%>
+<%@include file="footer.jsp" %>
