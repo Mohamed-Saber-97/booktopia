@@ -20,7 +20,7 @@ public class ProductsViewController extends HttpServlet {
     private CategoryController categoryController;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Product> products = new SearchProductsController().searchProducts(request);
         List<Category> categories = categoryController.findAll();
         RequestDispatcher dispatcher = request.getRequestDispatcher("books.jsp");

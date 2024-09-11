@@ -24,7 +24,7 @@ public class CategoriesViewController extends HttpServlet {
         List<Category> categories = categoryController.findAll();
         int i = 1;
         RequestDispatcher dispatcher = request.getRequestDispatcher("categories.jsp");
-        request.setAttribute(PAGE_TITLE, "Categories");
+        request.getSession().setAttribute(PAGE_TITLE, "Categories");
         request.setAttribute(CATEGORIES, categories);
         request.setAttribute("i", i);
         dispatcher.forward(request, response);

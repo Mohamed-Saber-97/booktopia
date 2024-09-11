@@ -1,6 +1,7 @@
 package service;
 
 import model.Buyer;
+import model.Order;
 import model.Product;
 import repository.BuyerRepository;
 
@@ -14,6 +15,10 @@ public class BuyerService {
     public BuyerService() {
         buyerRepository = new BuyerRepository();
         productService = new ProductService();
+    }
+
+    public List<Buyer> findAll() {
+        return buyerRepository.findAll();
     }
 
     public Buyer save(Buyer buyer) {
@@ -106,5 +111,13 @@ public class BuyerService {
 
     public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
         buyerRepository.removeFromWishlist(buyer, product);
+    }
+
+    public List<Buyer> search(int pageNumber, int pageSize) {
+        return buyerRepository.search(pageNumber, pageSize);
+    }
+
+    public List<Order> searchOrders(Long buyerId, int pageNumber, int pageSize) {
+        return buyerRepository.searchOrders(buyerId, pageNumber, pageSize);
     }
 }
