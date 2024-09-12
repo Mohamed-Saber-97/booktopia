@@ -52,4 +52,8 @@ public class ProductService {
     public Map<Product, Integer> findByIdsWithQuantities(Iterable<Long> ids) {
         return productRepository.findByIdsWithQuantities(ids);
     }
+
+    public void update(Product product) {
+        productRepository.update(product);
+    }
 }
