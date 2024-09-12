@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import mapper.BuyerToBuyerDto;
 import model.Buyer;
+import utils.Jsonify;
 import validator.NotEmptyValidator;
 
 import java.io.IOException;
@@ -25,14 +26,7 @@ public class NextBuyersController extends HttpServlet {
         String pageNumberString = request.getParameter("page");
         int pageNumber = NotEmptyValidator.isValid(pageNumberString) ? Integer.parseInt(pageNumberString) : 0;
         List<Buyer> buyers = buyerController.search(pageNumber, 16);
-
-        List<BuyerDto> buyerDtos = new ArrayList<>();
-        BuyerToBuyerDto buyerToBuyerDto = new BuyerToBuyerDto();
-        for (int i = 0; i < buyers.size(); i++) {
-            buyerDtos.add(buyerToBuyerDto.convert(buyers.get(i)));
-        }
-        Gson gson = new Gson();
-        String jsonBuyers = gson.toJson(buyerDtos);
+        String jsonBuyers = Jsonify.jsonifyBuyers(buyers);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"buyers\":" + jsonBuyers + "}");

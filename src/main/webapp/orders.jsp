@@ -24,8 +24,7 @@
                                         <td class="column-3">${item.getCreatedDate()}</td>
                                         <td class="column-2">${item.getOrderProducts().size()}</td>
                                         <td class="column-3">
-                                            <form action="buyer-order-products" method="get" style="display:inline;">
-                                                <input type="hidden" name="p" value="${tempBuyer.getId()}">
+                                            <form action="order-products" method="get" style="display:inline;">
                                                 <input type="hidden" name="order" value="${item.getId()}">
                                                 <button type="submit" class="btn btn-link">View</button>
                                             </form>
@@ -46,7 +45,7 @@
                 <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
                     <div class="m-l-25 m-r--38 m-lr-0-xl">
                         <div class="">
-                            <h1>This user hasn't orderd yet</h1>
+                            <h1>You haven't ordered yet</h1>
                         </div>
                     </div>
                 </div>
@@ -68,7 +67,6 @@
     window.addEventListener('load', function () {
         let pageNumber = 1;
         let counter = ${i};
-        let buyerId = ${tempBuyer.getId()};
         let table = $('.table-shopping-cart');
         document.getElementById('loadMore').addEventListener('click', loadOrders);
 
@@ -76,7 +74,7 @@
             $('#loadMore').prop('disabled', true);
 
             $.ajax({
-                url: "/next-buyer-orders",
+                url: "/next-orders",
                 type: "GET",
                 data: {
                     page: pageNumber++,
@@ -93,8 +91,7 @@
                                 <td class="column-3">`+order.createdDate+`</td>
                                 <td class="column-2">`+order.numberOfProducts+`</td>
                                 <td class="column-3">
-                                    <form action="buyer-order-products" method="get" style="display:inline;">
-                                        <input type="hidden" name="p" value="`+buyerId+`">
+                                    <form action="order-products" method="get" style="display:inline;">
                                         <input type="hidden" name="order" value="`+order.id+`">
                                         <button type="submit" class="btn btn-link">View</button>
                                     </form>
@@ -102,7 +99,6 @@
                             </tr>
                         `;
                     }).join(''));
-
 
                     table.append(newItems);
                 },

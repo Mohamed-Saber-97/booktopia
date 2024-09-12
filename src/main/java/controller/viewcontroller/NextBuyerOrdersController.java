@@ -16,26 +16,25 @@ import validator.NumberValidator;
 import java.io.IOException;
 import java.util.List;
 
-import static utils.RequestAttributeUtil.USER;
-
-@WebServlet(value = "/next-orders")
-public class NextOrdersController extends HttpServlet {
+@WebServlet(value = "/next-buyer-orders")
+public class NextBuyerOrdersController extends HttpServlet {
     private BuyerController buyerController;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pageNumberString = request.getParameter("page");
         int pageNumber = NotEmptyValidator.isValid(pageNumberString) && NumberValidator.isValid(pageNumberString) ? Integer.parseInt(pageNumberString) : 0;
-        Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
+        Buyer buyer = (Buyer) request.getSession().getAttribute("tempBuyer");
         if (buyer == null) {
-            response.sendRedirect(request.getContextPath() + "/");
+            request.setAttribute("error", "Buyer not found");
+            response.sendRedirect("/buyers");
         } else {
             List<Order> orders = buyerController.searchOrders(buyer.getId(), pageNumber, 16);
             orders.forEach(order -> order.getOrderProducts().removeIf(OrderProduct::getIsDeleted));
-            String json = Jsonify.jsonifyOrders(orders);
-            response.setContentType("application/json");
+            String jsonOrders = Jsonify.jsonifyOrders(orders);
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{\"orders\":" + json + "}");
+            response.setContentType("application/json");
+            response.getWriter().write("{\"orders\":" + jsonOrders + "}");
         }
     }
 

@@ -19,29 +19,27 @@ import java.util.Map;
 
 import static utils.RequestAttributeUtil.*;
 
-@WebServlet(value = "/buyer-order-products")
-public class BuyerOrderProductsViewController extends HttpServlet {
-    private BuyerController buyerController;
+@WebServlet(value = "/order-products")
+public class OrderProductsViewController extends HttpServlet {
     private OrderController orderController;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Map<String, String> errors = ValidatorUtil.validateEntityId(request, "p", "order");
+        Map<String, String> errors = ValidatorUtil.validateEntityId(request, "order");
         if (!errors.isEmpty()) {
             request.setAttribute(ERROR, errors.get(ERROR));
-            response.sendRedirect("/buyer-orders");
+            response.sendRedirect("/orders");
         } else {
-            Buyer buyer = buyerController.findById(Long.parseLong(request.getParameter("p")));
+            Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
             Order order = orderController.findById(Long.parseLong(request.getParameter("order")));
             if (buyer == null || order == null) {
-                request.setAttribute(ERROR, "Buyer not found");
-                response.sendRedirect("/buyer-profile");
+                request.setAttribute(ERROR, "Order not found");
+                response.sendRedirect("/orders");
             } else {
                 List<OrderProduct> products = orderController.findProductsByBuyerId(buyer.getId(), order.getId());
-                RequestDispatcher dispatcher = request.getRequestDispatcher("buyer-order-products.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("order-products.jsp");
                 request.getSession().setAttribute(PAGE_TITLE, "Order products");
                 request.setAttribute(PRODUCTS, products);
-                request.getSession().setAttribute("tempBuyer", buyer);
                 dispatcher.forward(request, response);
             }
         }
@@ -49,7 +47,6 @@ public class BuyerOrderProductsViewController extends HttpServlet {
 
     @Override
     public void init() {
-        buyerController = new BuyerController();
         orderController = new OrderController();
     }
 }

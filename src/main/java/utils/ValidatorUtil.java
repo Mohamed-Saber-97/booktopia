@@ -241,15 +241,4 @@ public class ValidatorUtil {
         }
         return errors;
     }
-
-    public static Map<String, String> validateEntityIdPOST(ServletRequest request) {
-        Map<String, String> errors = new HashMap<>();
-        String id = request.getParameter("id");
-        if (!NotEmptyValidator.isValid(id)) {
-            errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);
-        } else if (!NumberValidator.isValid(id)) {
-            errors.put(ERROR, NumberValidator.ERROR_MESSAGE);
-        }
-        return errors;
-    }
 }
