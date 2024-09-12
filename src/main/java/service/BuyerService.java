@@ -124,6 +124,7 @@ public class BuyerService {
             Map<Product, Integer> currentCart = buyer.getCart();
             Set<Long> productIds = currentCart.keySet().stream().map(Product::getId).collect(Collectors.toSet());
             Map<Product, Integer> currentProducts = productService.findByIdsWithQuantities(productIds);
+            currentCart.entrySet().stream().filter(entry -> currentProducts.containsKey(entry.getKey())).forEach(entry -> currentProducts.put(entry.getKey(), entry.getValue()));
             buyer.clearCart();
             buyer.addCartItem(currentProducts);
             buyerRepository.update(buyer);
