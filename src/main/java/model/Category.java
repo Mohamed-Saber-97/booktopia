@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Category extends BaseEntity<Long> {
 
-    @Column(name = "name", unique = true, nullable = false,length = 100)
+    @Column(name = "name", unique = true, nullable = false, length = 100)
     @NotBlank(message = "name is required")
     @Setter
     private String name;

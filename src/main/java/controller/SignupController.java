@@ -6,40 +6,39 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Buyer;
+import validator.CountryValidator;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
-import jakarta.servlet.http.HttpSession;
-import model.Account;
-import model.Address;
-import model.Buyer;
-import model.Category;
-import validator.*;
+import static utils.RequestAttributeUtil.*;
 
 @WebServlet(value = "/signup")
 public class SignupController extends HttpServlet {
-    BuyerController buyerController;
+    private transient BuyerController buyerController;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
-        request.getSession().setAttribute("pageTitle", "Sign up");
+        request.getSession().setAttribute(PAGE_TITLE, "Sign up");
+        request.getSession().setAttribute(COUNTRIES, CountryValidator.getCountries());
         dispatcher.forward(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Buyer buyer = (Buyer) request.getAttribute("buyer");
+        Buyer buyer = (Buyer) request.getAttribute(USER);
         Buyer savedBuyer = buyerController.save(buyer);
-        HttpSession session = request.getSession(true);
-        session.setAttribute("user", savedBuyer);
-        session.setAttribute("pageTitle", "Home");
-        System.out.println("Redirecting to home page");
-        response.sendRedirect(request.getContextPath() + "/");
+        if (savedBuyer == null) {
+            response.sendRedirect("/signup");
+        } else {
+            HttpSession session = request.getSession(true);
+            session.setAttribute(USER, savedBuyer);
+            session.setAttribute(BUYER, YES);
+            session.setAttribute(PAGE_TITLE, "Home");
+            response.sendRedirect(request.getContextPath() + "/");
+        }
     }
 
     @Override

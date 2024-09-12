@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<%@taglib prefix="c" uri="jakarta.tags.core"%>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
 
 <head>
-    <title><%= session.getAttribute("pageTitle") %></title>
+    <title><%= session.getAttribute("pageTitle") %>
+    </title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -39,9 +40,8 @@
 </head>
 
 <body class="animsition">
-
     <!-- Header -->
-    <header>
+    <header class="${pageContext.request.requestURI eq '/products.jsp' ? 'header-v4' : '' }">
         <!-- Header desktop -->
         <div class="container-menu-desktop">
             <!-- Topbar -->
@@ -52,44 +52,38 @@
                     </div>
 
                     <div class="right-top-bar flex-w h-full">
-                        <!-- <a href="#" class="flex-c-m trans-04 p-lr-25">
-							Help & FAQs
-						</a> -->
-                        <c:choose>
-                            <c:when test="${sessionScope.user != null}">
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
-                                    My Account
-                                </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
-                                    Track order
-                                </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
-                                    Order history
-                                </a>
-                            </c:when>
-                            <c:when test="${sessionScope.admin != null}">
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
-                                    Manage books
-                                </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
-                                    Manage categories
-                                </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
-                                    View users
-                                </a>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="signup" class="flex-c-m trans-04 p-lr-25">
-                                    Sign up
-                                </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
-                                    Admin Login
-                                </a>
-                                <a href="#" class="flex-c-m trans-04 p-lr-25">
-                                    User Login
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
+                        <c:if test="${sessionScope.user != null}">
+                            <a href="profile" class="flex-c-m trans-04 p-lr-25">
+                                My Account
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.buyer != null}">
+                            <a href="orders" class="flex-c-m trans-04 p-lr-25">
+                                Orders
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.admin != null}">
+                            <a href="books" class="flex-c-m trans-04 p-lr-25">
+                                Manage books
+                            </a>
+                            <a href="categories" class="flex-c-m trans-04 p-lr-25">
+                                Manage categories
+                            </a>
+                            <a href="buyers" class="flex-c-m trans-04 p-lr-25">
+                                View buyers
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.user == null}">
+                            <a href="signup" class="flex-c-m trans-04 p-lr-25">
+                                Sign up
+                            </a>
+                            <!-- <a href="admin-login" class="flex-c-m trans-04 p-lr-25">
+                        Admin Login
+                        </a> -->
+                            <a href="login" class="flex-c-m trans-04 p-lr-25">
+                                Login
+                            </a>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -98,7 +92,7 @@
                 <nav class="limiter-menu-desktop container">
 
                     <!-- Logo desktop -->
-                    <a href="#" class="logo">
+                    <a href="/" class="logo">
                         <img src="images/icons/logo-01.png" alt="IMG-LOGO">
                     </a>
 
@@ -106,54 +100,52 @@
                     <div class="menu-desktop">
                         <ul class="main-menu">
                             <!-- <li class="active-menu">
-								<a href="index.html">Home</a>
-								<ul class="sub-menu">
-									<li><a href="index.html">Homepage 1</a></li>
-									<li><a href="home-02.html">Homepage 2</a></li>
-									<li><a href="home-03.html">Homepage 3</a></li>
-								</ul>
-							</li> -->
+                            <a href="index.html">Home</a>
+                            <ul class="sub-menu">
+                                <li><a href="index.html">Homepage 1</a></li>
+                                <li><a href="home-02.html">Homepage 2</a></li>
+                                <li><a href="home-03.html">Homepage 3</a></li>
+                            </ul>
+                        </li> -->
 
                             <li>
-                                <a href="#all-books">All books</a>
+                                <a href="products">All books</a>
                             </li>
 
-
-
                             <!-- <li class="label1" data-label1="hot">
-								<a href="shoping-cart.html">Features</a>
-							</li>
+                            <a href="shoping-cart.html">Features</a>
+                        </li>
 
-							<li>
-								<a href="blog.html">Blog</a>
-							</li>
+                        <li>
+                            <a href="blog.html">Blog</a>
+                        </li>
 
-							<li>
-								<a href="about.html">About</a>
-							</li>
+                        <li>
+                            <a href="about.html">About</a>
+                        </li>
 
-							<li>
-								<a href="contact.html">Contact</a>
-							</li> -->
+                        <li>
+                            <a href="contact.html">Contact</a>
+                        </li> -->
                         </ul>
                     </div>
 
                     <!-- Icon header -->
                     <div class="wrap-icon-header flex-w flex-r-m">
-                        <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+                        <!-- <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
                             <i class="zmdi zmdi-search"></i>
-                        </div>
+                        </div> -->
 
-                        <c:if test="${sessionScope.user != null}">
-                            <a href="#"
-                                class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-                                data-notify="2">
+                        <c:if test="${sessionScope.buyer != null}">
+                            <a href="cart"
+                                class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti cart"
+                                data-notify="${sessionScope.user.getCart().size()}">
                                 <i class="zmdi zmdi-shopping-cart"></i>
                             </a>
 
-                            <a href="#"
-                                class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-                                data-notify="0">
+                            <a href="wishlist"
+                                class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti wishlist"
+                                data-notify="${sessionScope.user.getWishlist().size()}">
                                 <i class="zmdi zmdi-favorite-outline"></i>
                             </a>
                         </c:if>
@@ -166,7 +158,7 @@
         <div class="wrap-header-mobile">
             <!-- Logo moblie -->
             <div class="logo-mobile">
-                <a href="index.html"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
+                <a href="/"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
             </div>
 
             <!-- Icon header -->
@@ -175,14 +167,16 @@
                     <i class="zmdi zmdi-search"></i>
                 </div>
 
-                <c:if test="${sessionScope.user != null}">
-                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
-                        data-notify="2">
+                <c:if test="${sessionScope.buyer != null}">
+                    <a href="cart"
+                        class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti cart"
+                        data-notify="${sessionScope.user.getCart().size()}">
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </a>
 
-                    <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
-                        data-notify="0">
+                    <a href="wishlist"
+                        class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti wishlist"
+                        data-notify="${sessionScope.user.getWishlist().size()}">
                         <i class="zmdi zmdi-favorite-outline"></i>
                     </a>
                 </c:if>
@@ -202,63 +196,80 @@
             <ul class="topbar-mobile">
                 <li>
                     <div class="left-top-bar">
-                        Free shipping for standard order over $100
+                        Your only way to get enlightened
                     </div>
                 </li>
 
                 <li>
                     <div class="right-top-bar flex-w h-full">
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            Help & FAQs
-                        </a>
-
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            My Account
-                        </a>
-
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            EN
-                        </a>
-
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            USD
-                        </a>
+                        <c:if test="${sessionScope.user != null}">
+                            <a href="profile" class="flex-c-m p-lr-10 trans-04">
+                                My Account
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.buyer != null}">
+                            <a href="orders" class="flex-c-m p-lr-10 trans-04">
+                                Orders
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.admin != null}">
+                            <a href="books" class="flex-c-m p-lr-10 trans-04">
+                                Manage books
+                            </a>
+                            <a href="categories" class="flex-c-m p-lr-10 trans-04">
+                                Manage categories
+                            </a>
+                            <a href="buyers" class="flex-c-m p-lr-10 trans-04">
+                                View buyers
+                            </a>
+                        </c:if>
+                        <c:if test="${sessionScope.user == null}">
+                            <a href="signup" class="flex-c-m p-lr-10 trans-04">
+                                Sign up
+                            </a>
+                            <!-- <a href="admin-login" class="flex-c-m p-lr-10 trans-04">
+                        Admin Login
+                        </a> -->
+                            <a href="login" class="flex-c-m p-lr-10 trans-04">
+                                Login
+                            </a>
+                        </c:if>
                     </div>
                 </li>
             </ul>
 
             <ul class="main-menu-m">
-                <li>
-                    <a href="index.html">Home</a>
-                    <ul class="sub-menu-m">
-                        <li><a href="index.html">Homepage 1</a></li>
-                        <li><a href="home-02.html">Homepage 2</a></li>
-                        <li><a href="home-03.html">Homepage 3</a></li>
-                    </ul>
-                    <span class="arrow-main-menu-m">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </span>
-                </li>
+                <!-- <li>
+                <a href="index.html">Home</a>
+                <ul class="sub-menu-m">
+                    <li><a href="index.html">Homepage 1</a></li>
+                    <li><a href="home-02.html">Homepage 2</a></li>
+                    <li><a href="home-03.html">Homepage 3</a></li>
+                </ul>
+                <span class="arrow-main-menu-m">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </span>
+            </li> -->
 
                 <li>
-                    <a href="product.html">Shop</a>
+                    <a href="products">All books</a>
                 </li>
 
-                <li>
-                    <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
-                </li>
+                <!-- <li>
+                <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
+            </li>
 
-                <li>
-                    <a href="blog.html">Blog</a>
-                </li>
+            <li>
+                <a href="blog.html">Blog</a>
+            </li>
 
-                <li>
-                    <a href="about.html">About</a>
-                </li>
+            <li>
+                <a href="about.html">About</a>
+            </li>
 
-                <li>
-                    <a href="contact.html">Contact</a>
-                </li>
+            <li>
+                <a href="contact.html">Contact</a>
+            </li> -->
             </ul>
         </div>
 

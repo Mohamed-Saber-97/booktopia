@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "orders")
@@ -25,6 +28,9 @@ public class Order extends BaseEntity<Long> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id", nullable = false)
     private Buyer buyer;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderProduct> orderProducts = new HashSet<>();
 
     public Order(Buyer buyer) {
         if (buyer == null) {

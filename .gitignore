@@ -1,4 +1,4 @@
-target/
+git switch target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -45,7 +45,7 @@ build/
 # Edit at https://www.toptal.com/developers/gitignore?templates=maven,java
 
 ### Java ###
-# Compiled class file
+# TCompiled class file
 *.class
 
 # Log file
