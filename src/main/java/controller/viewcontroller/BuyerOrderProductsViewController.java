@@ -1,6 +1,7 @@
 package controller.viewcontroller;
 
 import controller.BuyerController;
+import controller.OrderController;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,8 +12,6 @@ import model.Buyer;
 import model.Order;
 import model.OrderProduct;
 import utils.ValidatorUtil;
-import validator.NotEmptyValidator;
-import validator.NumberValidator;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,29 +19,31 @@ import java.util.Map;
 
 import static utils.RequestAttributeUtil.*;
 
-@WebServlet(value = "/buyer-orders")
-public class BuyerOrdersViewController extends HttpServlet {
+@WebServlet(value = "/buyer-order-products")
+public class BuyerOrderProductsViewController extends HttpServlet {
     private BuyerController buyerController;
+    private OrderController orderController;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Map<String, String> errors = ValidatorUtil.validateEntityId(request, "p");
+        Map<String, String> errors = ValidatorUtil.validateEntityId(request, "p", "order");
         if (!errors.isEmpty()) {
             request.setAttribute(ERROR, errors.get(ERROR));
-            response.sendRedirect("/buyer-profile");
+            response.sendRedirect("/buyer-orders");
         } else {
-            Buyer buyer = new BuyerController().findById(Long.parseLong(request.getParameter("p")));
-            if (buyer == null) {
+            Buyer buyer = buyerController.findById(Long.parseLong(request.getParameter("p")));
+            Order order = orderController.findById(Long.parseLong(request.getParameter("order")));
+            if (buyer == null || order == null) {
                 request.setAttribute(ERROR, "Buyer not found");
                 response.sendRedirect("/buyer-profile");
             } else {
-                String pageNumberString = request.getParameter("page");
-                int pageNumber = NotEmptyValidator.isValid(pageNumberString) && NumberValidator.isValid(pageNumberString) ? Integer.parseInt(pageNumberString) : 0;
-                List<Order> orders = buyerController.searchOrders(buyer.getId(), pageNumber, 16);
-                orders.forEach(order -> order.getOrderProducts().removeIf(OrderProduct::getIsDeleted));
-                RequestDispatcher dispatcher = request.getRequestDispatcher("buyer-orders.jsp");
-                request.getSession().setAttribute(PAGE_TITLE, "Buyer's Orders");
-                request.setAttribute(ORDERS, orders);
+                System.out.println("Buyer id: " + buyer.getId());
+                List<OrderProduct> products = orderController.findProductsByBuyerId(buyer.getId(), order.getId());
+                System.out.println(products);
+                System.out.println(products.size());
+                RequestDispatcher dispatcher = request.getRequestDispatcher("buyer-order-products.jsp");
+                request.getSession().setAttribute(PAGE_TITLE, "Order products");
+                request.setAttribute(PRODUCTS, products);
                 request.getSession().setAttribute("tempBuyer", buyer);
                 dispatcher.forward(request, response);
             }
@@ -52,5 +53,6 @@ public class BuyerOrdersViewController extends HttpServlet {
     @Override
     public void init() {
         buyerController = new BuyerController();
+        orderController = new OrderController();
     }
 }

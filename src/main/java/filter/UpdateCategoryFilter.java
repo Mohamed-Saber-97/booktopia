@@ -15,6 +15,7 @@ import java.util.Map;
 import static utils.RequestAttributeUtil.ERROR;
 import static utils.RequestAttributeUtil.PAGE_TITLE;
 import static utils.RequestParameterUtil.CATEGORY;
+import static utils.RequestParameterUtil.ID;
 
 @WebFilter(urlPatterns = "/edit-category")
 public class UpdateCategoryFilter implements Filter {
@@ -25,7 +26,7 @@ public class UpdateCategoryFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         Map<String, String> errors;
         if ("POST".equalsIgnoreCase(httpRequest.getMethod())) {
-            errors = ValidatorUtil.validateEntityIdPOST(httpRequest);
+            errors = ValidatorUtil.validateEntityId(httpRequest, ID);
             if (!errors.isEmpty()) {
                 httpRequest.getSession().setAttribute(PAGE_TITLE, "Home");
                 ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/");
@@ -50,7 +51,7 @@ public class UpdateCategoryFilter implements Filter {
                 }
             }
         } else {
-            errors = ValidatorUtil.validateEntityIdGET(httpRequest);
+            errors = ValidatorUtil.validateEntityId(httpRequest, "p");
             if (!errors.isEmpty()) {
                 httpRequest.getSession().setAttribute(PAGE_TITLE, "Home");
                 ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/");

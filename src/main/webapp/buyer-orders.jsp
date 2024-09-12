@@ -12,6 +12,7 @@
                                     <th class="column-1">#</th>
                                     <th class="column-3">Status</th>
                                     <th class="column-3"></th>
+                                    <th class="column-3">Date ordered</th>
                                     <th class="column-2">Number of products</th>
                                     <th class="column-3">View</th>
                                 </tr>
@@ -20,6 +21,7 @@
                                         <td class="column-1">${i}</td>
                                         <td class="column-3">${item.getStatus()}</td>
                                         <td class="column-3"></td>
+                                        <td class="column-3">${item.getCreatedDate()}</td>
                                         <td class="column-2">${item.getOrderProducts().size()}</td>
                                         <td class="column-3">
                                             <form action="buyer-order-products" method="get" style="display:inline;">
@@ -66,6 +68,7 @@
     window.addEventListener('load', function () {
         let pageNumber = 1;
         let counter = ${i};
+        let buyerId = ${tempBuyer.getId()};
         let table = $('.table-shopping-cart');
         document.getElementById('loadMore').addEventListener('click', loadOrders);
 
@@ -84,15 +87,18 @@
                     let newItems = $(response.orders.map(function (order) {
                         return `
                             <tr class="table_row">
-                                        <td class="column-1">`+ counter++ +`</td>
-                                        <td class="column-2">` + order.name + `</td>
-                                        <td class="column-3"></td>
-                                        <td class="column-2">` + order.birthday + `</td>
-                                        <td class="column-2">` + order.job + `</td>
-                                        <td class="column-2">` + order.email + `</td>
-                                        <td class="column-2">` + order.creditLimit + `</td>
-                                        <td class="column-2">` + order.phoneNumber + `</td>
-                                        <td class="column-3"><a href="buyer-profile?p=` + order.id + `">View</a></td>
+                                <td class="column-1">`+counter++ +`</td>
+                                <td class="column-3">`+order.status+`</td>
+                                <td class="column-3"></td>
+                                <td class="column-3">`+order.createdDate+`</td>
+                                <td class="column-2">`+order.numberOfProducts+`</td>
+                                <td class="column-3">
+                                    <form action="buyer-order-products" method="get" style="display:inline;">
+                                        <input type="hidden" name="p" value="`+buyerId+`">
+                                        <input type="hidden" name="order" value="`+order.id+`">
+                                        <button type="submit" class="btn btn-link">View</button>
+                                    </form>
+                                </td>
                             </tr>
                         `;
                     }).join(''));

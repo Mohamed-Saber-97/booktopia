@@ -20,7 +20,7 @@ import static utils.RequestAttributeUtil.PAGE_TITLE;
 public class BuyerProfileViewController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Map<String, String> errors = ValidatorUtil.validateEntityIdGET(request);
+        Map<String, String> errors = ValidatorUtil.validateEntityId(request, "p");
         if (!errors.isEmpty()) {
             request.setAttribute(ERROR, errors.get(ERROR));
             response.sendRedirect("/buyers");

@@ -229,13 +229,15 @@ public class ValidatorUtil {
         return errors;
     }
 
-    public static Map<String, String> validateEntityIdGET(ServletRequest request) {
+    public static Map<String, String> validateEntityId(ServletRequest request, String... parameters) {
         Map<String, String> errors = new HashMap<>();
-        String id = request.getParameter("p");
-        if (!NotEmptyValidator.isValid(id)) {
-            errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);
-        } else if (!NumberValidator.isValid(id)) {
-            errors.put(ERROR, NumberValidator.ERROR_MESSAGE);
+        for (String parameter : parameters) {
+            String id = request.getParameter(parameter);
+            if (!NotEmptyValidator.isValid(id)) {
+                errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);
+            } else if (!NumberValidator.isValid(id)) {
+                errors.put(ERROR, NumberValidator.ERROR_MESSAGE);
+            }
         }
         return errors;
     }

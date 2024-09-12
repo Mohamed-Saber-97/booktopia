@@ -25,7 +25,7 @@ public class DeleteCategoryFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String method = httpRequest.getMethod();
         if ("POST".equalsIgnoreCase(method)) {
-            Map<String, String> errors = ValidatorUtil.validateEntityIdPOST(httpRequest);
+            Map<String, String> errors = ValidatorUtil.validateEntityId(httpRequest, ID);
             if (!errors.isEmpty()) {
                 request.setAttribute(ERROR, errors.get(ERROR));
                 RequestDispatcher dispatcher = request.getRequestDispatcher("categories.jsp");

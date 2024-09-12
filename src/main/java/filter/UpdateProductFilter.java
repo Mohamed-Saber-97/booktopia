@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import static utils.RequestAttributeUtil.*;
+import static utils.RequestParameterUtil.ID;
 
 @WebFilter(urlPatterns = "/edit-book")
 public class UpdateProductFilter implements Filter {
@@ -25,7 +26,7 @@ public class UpdateProductFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         Map<String, String> errors;
         if ("POST".equalsIgnoreCase(httpRequest.getMethod())) {
-            errors = ValidatorUtil.validateEntityIdPOST(httpRequest);
+            errors = ValidatorUtil.validateEntityId(httpRequest, ID);
             if (!errors.isEmpty()) {
                 httpRequest.getSession().setAttribute(PAGE_TITLE, "Home");
                 ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/");
@@ -50,7 +51,7 @@ public class UpdateProductFilter implements Filter {
                 }
             }
         } else {
-            errors = ValidatorUtil.validateEntityIdGET(httpRequest);
+            errors = ValidatorUtil.validateEntityId(httpRequest, "p");
             if (!errors.isEmpty()) {
                 httpRequest.getSession().setAttribute(PAGE_TITLE, "Home");
                 ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/");
