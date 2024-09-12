@@ -1,51 +1,40 @@
 package controller.viewcontroller;
 
-import controller.BuyerController;
-import controller.ProductController;
+import error.InsufficientFunds;
+import error.InsufficientStock;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Buyer;
-import model.Product;
-import validator.NotEmptyValidator;
+import service.BuyerService;
+import validator.CartValidator;
+import validator.CheckoutValidator;
 
 import java.io.IOException;
 
-import static utils.RequestAttributeUtil.USER;
+import static utils.RequestAttributeUtil.*;
 
 @WebServlet(value = "/update-cart")
 public class UpdateCartController extends HttpServlet {
-    private ProductController productController;
-    private BuyerController buyerController;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String[] productIds = request.getParameterValues("id");
-        String[] quantities = request.getParameterValues("quantity");
-        if (!NotEmptyValidator.isValid(productIds) || !NotEmptyValidator.isValid(quantities)) {
-            response.sendRedirect("/cart");
+        Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
+        if (!CheckoutValidator.isValid(buyer)) {
+            request.setAttribute(ERROR, CartValidator.ERROR_MESSAGE);
         } else {
-            Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
-            for (int i = 0; i < productIds.length; i++) {
-                Long productId = Long.parseLong(productIds[i]);
-                int quantity = Integer.parseInt(quantities[i]);
-                Product product = productController.findAvailableProductById(productId);
-                if (product != null) {
-                    buyerController.setBuyerCartProductQuantity(buyer, product, quantity);
-                } else {
-                    Product oldProduct = productController.findById(productId);
-                    buyerController.removeProductFromCart(buyer, oldProduct);
-                }
+            try {
+                new BuyerService().checkout(buyer);
+                request.getSession().setAttribute(USER, buyer);
+            } catch (InsufficientStock | InsufficientFunds e) {
+                request.setAttribute(ERROR, e.getMessage());
             }
-            response.sendRedirect("/cart");
         }
-    }
-
-    @Override
-    public void init() {
-        productController = new ProductController();
-        buyerController = new BuyerController();
+        RequestDispatcher dispatcher = request.getRequestDispatcher("cart.jsp");
+        request.getSession().setAttribute(PAGE_TITLE, "Cart");
+        dispatcher.forward(request, response);
     }
 }
