@@ -22,14 +22,10 @@ import static utils.RequestAttributeUtil.*;
 import static utils.RequestParameterUtil.CATEGORY_ID;
 
 @WebServlet(value = "/edit-book")
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 2,
-        maxFileSize = 1024 * 1024 * 10,
-        maxRequestSize = 1024 * 1024 * 50
-)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
 public class UpdateProductViewController extends HttpServlet {
-    private CategoryController categoryController;
-    private ProductController productController;
+    private transient CategoryController categoryController;
+    private transient ProductController productController;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
