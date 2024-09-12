@@ -18,38 +18,45 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static utils.RequestAttributeUtil.PAGE_TITLE;
-import static utils.RequestAttributeUtil.PRODUCT;
+import static utils.RequestAttributeUtil.*;
 import static utils.RequestParameterUtil.CATEGORY_ID;
 
-@WebServlet(value = "/add-book")
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
-public class AddProductViewController extends HttpServlet {
+@WebServlet(value = "/edit-book")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 50
+)
+public class UpdateProductViewController extends HttpServlet {
     private CategoryController categoryController;
     private ProductController productController;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Product product = (Product) request.getAttribute(PRODUCT);
         List<Category> categories = categoryController.findAll();
-        RequestDispatcher dispatcher = request.getRequestDispatcher("add-book.jsp");
-        request.getSession().setAttribute(PAGE_TITLE, "Add a book");
-        request.getSession().setAttribute("categories", categories);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("edit-book.jsp");
+        request.getSession().setAttribute(CATEGORIES, categories);
+        request.getSession().setAttribute(PRODUCT, product);
+        request.getSession().setAttribute(PAGE_TITLE, product.getName());
         dispatcher.forward(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Product product = (Product) request.getAttribute(PRODUCT);
+        Category category = categoryController.findById(Long.parseLong(request.getParameter(CATEGORY_ID)));
         String uploadPath = getServletContext().getRealPath("") + File.separator + "images";
         String imageName = ImageUtility.saveImage(request, uploadPath);
+        String oldImagePath = product.getImagePath();
         product.setImagePath("images" + File.separator + imageName);
-        Category category = categoryController.findById(Long.parseLong(request.getParameter(CATEGORY_ID)));
         product.setCategory(category);
-        Product savedProduct = productController.save(product);
-        if (savedProduct == null) {
-            response.sendRedirect("/add-book");
+        Product updatedProduct = productController.update(product);
+        if (updatedProduct == null) {
+            response.sendRedirect("/edit-book");
         } else {
-            HttpSession session = request.getSession(true);
+            ImageUtility.deleteImage(getServletContext().getRealPath("") + File.separator + oldImagePath);
+            HttpSession session = request.getSession();
             session.setAttribute(PAGE_TITLE, "Home");
             response.sendRedirect(request.getContextPath() + "/");
         }

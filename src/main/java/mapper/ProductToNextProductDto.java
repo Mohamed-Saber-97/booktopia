@@ -9,7 +9,9 @@ public class ProductToNextProductDto {
                 product.getId(),
                 product.getName(),
                 product.getImagePath(),
-                product.getPrice()
+                product.getPrice(),
+                product.getAuthor(),
+                product.getQuantity()
         );
     }
 }

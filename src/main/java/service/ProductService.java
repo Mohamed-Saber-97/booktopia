@@ -45,15 +45,19 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public Product update(Product product) {
+        return productRepository.update(product);
+    }
+
+    public boolean existsByIsbn(String isbn) {
+        return productRepository.existsByIsbn(isbn);
+    }
+
     public List<Product> findByIds(Iterable<Long> ids) {
         return productRepository.findByIds(ids);
     }
 
     public Map<Product, Integer> findByIdsWithQuantities(Iterable<Long> ids) {
         return productRepository.findByIdsWithQuantities(ids);
-    }
-
-    public void update(Product product) {
-        productRepository.update(product);
     }
 }
