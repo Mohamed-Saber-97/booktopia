@@ -38,6 +38,7 @@ public class ProductRepository extends BaseRepository<Product, Long> {
         if (queryParameters.getOrDefault(NAME, null) != null) {
             predicate = cb.and(predicate, cb.like(productRoot.get(NAME), "%" + queryParameters.get(NAME) + "%"));
         }
+        predicate = cb.and(predicate, cb.equal(productRoot.get(IS_DELETED), false));
         query.select(productRoot).where(predicate);
         return entityManager.createQuery(query).setFirstResult(pageNumber * pageSize).setMaxResults(pageSize).getResultList();
 //        return entityManager.createQuery(query).getResultList();
@@ -54,6 +55,12 @@ public class ProductRepository extends BaseRepository<Product, Long> {
         TypedQuery<Product> query = entityManager.createQuery(jpql, Product.class);
         query.setParameter("id", id);
         return query.getSingleResult();
+    }
+
+    public boolean existsByIsbn(String isbn) {
+        String jpql = "SELECT COUNT(p) FROM Product p WHERE p.isbn = :isbn";
+        Long count = entityManager.createQuery(jpql, Long.class).setParameter("isbn", isbn).getSingleResult();
+        return count > 0;
     }
 
     public List<Product> findByIds(Iterable<Long> ids) {
