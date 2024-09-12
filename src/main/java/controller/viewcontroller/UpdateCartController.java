@@ -29,6 +29,7 @@ public class UpdateCartController extends HttpServlet {
             try {
                 new BuyerService().checkout(buyer);
                 request.getSession().setAttribute(USER, buyer);
+                request.setAttribute(SUCCESS, "Thank you for your purchase!");
             } catch (InsufficientStock | InsufficientFunds e) {
                 request.setAttribute(ERROR, e.getMessage());
             }

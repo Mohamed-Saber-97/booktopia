@@ -21,6 +21,8 @@ public class CartViewController extends HttpServlet {
         if (!CartValidator.isValid(buyer)) {
             request.setAttribute(ERROR, CartValidator.ERROR_MESSAGE);
             request.getSession().setAttribute(USER, buyer);
+        } else {
+            request.setAttribute(SUCCESS, "Your Cart is Up to Date!");
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("cart.jsp");
         request.getSession().setAttribute(PAGE_TITLE, "Cart");

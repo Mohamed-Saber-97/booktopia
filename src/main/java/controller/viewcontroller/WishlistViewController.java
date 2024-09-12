@@ -21,6 +21,8 @@ public class WishlistViewController extends HttpServlet {
         if (!WishlistValidator.isValid(buyer)) {
             request.setAttribute(ERROR, WishlistValidator.ERROR_MESSAGE);
             request.getSession().setAttribute(USER, buyer);
+        } else {
+            request.setAttribute(SUCCESS, "Your Wishlist is Up to Date!");
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("wishlist.jsp");
         request.getSession().setAttribute(PAGE_TITLE, "Wishlist");
