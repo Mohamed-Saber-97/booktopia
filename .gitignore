@@ -88,3 +88,4 @@ factoryConfiguration.json
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Java,Maven,Java-Web,Code-Java!/src/main/resources/META-INF/persistence.xml
 src/main/resources/META-INF/persistence.xml
+pom.xml
