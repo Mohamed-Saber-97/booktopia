@@ -10,8 +10,8 @@
     <packaging>war</packaging>
 
     <properties>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -133,13 +133,18 @@
                     <failIfNoTests>false</failIfNoTests>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+            </plugin>
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pmd-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.24.0</version>
                 <configuration>
-                    <targetJdk>22</targetJdk>
+                    <targetJdk>21</targetJdk>
                     <format>html</format>
                     <linkXRef>false</linkXRef>
                 </configuration>

@@ -1,0 +1,39 @@
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+    version="5.0"
+    metadata-complete="false">
+    <filter>
+        <filter-name>guest-filter</filter-name>
+        <filter-class>filter.GuestFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>signup-filter</filter-name>
+        <filter-class>filter.SignupFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>guest-filter</filter-name>
+        <url-pattern>/signup</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>signup-filter</filter-name>
+        <url-pattern>/signup</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>auth-filter</filter-name>
+        <filter-class>filter.AuthFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>update-profile</filter-name>
+        <filter-class>filter.UpdateProfileFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>auth-filter</filter-name>
+        <url-pattern>/update-profile</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>update-profile</filter-name>
+        <url-pattern>/update-profile</url-pattern>
+    </filter-mapping>
+</web-app>

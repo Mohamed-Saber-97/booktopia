@@ -12,7 +12,7 @@ public class ImageUtility {
     }
 
     public static String saveImage(HttpServletRequest request, String uploadPath) throws ServletException, IOException {
-        File uploadDir = new File(uploadPath);
+        //File uploadDir = new File(uploadPath);
 
         Part filePart = request.getPart("imagePath");
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BuyerController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Booktopia</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">BuyerController.java</span></div><h1>BuyerController.java</h1><pre class="source lang-java linenums">package controller;
+
+import model.Buyer;
+import model.Product;
+import service.BuyerService;
+
+public class BuyerController {
+    private final BuyerService buyerService;
+
+<span class="nc" id="L10">    public BuyerController() {</span>
+<span class="nc" id="L11">        this.buyerService = new BuyerService();</span>
+<span class="nc" id="L12">    }</span>
+
+    public Buyer save(Buyer buyer) {
+<span class="nc" id="L15">        return buyerService.save(buyer);</span>
+    }
+
+    public Buyer update(Buyer buyer) {
+<span class="nc" id="L19">        return buyerService.update(buyer);</span>
+    }
+
+    public void removeProductFromCart(Buyer buyer, Product product) {
+<span class="nc" id="L23">        buyerService.removeProductFromBuyerCart(buyer, product);</span>
+<span class="nc" id="L24">    }</span>
+
+    public void addProductToBuyerCart(Buyer buyer, Product product, int quantity) {
+<span class="nc" id="L27">        buyerService.addProductToBuyerCart(buyer, product, quantity);</span>
+<span class="nc" id="L28">    }</span>
+
+    public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity) {
+<span class="nc" id="L31">        buyerService.setBuyerCartProductQuantity(buyer, product, quantity);</span>
+<span class="nc" id="L32">    }</span>
+
+    public int incrementProductQuantity(Buyer buyer, Product product) {
+<span class="nc" id="L35">        return buyerService.incrementBuyerCartProductQuantity(buyer, product);</span>
+    }
+
+    public int decrementProductQuantity(Buyer buyer, Product product) {
+<span class="nc" id="L39">        return buyerService.decrementBuyerCartProductQuantity(buyer, product);</span>
+    }
+
+    public void addProductToBuyerWishlist(Buyer buyer, Product product) {
+<span class="nc" id="L43">        buyerService.addProductToBuyerWishlist(buyer, product);</span>
+<span class="nc" id="L44">    }</span>
+
+    public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
+<span class="nc" id="L47">        buyerService.removeProductFromBuyerWishlist(buyer, product);</span>
+<span class="nc" id="L48">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdateProductFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Booktopia</a> &gt; <a href="index.source.html" class="el_package">filter</a> &gt; <span class="el_source">UpdateProductFilter.java</span></div><h1>UpdateProductFilter.java</h1><pre class="source lang-java linenums">package filter;
+
+import controller.ProductController;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import model.Product;
+import utils.RequestBuilderUtil;
+import utils.ValidatorUtil;
+import validator.NotEmptyValidator;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static utils.RequestAttributeUtil.*;
+
+@WebFilter(urlPatterns = &quot;/edit-book&quot;)
+<span class="nc" id="L20">public class UpdateProductFilter implements Filter {</span>
+    private ProductController productController;
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+<span class="nc" id="L25">        HttpServletRequest httpRequest = (HttpServletRequest) request;</span>
+        Map&lt;String, String&gt; errors;
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (&quot;POST&quot;.equalsIgnoreCase(httpRequest.getMethod())) {</span>
+<span class="nc" id="L28">            errors = ValidatorUtil.validateEntityIdPOST(httpRequest);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">            if (!errors.isEmpty()) {</span>
+<span class="nc" id="L30">                httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Home&quot;);</span>
+<span class="nc" id="L31">                ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+            } else {
+<span class="nc" id="L33">                Product product = productController.findById(Long.parseLong(request.getParameter(&quot;id&quot;)));</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">                if (product == null) {</span>
+<span class="nc" id="L35">                    httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Home&quot;);</span>
+<span class="nc" id="L36">                    ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+                } else {
+<span class="nc" id="L38">                    request.setAttribute(PRODUCT, product);</span>
+<span class="nc" id="L39">                    errors = ValidatorUtil.validateUpdateBook(httpRequest);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">                    if (!errors.isEmpty()) {</span>
+<span class="nc" id="L41">                        request.setAttribute(ERROR, errors.get(ERROR));</span>
+<span class="nc" id="L42">                        RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;edit-book.jsp&quot;);</span>
+<span class="nc" id="L43">                        httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Edit a book&quot;);</span>
+<span class="nc" id="L44">                        dispatcher.forward(request, response);</span>
+<span class="nc" id="L45">                    } else {</span>
+<span class="nc" id="L46">                        product = RequestBuilderUtil.updateProductFromRequest(httpRequest);</span>
+<span class="nc" id="L47">                        request.setAttribute(PRODUCT, product);</span>
+<span class="nc" id="L48">                        chain.doFilter(request, response);</span>
+                    }
+                }
+<span class="nc" id="L51">            }</span>
+        } else {
+<span class="nc" id="L53">            errors = ValidatorUtil.validateEntityIdGET(httpRequest);</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            if (!errors.isEmpty()) {</span>
+<span class="nc" id="L55">                httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Home&quot;);</span>
+<span class="nc" id="L56">                ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+            } else {
+<span class="nc" id="L58">                Product product = productController.findById(Long.parseLong(request.getParameter(&quot;p&quot;)));</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">                if (product == null) {</span>
+<span class="nc" id="L60">                    httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Home&quot;);</span>
+<span class="nc" id="L61">                    ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+                } else {
+<span class="nc" id="L63">                    request.setAttribute(PRODUCT, product);</span>
+<span class="nc" id="L64">                    chain.doFilter(request, response);</span>
+                }
+            }
+        }
+<span class="nc" id="L68">    }</span>
+
+    @Override
+    public void init(FilterConfig filterConfig) {
+<span class="nc" id="L72">        productController = new ProductController();</span>
+<span class="nc" id="L73">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
