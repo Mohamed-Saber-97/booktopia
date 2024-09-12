@@ -81,7 +81,9 @@ public class Buyer extends BaseEntity<Long> {
     }
 
     public void removeFromCart(Product product) {
-        this.cart.remove(product);
+        if (this.cart != null) {
+            this.cart.entrySet().removeIf(entry -> Objects.equals(entry.getKey().getId(), product.getId()));
+        }
     }
 
     public void clearCart() {
