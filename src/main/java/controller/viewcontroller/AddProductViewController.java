@@ -23,11 +23,7 @@ import static utils.RequestAttributeUtil.PRODUCT;
 import static utils.RequestParameterUtil.CATEGORY_ID;
 
 @WebServlet(value = "/add-book")
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 2,
-        maxFileSize = 1024 * 1024 * 10,
-        maxRequestSize = 1024 * 1024 * 50
-)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
 public class AddProductViewController extends HttpServlet {
     private CategoryController categoryController;
     private ProductController productController;

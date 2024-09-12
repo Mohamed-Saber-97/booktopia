@@ -14,6 +14,7 @@ public class RequestAttributeUtil {
     public static final String CATEGORIES = "categories";
     public static final String BUYERS = "buyers";
     public static final String ORDERS = "orders";
+    public static final String SUCCESS = "success";
 
     private RequestAttributeUtil() {
     }

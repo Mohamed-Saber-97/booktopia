@@ -7,6 +7,7 @@
 <form action="remove-wishlist-item" method="POST" id="removeFromWishlist">
     <input type="hidden" name="productId" id="productId">
 </form>
+<%@include file="notifications.jsp" %>
 <!-- Shoping Wishlist -->
 <c:choose>
     <c:when test="${sessionScope.user.getWishlist().size() > 0}">

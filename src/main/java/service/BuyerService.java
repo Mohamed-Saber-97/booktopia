@@ -1,12 +1,21 @@
 package service;
 
+import error.InsufficientFunds;
+import error.InsufficientStock;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import model.Buyer;
 import model.Order;
 import model.Product;
 import repository.BuyerRepository;
+import utils.EMFactory;
 
+import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BuyerService {
     private final BuyerRepository buyerRepository;
@@ -113,11 +122,109 @@ public class BuyerService {
         buyerRepository.removeFromWishlist(buyer, product);
     }
 
+
+
+
     public List<Buyer> search(int pageNumber, int pageSize) {
         return buyerRepository.search(pageNumber, pageSize);
     }
 
     public List<Order> searchOrders(Long buyerId, int pageNumber, int pageSize) {
         return buyerRepository.searchOrders(buyerId, pageNumber, pageSize);
+    }
+
+
+    public boolean validateAndUpdateCart(Buyer buyer) {
+        if (buyer == null || buyer.getCart() == null) return false;
+        int initialCartSize = buyer.getCart().size();
+        EntityManager entityManager = EMFactory.getEMF("booktopia").createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            Map<Product, Integer> currentCart = buyer.getCart();
+            Set<Long> productIds = currentCart.keySet().stream().map(Product::getId).collect(Collectors.toSet());
+            Map<Product, Integer> currentProducts = productService.findByIdsWithQuantities(productIds);
+            currentCart.entrySet().stream().filter(entry -> currentProducts.containsKey(entry.getKey())).forEach(entry -> currentProducts.put(entry.getKey(), entry.getValue()));
+            buyer.clearCart();
+            buyer.addCartItem(currentProducts);
+            buyerRepository.update(buyer);
+            entityManager.getTransaction().commit();
+            return buyer.getCart().size() == initialCartSize;
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+                return false;
+            }
+        } finally {
+            entityManager.close();
+        }
+        return false;
+    }
+
+    public boolean validateAndUpdateWishList(Buyer buyer) {
+        if (buyer == null || buyer.getWishlist() == null) return false;
+        int initialWishlistSize = buyer.getWishlist().size();
+        EntityManager entityManager = EMFactory.getEMF("booktopia").createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            Set<Product> currentWishlist = buyer.getWishlist();
+            Set<Long> productIds = currentWishlist.stream().map(Product::getId).collect(Collectors.toSet());
+            Set<Product> availableProductsInWishlist = new HashSet<>(productService.findByIds(productIds));
+            Set<Product> itemsToRemove = currentWishlist.stream().filter(item -> !availableProductsInWishlist.contains(item)).collect(Collectors.toSet());
+            buyer.removeFromWishlist(itemsToRemove);
+            buyerRepository.update(buyer);
+            transaction.commit();
+            return currentWishlist.size() == initialWishlistSize;
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+                return false;
+            }
+        } finally {
+            entityManager.close();
+        }
+        return false;
+    }
+
+    public boolean checkout(Buyer buyer) throws InsufficientStock, InsufficientFunds {
+        if (buyer == null || buyer.getCart() == null) return false;
+        EntityManager entityManager = EMFactory.getEMF("booktopia").createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            Map<Product, Integer> currentCart = buyer.getCart();
+            for (Map.Entry<Product, Integer> entry : currentCart.entrySet()) {
+                Product product = entry.getKey();
+                //--- Check if stock sufficient
+                Integer productStock = product.getQuantity();
+                Integer productQuantity = entry.getValue();
+                if (productStock < productQuantity) {
+                    throw new InsufficientStock("Transaction declined insufficient stock");
+                }
+                product.setQuantity(productStock - productQuantity);
+                entityManager.merge(product);
+                //-- Check is funds sufficient
+                BigDecimal productPrice = product.getPrice();
+                BigDecimal orderPrice = productPrice.multiply(new BigDecimal(productQuantity));
+                BigDecimal buyerCreditLimit = buyer.getCreditLimit();
+                if (orderPrice.compareTo(buyerCreditLimit) > 0) {
+                    throw new InsufficientFunds("Transaction declined insufficient funds");
+                }
+                buyer.setCreditLimit(buyerCreditLimit.subtract(orderPrice));
+                buyer.removeFromCart(product);
+                //Add it to Orders
+                entityManager.merge(buyer);
+            }
+            transaction.commit();
+            return buyer.getCart().isEmpty();
+        } catch (InsufficientStock | InsufficientFunds e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            entityManager.close();
+        }
     }
 }

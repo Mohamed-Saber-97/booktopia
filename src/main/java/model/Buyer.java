@@ -26,7 +26,7 @@ public class Buyer extends BaseEntity<Long> {
     private Account account;
 
     @Column(name = "credit_limit", nullable = false, precision = 65, scale = 2, columnDefinition = "DECIMAL(65,2) DEFAULT 0.00")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Credit limit must be greater than 0")
+    @DecimalMin(value = "0.0", inclusive = true, message = "Credit limit must be greater than 0")
     @NotNull(message = "Credit limit is required")
     @ColumnDefault(value = "0.0")
     private BigDecimal creditLimit;
@@ -68,6 +68,10 @@ public class Buyer extends BaseEntity<Long> {
         this.wishlist.remove(product);
     }
 
+    public void removeFromWishlist(Set<Product> products) {
+        this.wishlist.removeAll(products);
+    }
+
     public Set<Product> getWishlist() {
         return Collections.unmodifiableSet(this.wishlist);
     }
@@ -77,11 +81,21 @@ public class Buyer extends BaseEntity<Long> {
     }
 
     public void removeFromCart(Product product) {
-        this.cart.remove(product);
+        if (this.cart != null) {
+            this.cart.entrySet().removeIf(entry -> Objects.equals(entry.getKey().getId(), product.getId()));
+        }
     }
 
     public void clearCart() {
         this.cart.clear();
+    }
+
+    public void addCartItem(Product product, int quantity) {
+        this.cart.put(product, quantity);
+    }
+
+    public void addCartItem(Map<Product, Integer> cart) {
+        this.cart.putAll(cart);
     }
 
     public Map<Product, Integer> getCart() {

@@ -1,10 +1,5 @@
 <%@include file="header.jsp"%>
-
-<c:if test="${not empty error}">
-    <div class="alert alert-danger text-center" style="width: fit-content; margin: 0 auto;">
-        ${error}
-    </div>
-</c:if>
+<%@include file="notifications.jsp" %>
 <section class="bg0 p-t-104 p-b-116">
     <div class="container">
         <div class="flex-c-m flex-w">

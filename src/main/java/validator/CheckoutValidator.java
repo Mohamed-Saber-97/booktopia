@@ -3,10 +3,10 @@ package validator;
 import model.Buyer;
 import service.BuyerService;
 
-public class CartValidator {
-    public static final String ERROR_MESSAGE = "Some products are no longer available, please retry again";
+public class CheckoutValidator {
+    public static String ERROR_MESSAGE = "Some products are no longer available, please retry again";
 
-    private CartValidator() {
+    private CheckoutValidator() {
     }
 
     public static boolean isValid(Buyer buyer) {

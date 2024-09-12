@@ -52,4 +52,12 @@ public class ProductService {
     public boolean existsByIsbn(String isbn) {
         return productRepository.existsByIsbn(isbn);
     }
+
+    public List<Product> findByIds(Iterable<Long> ids) {
+        return productRepository.findByIds(ids);
+    }
+
+    public Map<Product, Integer> findByIdsWithQuantities(Iterable<Long> ids) {
+        return productRepository.findByIdsWithQuantities(ids);
+    }
 }
