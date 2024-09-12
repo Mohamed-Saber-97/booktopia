@@ -1,5 +1,7 @@
 package service;
 
+import error.InsufficientFunds;
+import error.InsufficientStock;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import model.Buyer;
@@ -7,6 +9,7 @@ import model.Product;
 import repository.BuyerRepository;
 import utils.EMFactory;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -165,5 +168,46 @@ public class BuyerService {
             entityManager.close();
         }
         return false;
+    }
+
+    public boolean checkout(Buyer buyer) throws InsufficientStock, InsufficientFunds {
+        if (buyer == null || buyer.getCart() == null) return false;
+        EntityManager entityManager = EMFactory.getEMF("booktopia").createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            Map<Product, Integer> currentCart = buyer.getCart();
+            for (Map.Entry<Product, Integer> entry : currentCart.entrySet()) {
+                Product product = entry.getKey();
+                //--- Check if stock sufficient
+                Integer productStock = product.getQuantity();
+                Integer productQuantity = entry.getValue();
+                if (productStock < productQuantity) {
+                    throw new InsufficientStock("Transaction declined insufficient stock");
+                }
+                product.setQuantity(productStock - productQuantity);
+                entityManager.merge(product);
+                //-- Check is funds sufficient
+                BigDecimal productPrice = product.getPrice();
+                BigDecimal orderPrice = productPrice.multiply(new BigDecimal(productQuantity));
+                BigDecimal buyerCreditLimit = buyer.getCreditLimit();
+                if (orderPrice.compareTo(buyerCreditLimit) > 0) {
+                    throw new InsufficientFunds("Transaction declined insufficient funds");
+                }
+                buyer.setCreditLimit(buyerCreditLimit.subtract(orderPrice));
+                buyer.removeFromCart(product);
+                //Add it to Orders
+                entityManager.merge(buyer);
+            }
+            transaction.commit();
+            return buyer.getCart().isEmpty();
+        } catch (InsufficientStock | InsufficientFunds e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            entityManager.close();
+        }
     }
 }
