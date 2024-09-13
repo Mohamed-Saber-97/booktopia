@@ -63,7 +63,7 @@
                     </h4>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" name="price"
-                            value="${product.price}">
+                            value="${product.price}" step="0.01">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0" name="quantity"
