@@ -66,6 +66,18 @@
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="zipcode"
                         form="signupForm" placeholder="Zipcode">
                 </div>
+                <div class="m-b-20">
+                    <select class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" form="signupForm" id="categories"
+                        name="categories" multiple style="height: 20vh;">
+                        <option value="" disabled selected>Category</option>
+                        <c:forEach items="${categories}" var="category">
+                            <option value="${category.getId()}">${category.getName()}</option>
+                        </c:forEach>
+                    </select>
+                    <small id="categoriesHelp" class="form-text text-muted pl-3">
+                        Hold Ctrl (Cmd on Mac) to select multiple categories.
+                    </small>
+                </div>
 
                 <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
                     form="signupForm">

@@ -17,12 +17,14 @@ import static utils.RequestAttributeUtil.*;
 @WebServlet(value = "/signup")
 public class SignupController extends HttpServlet {
     private transient BuyerController buyerController;
+    private transient CategoryController categoryController;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("signup.jsp");
         request.getSession().setAttribute(PAGE_TITLE, "Sign up");
         request.getSession().setAttribute(COUNTRIES, CountryValidator.getCountries());
+        request.getSession().setAttribute(CATEGORIES, categoryController.findAll());
         dispatcher.forward(request, response);
     }
 
@@ -45,5 +47,6 @@ public class SignupController extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         buyerController = new BuyerController();
+        categoryController = new CategoryController();
     }
 }
