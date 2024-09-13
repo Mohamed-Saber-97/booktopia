@@ -28,7 +28,8 @@ public class BuyerLoginController extends HttpServlet {
         HttpSession session = request.getSession(true);
         session.setAttribute(USER, buyer);
         session.setAttribute(BUYER, YES);
-        session.setAttribute(PAGE_TITLE, "Home");
-        response.sendRedirect(request.getContextPath() + "/");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+        request.setAttribute(SUCCESS, "Welcome back, %s".formatted(buyer.getAccount().getName()));
+        dispatcher.forward(request, response);
     }
 }
