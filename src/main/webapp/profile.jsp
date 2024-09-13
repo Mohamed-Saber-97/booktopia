@@ -34,22 +34,21 @@
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="password" name="confirmPassword"
                             placeholder="Confirm Password">
                     </div>
+                    <c:if test="${sessionScope.buyer != null}">
+                        <div class="bor8 m-b-20">
+                            <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0"
+                                name="creditLimit" placeholder="Credit Limit" value="${user.getCreditLimit()}"
+                                step="0.01">
+                        </div>
+                    </c:if>
+                    <div class="bor8 m-b-20">
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="phoneNumber"
+                            form="updateProfileForm" placeholder="Phone Number"
+                            value="${user.getAccount().getPhoneNumber()}">
+                    </div>
                 </form>
             </div>
-
             <div class="size-210 bor10 flex-w flex-col-m p-lr-93 p-tb-30 p-lr-15-lg w-full-md">
-                <c:if test="${sessionScope.buyer != null}">
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0"
-                            name="creditLimit" form="updateProfileForm" placeholder="Credit Limit"
-                            value="${user.getCreditLimit()}">
-                    </div>
-                </c:if>
-                <div class="bor8 m-b-20">
-                    <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="phoneNumber"
-                        form="updateProfileForm" placeholder="Phone Number"
-                        value="${user.getAccount().getPhoneNumber()}">
-                </div>
                 <div class="bor8 m-b-20">
                     <select class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" id="countries" name="country"
                         form="updateProfileForm">
@@ -77,6 +76,21 @@
                         form="updateProfileForm" placeholder="Zipcode"
                         value="${user.getAccount().getAddress().getZipcode()}">
                 </div>
+                <c:if test="${sessionScope.buyer != null}">
+                    <div class="m-b-20" style="max-height: 200px; overflow-y: auto; padding-right: 10px;">
+                        <label for="categories"><b>Interests</b></label>
+                        <c:forEach items="${categories}" var="category">
+                            <div class="form-check d-flex align-items-center" style="padding: 5px 0;">
+                                <input type="checkbox" id="category${category.getId()}" name="categories"
+                                    form="updateProfileForm" value="${category.getId()}" class="form-check-input mr-2"
+                                    style="margin: 0;" ${user.getInterests().contains(category) ? 'checked' : '' }>
+                                <label for="category${category.getId()}" class="form-check-label" style="margin: 0;">
+                                    ${category.getName()}
+                                </label>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </c:if>
                 <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
                     form="updateProfileForm">
                     Update my profile

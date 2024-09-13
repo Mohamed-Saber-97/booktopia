@@ -46,6 +46,7 @@ public class BuyerService {
         existingBuyer.getAccount().setAddress(newBuyer.getAccount().getAddress());
         existingBuyer.setAccount(newBuyer.getAccount());
         existingBuyer.setCreditLimit(newBuyer.getCreditLimit());
+        existingBuyer.setInterests(newBuyer.getInterests());
         return buyerRepository.update(existingBuyer);
     }
 

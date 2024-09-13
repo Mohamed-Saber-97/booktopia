@@ -6,6 +6,11 @@
             <div class="row">
                 <div class="col-lg-10 col-xl-9 m-lr-auto m-b-50">
                     <div class="m-l-25 m-r--38 m-lr-0-xl">
+                        <a href="add-category"
+                            class="flex-c-m stext-101 size-121 cl0 bg3 bor1 hov-btn3 p-lr-15 p-tb-5 trans-04 pointer m-b-15 m-t-15"
+                            style="width: 50%">
+                            Add a new category
+                        </a>
                         <div class="wrap-table-shopping-cart">
                             <table class="table-shopping-cart">
                                 <tr class="table_head">

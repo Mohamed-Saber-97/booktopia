@@ -60,6 +60,11 @@ public class Buyer extends BaseEntity<Long> {
         return Collections.unmodifiableSet(this.interests);
     }
 
+    public void setInterests(Set<Category> interests) {
+        this.interests.clear();
+        this.interests.addAll(interests);
+    }
+
     public void addToWishlist(Product product) {
         this.wishlist.add(product);
     }
