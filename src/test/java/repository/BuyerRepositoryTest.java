@@ -7,7 +7,6 @@ import jakarta.persistence.Persistence;
 import model.Buyer;
 import model.Order;
 import model.Product;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import repository.BuyerRepository;
@@ -187,15 +186,4 @@ class BuyerRepositoryTest {
         assertNotNull(cart);
         assertEquals(quantity-1, newQuantity);
     }
-/*
-    @AfterAll
-    void tearDown() {
-        if (em != null) {
-            em.close();
-        }
-        if (emf != null) {
-            emf.close();
-        }
-    }
-*/
     }

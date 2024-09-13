@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryServiceIntegrationTest {
+class CategoryServiceTest {
 
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
