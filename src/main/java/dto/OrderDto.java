@@ -1,5 +1,10 @@
 package dto;
 
-public class OrderDto {
-    
+public record OrderDto(
+        Long id,
+        String createdDate,
+        String status,
+        Long numberOfProducts
+) {
+
 }

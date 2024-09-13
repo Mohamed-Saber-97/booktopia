@@ -42,6 +42,7 @@ public abstract class BaseRepository<T, ID> {
     }
 
     public List<T> findAll() {
+        entityManager.clear();
         String jpql = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e.isDeleted = false";
         TypedQuery<T> query = entityManager.createQuery(jpql, entityClass);
         return query.getResultList();

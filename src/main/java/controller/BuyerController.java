@@ -1,14 +1,25 @@
 package controller;
 
 import model.Buyer;
+import model.Order;
 import model.Product;
 import service.BuyerService;
+
+import java.util.List;
 
 public class BuyerController {
     private final BuyerService buyerService;
 
     public BuyerController() {
         this.buyerService = new BuyerService();
+    }
+
+    public List<Buyer> findAll() {
+        return buyerService.findAll();
+    }
+
+    public Buyer findById(Long id) {
+        return buyerService.findById(id);
     }
 
     public Buyer save(Buyer buyer) {
@@ -45,5 +56,13 @@ public class BuyerController {
 
     public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
         buyerService.removeProductFromBuyerWishlist(buyer, product);
+    }
+
+    public List<Buyer> search(int pageNumber, int pageSize) {
+        return buyerService.search(pageNumber, pageSize);
+    }
+
+    public List<Order> searchOrders(Long buyerId, int pageNumber, int pageSize) {
+        return buyerService.searchOrders(buyerId, pageNumber, pageSize);
     }
 }

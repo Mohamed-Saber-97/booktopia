@@ -28,4 +28,16 @@ public class ProductController {
     public List<Product> findAllAvailable() {
         return productService.findAllAvailable();
     }
+
+    public Product save(Product product) {
+        return productService.save(product);
+    }
+
+    public Product update(Product product) {
+        return productService.update(product);
+    }
+
+    public boolean existsByIsbn(String isbn) {
+        return productService.existsByIsbn(isbn);
+    }
 }

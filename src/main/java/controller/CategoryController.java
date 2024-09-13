@@ -19,4 +19,16 @@ public class CategoryController {
     public Category save(Category category) {
         return categoryService.save(category);
     }
+
+    public Category findById(Long id) {
+        return categoryService.findById(id);
+    }
+
+    public boolean existsByName(String name) {
+        return categoryService.existsByName(name);
+    }
+
+    public Category update(Category category) {
+        return categoryService.update(category);
+    }
 }

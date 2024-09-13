@@ -18,11 +18,6 @@ public class SearchProductsController {
         String category = request.getParameter("category");
         String pageNumberString = request.getParameter("page");
         int pageNumber = NotEmptyValidator.isValid(pageNumberString) ? Integer.parseInt(pageNumberString) : 0;
-        System.out.println("Page number:hhh " + pageNumber);
-        System.out.println("Page number: " + pageNumberString);
-        System.out.println("Min price: " + minPrice);
-        System.out.println("Max price: " + maxPrice);
-        System.out.println("Category: " + category);
         String name = request.getParameter("name");
         Map<String, String> queryParameters = new HashMap<>();
         if (NotEmptyValidator.isValid(minPrice)) {

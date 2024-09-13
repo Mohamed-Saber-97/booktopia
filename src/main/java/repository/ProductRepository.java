@@ -1,6 +1,7 @@
 package repository;
 
 import base.BaseRepository;
+import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -11,6 +12,7 @@ import model.Product;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static utils.RequestParameterUtil.*;
 
@@ -36,6 +38,7 @@ public class ProductRepository extends BaseRepository<Product, Long> {
         if (queryParameters.getOrDefault(NAME, null) != null) {
             predicate = cb.and(predicate, cb.like(productRoot.get(NAME), "%" + queryParameters.get(NAME) + "%"));
         }
+        predicate = cb.and(predicate, cb.equal(productRoot.get(IS_DELETED), false));
         query.select(productRoot).where(predicate);
         return entityManager.createQuery(query).setFirstResult(pageNumber * pageSize).setMaxResults(pageSize).getResultList();
 //        return entityManager.createQuery(query).getResultList();
@@ -52,5 +55,22 @@ public class ProductRepository extends BaseRepository<Product, Long> {
         TypedQuery<Product> query = entityManager.createQuery(jpql, Product.class);
         query.setParameter("id", id);
         return query.getSingleResult();
+    }
+
+    public boolean existsByIsbn(String isbn) {
+        String jpql = "SELECT COUNT(p) FROM Product p WHERE p.isbn = :isbn";
+        Long count = entityManager.createQuery(jpql, Long.class).setParameter("isbn", isbn).getSingleResult();
+        return count > 0;
+    }
+
+    public List<Product> findByIds(Iterable<Long> ids) {
+        return entityManager.createQuery("SELECT product FROM Product product where product.id in :productIds AND product.isDeleted = false AND product.quantity > 0", Product.class).setParameter("productIds", ids).getResultList();
+    }
+
+    public Map<Product, Integer> findByIdsWithQuantities(Iterable<Long> ids) {
+        TypedQuery<Tuple> query = entityManager.createQuery("SELECT product, product.quantity FROM Product product WHERE product.id IN :productIds AND product.isDeleted = false AND product.quantity > 0", Tuple.class);
+        query.setParameter("productIds", ids);
+        List<Tuple> results = query.getResultList();
+        return results.stream().collect(Collectors.toMap(tuple -> tuple.get(0, Product.class), tuple -> tuple.get(1, Integer.class)));
     }
 }
