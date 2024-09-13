@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import model.Buyer;
 import model.Order;
+import model.OrderProduct;
 import model.Product;
 import repository.BuyerRepository;
 import utils.EMFactory;
@@ -123,8 +124,6 @@ public class BuyerService {
     }
 
 
-
-
     public List<Buyer> search(int pageNumber, int pageSize) {
         return buyerRepository.search(pageNumber, pageSize);
     }
@@ -194,6 +193,8 @@ public class BuyerService {
         try {
             transaction.begin();
             Map<Product, Integer> currentCart = buyer.getCart();
+            Order order = new Order(buyer);
+            order = entityManager.merge(order);
             for (Map.Entry<Product, Integer> entry : currentCart.entrySet()) {
                 Product product = entry.getKey();
                 //--- Check if stock sufficient
@@ -213,8 +214,11 @@ public class BuyerService {
                 }
                 buyer.setCreditLimit(buyerCreditLimit.subtract(orderPrice));
                 buyer.removeFromCart(product);
-                //Add it to Orders
                 entityManager.merge(buyer);
+                //-- Add it to Orders
+                OrderProduct orderProduct = new OrderProduct(order, entry);
+                order.addOrderProduct(orderProduct);
+                entityManager.merge(order);
             }
             transaction.commit();
             return buyer.getCart().isEmpty();
