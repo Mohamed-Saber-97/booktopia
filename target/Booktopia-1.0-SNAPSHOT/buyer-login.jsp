@@ -1,9 +1,7 @@
 <%@include file="header.jsp" %>
 
 <c:if test="${not empty error}">
-    <div class="alert alert-danger text-center" style="width: fit-content; margin: 0 auto;">
-            ${error}
-    </div>
+   
 </c:if>
 <section class="bg0 p-t-104 p-b-116">
     <div class="container">
@@ -32,5 +30,134 @@
         </div>
     </div>
 </section>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('#buyerLoginForm');
+        const fields = {
+            email: form.querySelector('input[name="email"]'),
+            password: form.querySelector('input[name="password"]')
+        };
+
+        for (const [key, input] of Object.entries(fields)) {
+            input.addEventListener('blur', () => validateField(key));
+        }
+
+        form.addEventListener('submit', function (event) {
+            let valid = true;
+
+            // Clear previous error messages
+            form.querySelectorAll('.error-message').forEach(el => el.remove());
+
+            // Validate all fields on submit
+            for (const key in fields) {
+                if (!validateField(key)) {
+                    valid = false;
+                }
+            }
+
+            if (!valid) {
+                event.preventDefault();
+            }
+        });
+
+        function validateField(fieldName) {
+            const input = fields[fieldName];
+            let valid = true;
+            let message = '';
+
+            switch (fieldName) {
+                case 'email':
+                    if (!validateEmail(input.value)) {
+                        if(!validateEmailbyServer(input.value)){
+                            message = 'Please enter a valid email address.';
+                            valid = false;
+                        }else if(validateUniqueEmailbyServer(input.value)){
+                            message = 'This email address is not registered.';
+                            valid = false;
+                        }
+                    }
+                    break;
+                case 'password':
+                    if (input.value.length < 6) {
+                        message = 'Password must be at least 6 characters long.';
+                        valid = false;
+                    }
+                    if (input.value.length >= 6 && !validatePass(input.value)) {
+                        message = 'Password must contain at least one digit.';
+                        valid = false;
+                    }
+                    break;
+            }
+
+            if (!valid) {
+                showError(input, message);
+            } else {
+                clearError(input);
+            }
+
+            return valid;
+        }
+
+        function validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        function validateEmailbyServer(email){
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "validateEmail", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = () => {
+            if (xhr.status === 200) {
+                if(xhr.responseText == 'true')
+                    return true;
+            } else {
+                return false;
+            }};
+            xhr.send("email="+email);
+        }
+
+        function validateUniqueEmailbyServer(email){
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "validateUniqueEmail", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = () => {
+            if (xhr.status === 200) {
+                if(xhr.responseText == 'true')
+                    return true;
+            } else {
+                return false;
+            }};
+            xhr.send("email="+email);
+        }
+
+
+        function validatePass(password) {
+            const PassPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+            return PassPattern.test(password);
+        }
+
+        
+        function showError(input, message) {
+            // Ensure previous error message is removed
+            clearError(input);
+
+            const error = document.createElement('div');
+            error.className = 'error-message';
+            error.style.color = 'red';
+            error.style.marginTop = '5px';
+            error.textContent = message;
+            input.parentElement.appendChild(error);
+        }
+
+        function clearError(input) {
+            const existingError = input.parentElement.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+        }
+    });
+
+</script>
 
 <%@include file="footer.jsp" %>

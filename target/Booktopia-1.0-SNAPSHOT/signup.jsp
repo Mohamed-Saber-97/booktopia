@@ -147,7 +147,10 @@
                             if(!validateEmailbyServer(input.value)){
                                 message = 'Please enter a valid email address.';
                                 valid = false;
-                                }
+                            }else if(!validateUniqueEmailbyServer(input.value)){
+                                message = 'This email address is already taken.';
+                                valid = false;
+                            }
                         }
                         break;
                     case 'name':
@@ -253,6 +256,21 @@
                 }};
                 xhr.send("email="+email);
             }
+
+            function validateUniqueEmailbyServer(email){
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "validateUniqueEmail", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = () => {
+                if (xhr.status === 200) {
+                    if(xhr.responseText == 'true')
+                        return true;
+                } else {
+                    return false;
+                }};
+                xhr.send("email="+email);
+            }
+
 
             function validatePass(password) {
                 const PassPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;

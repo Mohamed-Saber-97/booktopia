@@ -4,15 +4,38 @@ import service.BuyerService;
 
 import java.util.Arrays;
 
-public class UniqueEmailValidator {
-    public static final String ERROR_MESSAGE = &quot;Email already exists&quot;;
-<span class="nc" id="L9">    private static final BuyerService buyerService = new BuyerService();</span>
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-    private UniqueEmailValidator() {
-    }
+@WebServlet(&quot;/validateUniqueEmail&quot;)
+<span class="nc" id="L15">public class UniqueEmailValidator extends HttpServlet{</span>
+    public static final String ERROR_MESSAGE = &quot;Email already exists&quot;;
+<span class="nc" id="L17">    private static final BuyerService buyerService = new BuyerService();</span>
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+<span class="nc" id="L21">        response.setContentType(&quot;text/plain&quot;);</span>
+<span class="nc" id="L22">        String email = request.getParameter(&quot;email&quot;);</span>
+
+        String status;
+
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (isValid(email)) {</span>
+<span class="nc" id="L27">            status = &quot;ture&quot;;</span>
+        } else {
+<span class="nc" id="L29">            status = &quot;false&quot;;</span>
+        }
+        
+<span class="nc" id="L32">        response.setContentType(&quot;text/plain&quot;);</span>
+<span class="nc" id="L33">        response.getWriter().write(status);</span>
+
+<span class="nc" id="L35">    }</span>
 
     public static boolean isValid(String... emails) {
-<span class="nc" id="L15">        return Arrays.stream(emails).noneMatch(buyerService::existsByEmail);</span>
+<span class="nc" id="L38">        return Arrays.stream(emails).noneMatch(buyerService::existsByEmail);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

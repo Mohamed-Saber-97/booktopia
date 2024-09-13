@@ -31,7 +31,7 @@ Booktopia,controller.viewcontroller,AddToCartViewController,104,0,10,0,24,0,8,0,
 Booktopia,validator,CartValidator,71,0,6,0,14,0,4,0,1,0
 Booktopia,validator,UniqueCategoryNameValidator,17,0,0,0,3,0,3,0,3,0
 Booktopia,validator,PriceValidator,9,0,0,0,1,0,2,0,2,0
-Booktopia,validator,UniqueEmailValidator,14,0,0,0,2,0,2,0,2,0
+Booktopia,validator,UniqueEmailValidator,45,0,2,0,11,0,5,0,4,0
 Booktopia,validator,PhoneNumberValidator,9,0,0,0,1,0,2,0,2,0
 Booktopia,validator,ObjectNotNullValidator,5,0,0,0,1,0,1,0,1,0
 Booktopia,validator,PasswordConfirmationValidator,4,0,0,0,1,0,1,0,1,0
