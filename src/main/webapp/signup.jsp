@@ -35,7 +35,7 @@
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0"
-                            name="creditLimit" placeholder="Credit Limit">
+                            name="creditLimit" placeholder="Credit Limit" step="0.01">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="phoneNumber"

@@ -90,6 +90,8 @@ public class ValidatorUtil {
             errors.put(ERROR, CreditLimitValidator.ERROR_MESSAGE);
         } else if (!UniquePhoneNumberValidator.isValid(phoneNumber)) {
             errors.put(ERROR, UniquePhoneNumberValidator.ERROR_MESSAGE);
+        } else if (!NotEmptyValidator.isValid(interests)) {
+            errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);
         } else if (!CategoryValidator.isValid(interests)) {
             errors.put(ERROR, CategoryValidator.ERROR_MESSAGE);
         }
