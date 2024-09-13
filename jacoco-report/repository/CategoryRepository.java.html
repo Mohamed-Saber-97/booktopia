@@ -7,5 +7,11 @@ public class CategoryRepository extends BaseRepository&lt;Category, Long&gt; {
     public CategoryRepository() {
 <span class="nc" id="L8">        super(Category.class);</span>
 <span class="nc" id="L9">    }</span>
+
+    public boolean existsByName(String name) {
+<span class="nc" id="L12">        return entityManager.createQuery(&quot;SELECT COUNT(c) FROM Category c WHERE c.name = :name&quot;, Long.class)</span>
+<span class="nc" id="L13">                .setParameter(&quot;name&quot;, name)</span>
+<span class="nc bnc" id="L14" title="All 2 branches missed.">                .getSingleResult() &gt; 0;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

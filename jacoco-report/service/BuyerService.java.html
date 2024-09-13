@@ -1,111 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BuyerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Booktopia</a> &gt; <a href="index.source.html" class="el_package">service</a> &gt; <span class="el_source">BuyerService.java</span></div><h1>BuyerService.java</h1><pre class="source lang-java linenums">package service;
 
+import error.InsufficientFunds;
+import error.InsufficientStock;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import model.Buyer;
+import model.Order;
 import model.Product;
 import repository.BuyerRepository;
+import utils.EMFactory;
 
+import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BuyerService {
     private final BuyerRepository buyerRepository;
     private final ProductService productService;
 
-<span class="nc" id="L14">    public BuyerService() {</span>
-<span class="nc" id="L15">        buyerRepository = new BuyerRepository();</span>
-<span class="nc" id="L16">        productService = new ProductService();</span>
-<span class="nc" id="L17">    }</span>
+<span class="nc" id="L24">    public BuyerService() {</span>
+<span class="nc" id="L25">        buyerRepository = new BuyerRepository();</span>
+<span class="nc" id="L26">        productService = new ProductService();</span>
+<span class="nc" id="L27">    }</span>
+
+    public List&lt;Buyer&gt; findAll() {
+<span class="nc" id="L30">        return buyerRepository.findAll();</span>
+    }
 
     public Buyer save(Buyer buyer) {
-<span class="nc" id="L20">        return buyerRepository.save(buyer);</span>
+<span class="nc" id="L34">        return buyerRepository.save(buyer);</span>
     }
 
     public Buyer update(Buyer newBuyer) {
-<span class="nc" id="L24">        Buyer existingBuyer = buyerRepository.findById(newBuyer.getId()).orElse(null);</span>
-<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (existingBuyer == null) {</span>
-<span class="nc" id="L26">            return null;</span>
+<span class="nc" id="L38">        Buyer existingBuyer = buyerRepository.findById(newBuyer.getId()).orElse(null);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (existingBuyer == null) {</span>
+<span class="nc" id="L40">            return null;</span>
         }
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (existingBuyer.hashCode() == newBuyer.hashCode()) {</span>
-<span class="nc" id="L29">            return existingBuyer;</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (existingBuyer.hashCode() == newBuyer.hashCode()) {</span>
+<span class="nc" id="L43">            return existingBuyer;</span>
         }
-<span class="nc" id="L31">        existingBuyer.getAccount().setAddress(newBuyer.getAccount().getAddress());</span>
-<span class="nc" id="L32">        existingBuyer.setAccount(newBuyer.getAccount());</span>
-<span class="nc" id="L33">        existingBuyer.setCreditLimit(newBuyer.getCreditLimit());</span>
-<span class="nc" id="L34">        return buyerRepository.update(existingBuyer);</span>
+<span class="nc" id="L45">        existingBuyer.getAccount().setAddress(newBuyer.getAccount().getAddress());</span>
+<span class="nc" id="L46">        existingBuyer.setAccount(newBuyer.getAccount());</span>
+<span class="nc" id="L47">        existingBuyer.setCreditLimit(newBuyer.getCreditLimit());</span>
+<span class="nc" id="L48">        return buyerRepository.update(existingBuyer);</span>
     }
 
     public boolean existsByEmail(String email) {
-<span class="nc" id="L38">        return buyerRepository.existsByEmail(email);</span>
+<span class="nc" id="L52">        return buyerRepository.existsByEmail(email);</span>
     }
 
     public boolean existsByPhoneNumber(String phoneNumber) {
-<span class="nc" id="L42">        return buyerRepository.existsByPhoneNumber(phoneNumber);</span>
+<span class="nc" id="L56">        return buyerRepository.existsByPhoneNumber(phoneNumber);</span>
     }
 
     public List&lt;Product&gt; findInterestsByBuyerId(Long buyerId) {
-<span class="nc" id="L46">        List&lt;Product&gt; interests = buyerRepository.findInterestsByBuyerId(buyerId);</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (interests.isEmpty()) {</span>
-<span class="nc" id="L48">            return productService.findFirstX(16);</span>
+<span class="nc" id="L60">        List&lt;Product&gt; interests = buyerRepository.findInterestsByBuyerId(buyerId);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (interests.isEmpty()) {</span>
+<span class="nc" id="L62">            return productService.findFirstX(16);</span>
         }
-<span class="nc" id="L50">        return interests.subList(0, Math.min(interests.size(), 16));</span>
+<span class="nc" id="L64">        return interests.subList(0, Math.min(interests.size(), 16));</span>
     }
 
     public Buyer findByEmail(String email) {
         Buyer buyer;
         try {
-<span class="nc" id="L56">            buyer = buyerRepository.findByEmail(email);</span>
-<span class="nc" id="L57">        } catch (Exception e) {</span>
-<span class="nc" id="L58">            return null;</span>
-<span class="nc" id="L59">        }</span>
-<span class="nc" id="L60">        return buyer;</span>
+<span class="nc" id="L70">            buyer = buyerRepository.findByEmail(email);</span>
+<span class="nc" id="L71">        } catch (Exception e) {</span>
+<span class="nc" id="L72">            return null;</span>
+<span class="nc" id="L73">        }</span>
+<span class="nc" id="L74">        return buyer;</span>
     }
 
     public boolean checkValidLoginCredentials(String email, String password) {
-<span class="nc" id="L64">        Buyer buyer = findByEmail(email);</span>
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (buyer == null) {</span>
-<span class="nc" id="L66">            return false;</span>
+<span class="nc" id="L78">        Buyer buyer = findByEmail(email);</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (buyer == null) {</span>
+<span class="nc" id="L80">            return false;</span>
         }
-<span class="nc" id="L68">        return buyer.getAccount().getPassword().equals(password);</span>
+<span class="nc" id="L82">        return buyer.getAccount().getPassword().equals(password);</span>
     }
 
     public Buyer findById(Long id) {
-<span class="nc" id="L72">        return buyerRepository.findById(id).orElse(null);</span>
+<span class="nc" id="L86">        return buyerRepository.findById(id).orElse(null);</span>
     }
 
     public void addProductToBuyerCart(Buyer buyer, Product product, int quantity) {
-<span class="nc" id="L76">        buyerRepository.addProductToCart(buyer, product, quantity);</span>
-<span class="nc" id="L77">    }</span>
+<span class="nc" id="L90">        buyerRepository.addProductToCart(buyer, product, quantity);</span>
+<span class="nc" id="L91">    }</span>
 
     public void removeProductFromBuyerCart(Buyer buyer, Product product) {
-<span class="nc" id="L80">        buyerRepository.removeProductFromCart(buyer, product);</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L94">        buyerRepository.removeProductFromCart(buyer, product);</span>
+<span class="nc" id="L95">    }</span>
 
     public int incrementBuyerCartProductQuantity(Buyer buyer, Product product) {
-<span class="nc" id="L84">        return buyerRepository.incrementProductQuantity(buyer, product);</span>
+<span class="nc" id="L98">        return buyerRepository.incrementProductQuantity(buyer, product);</span>
     }
 
     public int decrementBuyerCartProductQuantity(Buyer buyer, Product product) {
-<span class="nc" id="L88">        return buyerRepository.decrementProductQuantity(buyer, product);</span>
+<span class="nc" id="L102">        return buyerRepository.decrementProductQuantity(buyer, product);</span>
     }
 
     public void clearBuyerCart(Buyer buyer) {
-<span class="nc" id="L92">        buyerRepository.clearCart(buyer);</span>
-<span class="nc" id="L93">    }</span>
+<span class="nc" id="L106">        buyerRepository.clearCart(buyer);</span>
+<span class="nc" id="L107">    }</span>
 
     public Map&lt;Product, Integer&gt; retreiveBuyerCart(Buyer buyer) {
-<span class="nc" id="L96">        return buyer.getCart();</span>
+<span class="nc" id="L110">        return buyer.getCart();</span>
     }
 
     public void setBuyerCartProductQuantity(Buyer buyer, Product product, int quantity) {
-<span class="nc" id="L100">        buyerRepository.setProductQuantity(buyer, product, quantity);</span>
-<span class="nc" id="L101">    }</span>
+<span class="nc" id="L114">        buyerRepository.setProductQuantity(buyer, product, quantity);</span>
+<span class="nc" id="L115">    }</span>
 
     public void addProductToBuyerWishlist(Buyer buyer, Product product) {
-<span class="nc" id="L104">        buyerRepository.addToWishlist(buyer, product);</span>
-<span class="nc" id="L105">    }</span>
+<span class="nc" id="L118">        buyerRepository.addToWishlist(buyer, product);</span>
+<span class="nc" id="L119">    }</span>
 
     public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
-<span class="nc" id="L108">        buyerRepository.removeFromWishlist(buyer, product);</span>
-<span class="nc" id="L109">    }</span>
+<span class="nc" id="L122">        buyerRepository.removeFromWishlist(buyer, product);</span>
+<span class="nc" id="L123">    }</span>
+
+
+
+
+    public List&lt;Buyer&gt; search(int pageNumber, int pageSize) {
+<span class="nc" id="L129">        return buyerRepository.search(pageNumber, pageSize);</span>
+    }
+
+    public List&lt;Order&gt; searchOrders(Long buyerId, int pageNumber, int pageSize) {
+<span class="nc" id="L133">        return buyerRepository.searchOrders(buyerId, pageNumber, pageSize);</span>
+    }
+
+
+    public boolean validateAndUpdateCart(Buyer buyer) {
+<span class="nc bnc" id="L138" title="All 4 branches missed.">        if (buyer == null || buyer.getCart() == null) return false;</span>
+<span class="nc" id="L139">        int initialCartSize = buyer.getCart().size();</span>
+<span class="nc" id="L140">        EntityManager entityManager = EMFactory.getEMF(&quot;booktopia&quot;).createEntityManager();</span>
+<span class="nc" id="L141">        EntityTransaction transaction = entityManager.getTransaction();</span>
+        try {
+<span class="nc" id="L143">            transaction.begin();</span>
+<span class="nc" id="L144">            Map&lt;Product, Integer&gt; currentCart = buyer.getCart();</span>
+<span class="nc" id="L145">            Set&lt;Long&gt; productIds = currentCart.keySet().stream().map(Product::getId).collect(Collectors.toSet());</span>
+<span class="nc" id="L146">            Map&lt;Product, Integer&gt; currentProducts = productService.findByIdsWithQuantities(productIds);</span>
+<span class="nc" id="L147">            currentCart.entrySet().stream().filter(entry -&gt; currentProducts.containsKey(entry.getKey())).forEach(entry -&gt; currentProducts.put(entry.getKey(), entry.getValue()));</span>
+<span class="nc" id="L148">            buyer.clearCart();</span>
+<span class="nc" id="L149">            buyer.addCartItem(currentProducts);</span>
+<span class="nc" id="L150">            buyerRepository.update(buyer);</span>
+<span class="nc" id="L151">            entityManager.getTransaction().commit();</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            return buyer.getCart().size() == initialCartSize;</span>
+<span class="nc" id="L153">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">            if (entityManager.getTransaction().isActive()) {</span>
+<span class="nc" id="L155">                entityManager.getTransaction().rollback();</span>
+<span class="nc" id="L156">                return false;</span>
+            }
+        } finally {
+<span class="nc" id="L159">            entityManager.close();</span>
+        }
+<span class="nc" id="L161">        return false;</span>
+    }
+
+    public boolean validateAndUpdateWishList(Buyer buyer) {
+<span class="nc bnc" id="L165" title="All 4 branches missed.">        if (buyer == null || buyer.getWishlist() == null) return false;</span>
+<span class="nc" id="L166">        int initialWishlistSize = buyer.getWishlist().size();</span>
+<span class="nc" id="L167">        EntityManager entityManager = EMFactory.getEMF(&quot;booktopia&quot;).createEntityManager();</span>
+<span class="nc" id="L168">        EntityTransaction transaction = entityManager.getTransaction();</span>
+        try {
+<span class="nc" id="L170">            transaction.begin();</span>
+<span class="nc" id="L171">            Set&lt;Product&gt; currentWishlist = buyer.getWishlist();</span>
+<span class="nc" id="L172">            Set&lt;Long&gt; productIds = currentWishlist.stream().map(Product::getId).collect(Collectors.toSet());</span>
+<span class="nc" id="L173">            Set&lt;Product&gt; availableProductsInWishlist = new HashSet&lt;&gt;(productService.findByIds(productIds));</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">            Set&lt;Product&gt; itemsToRemove = currentWishlist.stream().filter(item -&gt; !availableProductsInWishlist.contains(item)).collect(Collectors.toSet());</span>
+<span class="nc" id="L175">            buyer.removeFromWishlist(itemsToRemove);</span>
+<span class="nc" id="L176">            buyerRepository.update(buyer);</span>
+<span class="nc" id="L177">            transaction.commit();</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">            return currentWishlist.size() == initialWishlistSize;</span>
+<span class="nc" id="L179">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L181">                transaction.rollback();</span>
+<span class="nc" id="L182">                return false;</span>
+            }
+        } finally {
+<span class="nc" id="L185">            entityManager.close();</span>
+        }
+<span class="nc" id="L187">        return false;</span>
+    }
+
+    public boolean checkout(Buyer buyer) throws InsufficientStock, InsufficientFunds {
+<span class="nc bnc" id="L191" title="All 4 branches missed.">        if (buyer == null || buyer.getCart() == null) return false;</span>
+<span class="nc" id="L192">        EntityManager entityManager = EMFactory.getEMF(&quot;booktopia&quot;).createEntityManager();</span>
+<span class="nc" id="L193">        EntityTransaction transaction = entityManager.getTransaction();</span>
+        try {
+<span class="nc" id="L195">            transaction.begin();</span>
+<span class="nc" id="L196">            Map&lt;Product, Integer&gt; currentCart = buyer.getCart();</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">            for (Map.Entry&lt;Product, Integer&gt; entry : currentCart.entrySet()) {</span>
+<span class="nc" id="L198">                Product product = entry.getKey();</span>
+                //--- Check if stock sufficient
+<span class="nc" id="L200">                Integer productStock = product.getQuantity();</span>
+<span class="nc" id="L201">                Integer productQuantity = entry.getValue();</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">                if (productStock &lt; productQuantity) {</span>
+<span class="nc" id="L203">                    throw new InsufficientStock(&quot;Transaction declined insufficient stock&quot;);</span>
+                }
+<span class="nc" id="L205">                product.setQuantity(productStock - productQuantity);</span>
+<span class="nc" id="L206">                entityManager.merge(product);</span>
+                //-- Check is funds sufficient
+<span class="nc" id="L208">                BigDecimal productPrice = product.getPrice();</span>
+<span class="nc" id="L209">                BigDecimal orderPrice = productPrice.multiply(new BigDecimal(productQuantity));</span>
+<span class="nc" id="L210">                BigDecimal buyerCreditLimit = buyer.getCreditLimit();</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                if (orderPrice.compareTo(buyerCreditLimit) &gt; 0) {</span>
+<span class="nc" id="L212">                    throw new InsufficientFunds(&quot;Transaction declined insufficient funds&quot;);</span>
+                }
+<span class="nc" id="L214">                buyer.setCreditLimit(buyerCreditLimit.subtract(orderPrice));</span>
+<span class="nc" id="L215">                buyer.removeFromCart(product);</span>
+                //Add it to Orders
+<span class="nc" id="L217">                entityManager.merge(buyer);</span>
+<span class="nc" id="L218">            }</span>
+<span class="nc" id="L219">            transaction.commit();</span>
+<span class="nc" id="L220">            return buyer.getCart().isEmpty();</span>
+<span class="nc" id="L221">        } catch (InsufficientStock | InsufficientFunds e) {</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L223">                transaction.rollback();</span>
+            }
+<span class="nc" id="L225">            throw e;</span>
+        } finally {
+<span class="nc" id="L227">            entityManager.close();</span>
+        }
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -9,18 +9,16 @@ import java.io.IOException;
 
 import static utils.RequestAttributeUtil.BUYER;
 
-@WebFilter(urlPatterns = {&quot;/orders&quot;, &quot;/addToCart&quot;, &quot;/cart&quot;, &quot;/update-cart&quot;, &quot;/remove-bucket-item&quot;,
-        &quot;/cartSingleOperation&quot;, &quot;/addToWishlist&quot;, &quot;/wishlist&quot;})
-<span class="nc" id="L14">public class BuyerFilter implements Filter {</span>
+@WebFilter(urlPatterns = {&quot;/orders&quot;, &quot;/addToCart&quot;, &quot;/cart&quot;, &quot;/update-cart&quot;, &quot;/remove-bucket-item&quot;, &quot;/cartSingleOperation&quot;, &quot;/addToWishlist&quot;, &quot;/wishlist&quot;, &quot;/order-products&quot;})
+<span class="nc" id="L13">public class BuyerFilter implements Filter {</span>
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
-<span class="nc" id="L18">        HttpServletRequest httpRequest = (HttpServletRequest) request;</span>
-<span class="nc bnc" id="L19" title="All 2 branches missed.">        if (httpRequest.getSession().getAttribute(BUYER) == null) {</span>
-<span class="nc" id="L20">            ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+<span class="nc" id="L16">        HttpServletRequest httpRequest = (HttpServletRequest) request;</span>
+<span class="nc bnc" id="L17" title="All 2 branches missed.">        if (httpRequest.getSession().getAttribute(BUYER) == null) {</span>
+<span class="nc" id="L18">            ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
         } else {
-<span class="nc" id="L22">            chain.doFilter(request, response);</span>
+<span class="nc" id="L20">            chain.doFilter(request, response);</span>
         }
-<span class="nc" id="L24">    }</span>
+<span class="nc" id="L22">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

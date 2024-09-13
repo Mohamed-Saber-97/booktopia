@@ -42,76 +42,77 @@ public abstract class BaseRepository&lt;T, ID&gt; {
     }
 
     public List&lt;T&gt; findAll() {
-<span class="nc" id="L45">        String jpql = &quot;SELECT e FROM &quot; + entityClass.getSimpleName() + &quot; e WHERE e.isDeleted = false&quot;;</span>
-<span class="nc" id="L46">        TypedQuery&lt;T&gt; query = entityManager.createQuery(jpql, entityClass);</span>
-<span class="nc" id="L47">        return query.getResultList();</span>
+<span class="nc" id="L45">        entityManager.clear();</span>
+<span class="nc" id="L46">        String jpql = &quot;SELECT e FROM &quot; + entityClass.getSimpleName() + &quot; e WHERE e.isDeleted = false&quot;;</span>
+<span class="nc" id="L47">        TypedQuery&lt;T&gt; query = entityManager.createQuery(jpql, entityClass);</span>
+<span class="nc" id="L48">        return query.getResultList();</span>
     }
 
     public T save(T entity) {
-<span class="nc" id="L51">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L52">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L53">            transaction.begin();</span>
-<span class="nc" id="L54">            entityManager.persist(entity);</span>
-<span class="nc" id="L55">            transaction.commit();</span>
-<span class="nc" id="L56">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L58">                transaction.rollback();</span>
+<span class="nc" id="L54">            transaction.begin();</span>
+<span class="nc" id="L55">            entityManager.persist(entity);</span>
+<span class="nc" id="L56">            transaction.commit();</span>
+<span class="nc" id="L57">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L59">                transaction.rollback();</span>
             }
-<span class="nc" id="L60">            throw e;</span>
-<span class="nc" id="L61">        }</span>
-<span class="nc" id="L62">        return entity;</span>
+<span class="nc" id="L61">            throw e;</span>
+<span class="nc" id="L62">        }</span>
+<span class="nc" id="L63">        return entity;</span>
     }
 
     public T update(T entity) {
-<span class="nc" id="L66">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L67">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L68">            transaction.begin();</span>
-<span class="nc" id="L69">            T updatedEntity = entityManager.merge(entity);</span>
-<span class="nc" id="L70">            transaction.commit();</span>
-<span class="nc" id="L71">            return updatedEntity;</span>
-<span class="nc" id="L72">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L74">                transaction.rollback();</span>
+<span class="nc" id="L69">            transaction.begin();</span>
+<span class="nc" id="L70">            T updatedEntity = entityManager.merge(entity);</span>
+<span class="nc" id="L71">            transaction.commit();</span>
+<span class="nc" id="L72">            return updatedEntity;</span>
+<span class="nc" id="L73">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L75">                transaction.rollback();</span>
             }
-<span class="nc" id="L76">            throw e;</span>
+<span class="nc" id="L77">            throw e;</span>
         }
     }
 
     public void delete(T entity) {
-<span class="nc" id="L81">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L82">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L83">            transaction.begin();</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">            entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));</span>
-<span class="nc" id="L85">            transaction.commit();</span>
-<span class="nc" id="L86">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L88">                transaction.rollback();</span>
+<span class="nc" id="L84">            transaction.begin();</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));</span>
+<span class="nc" id="L86">            transaction.commit();</span>
+<span class="nc" id="L87">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L89">                transaction.rollback();</span>
             }
-<span class="nc" id="L90">            throw e;</span>
-<span class="nc" id="L91">        }</span>
-<span class="nc" id="L92">    }</span>
+<span class="nc" id="L91">            throw e;</span>
+<span class="nc" id="L92">        }</span>
+<span class="nc" id="L93">    }</span>
 
     public void deleteById(ID id) {
-<span class="nc" id="L95">        findById(id).ifPresent(this::delete);</span>
-<span class="nc" id="L96">    }</span>
+<span class="nc" id="L96">        findById(id).ifPresent(this::delete);</span>
+<span class="nc" id="L97">    }</span>
 
     public long count() {
-<span class="nc" id="L99">        String jpql = &quot;SELECT COUNT(e) FROM &quot; + entityClass.getSimpleName() + &quot; e WHERE e.isDeleted = false&quot;;</span>
-<span class="nc" id="L100">        TypedQuery&lt;Long&gt; query = entityManager.createQuery(jpql, Long.class);</span>
-<span class="nc" id="L101">        return query.getSingleResult();</span>
+<span class="nc" id="L100">        String jpql = &quot;SELECT COUNT(e) FROM &quot; + entityClass.getSimpleName() + &quot; e WHERE e.isDeleted = false&quot;;</span>
+<span class="nc" id="L101">        TypedQuery&lt;Long&gt; query = entityManager.createQuery(jpql, Long.class);</span>
+<span class="nc" id="L102">        return query.getSingleResult();</span>
     }
 
     public List&lt;T&gt; findAllSorted(String sortField, boolean ascending) {
-<span class="nc bnc" id="L105" title="All 2 branches missed.">        String jpql = &quot;SELECT e FROM &quot; + entityClass.getSimpleName() + &quot; e WHERE e.isDeleted = false ORDER BY e.&quot; + sortField + (ascending ? &quot; ASC&quot; : &quot; DESC&quot;);</span>
-<span class="nc" id="L106">        TypedQuery&lt;T&gt; query = entityManager.createQuery(jpql, entityClass);</span>
-<span class="nc" id="L107">        return query.getResultList();</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        String jpql = &quot;SELECT e FROM &quot; + entityClass.getSimpleName() + &quot; e WHERE e.isDeleted = false ORDER BY e.&quot; + sortField + (ascending ? &quot; ASC&quot; : &quot; DESC&quot;);</span>
+<span class="nc" id="L107">        TypedQuery&lt;T&gt; query = entityManager.createQuery(jpql, entityClass);</span>
+<span class="nc" id="L108">        return query.getResultList();</span>
     }
 
     public List&lt;T&gt; findByField(String fieldName, Object value) {
-<span class="nc" id="L111">        String jpql = &quot;SELECT e FROM &quot; + entityClass.getSimpleName() + &quot; e WHERE e.&quot; + fieldName + &quot; = :value AND e.isDeleted = false&quot;;</span>
-<span class="nc" id="L112">        TypedQuery&lt;T&gt; query = entityManager.createQuery(jpql, entityClass);</span>
-<span class="nc" id="L113">        query.setParameter(&quot;value&quot;, value);</span>
-<span class="nc" id="L114">        return query.getResultList();</span>
+<span class="nc" id="L112">        String jpql = &quot;SELECT e FROM &quot; + entityClass.getSimpleName() + &quot; e WHERE e.&quot; + fieldName + &quot; = :value AND e.isDeleted = false&quot;;</span>
+<span class="nc" id="L113">        TypedQuery&lt;T&gt; query = entityManager.createQuery(jpql, entityClass);</span>
+<span class="nc" id="L114">        query.setParameter(&quot;value&quot;, value);</span>
+<span class="nc" id="L115">        return query.getResultList();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

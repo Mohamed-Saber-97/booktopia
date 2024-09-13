@@ -18,30 +18,25 @@ public class SearchProductsController {
 <span class="nc" id="L18">        String category = request.getParameter(&quot;category&quot;);</span>
 <span class="nc" id="L19">        String pageNumberString = request.getParameter(&quot;page&quot;);</span>
 <span class="nc bnc" id="L20" title="All 2 branches missed.">        int pageNumber = NotEmptyValidator.isValid(pageNumberString) ? Integer.parseInt(pageNumberString) : 0;</span>
-<span class="nc" id="L21">        System.out.println(&quot;Page number:hhh &quot; + pageNumber);</span>
-<span class="nc" id="L22">        System.out.println(&quot;Page number: &quot; + pageNumberString);</span>
-<span class="nc" id="L23">        System.out.println(&quot;Min price: &quot; + minPrice);</span>
-<span class="nc" id="L24">        System.out.println(&quot;Max price: &quot; + maxPrice);</span>
-<span class="nc" id="L25">        System.out.println(&quot;Category: &quot; + category);</span>
-<span class="nc" id="L26">        String name = request.getParameter(&quot;name&quot;);</span>
-<span class="nc" id="L27">        Map&lt;String, String&gt; queryParameters = new HashMap&lt;&gt;();</span>
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (NotEmptyValidator.isValid(minPrice)) {</span>
-<span class="nc" id="L29">            queryParameters.put(&quot;minPrice&quot;, minPrice);</span>
+<span class="nc" id="L21">        String name = request.getParameter(&quot;name&quot;);</span>
+<span class="nc" id="L22">        Map&lt;String, String&gt; queryParameters = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        if (NotEmptyValidator.isValid(minPrice)) {</span>
+<span class="nc" id="L24">            queryParameters.put(&quot;minPrice&quot;, minPrice);</span>
         }
-<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (NotEmptyValidator.isValid(maxPrice)) {</span>
-<span class="nc" id="L32">            queryParameters.put(&quot;maxPrice&quot;, maxPrice);</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (NotEmptyValidator.isValid(maxPrice)) {</span>
+<span class="nc" id="L27">            queryParameters.put(&quot;maxPrice&quot;, maxPrice);</span>
         }
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (NotEmptyValidator.isValid(category)) {</span>
-<span class="nc" id="L35">            queryParameters.put(&quot;category&quot;, category);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (NotEmptyValidator.isValid(category)) {</span>
+<span class="nc" id="L30">            queryParameters.put(&quot;category&quot;, category);</span>
         }
-<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (NotEmptyValidator.isValid(name)) {</span>
-<span class="nc" id="L38">            queryParameters.put(&quot;name&quot;, name);</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (NotEmptyValidator.isValid(name)) {</span>
+<span class="nc" id="L33">            queryParameters.put(&quot;name&quot;, name);</span>
         }
-<span class="nc" id="L40">        return productController.search(queryParameters, pageNumber, 16);</span>
+<span class="nc" id="L35">        return productController.search(queryParameters, pageNumber, 16);</span>
     }
 
-<span class="nc" id="L43">    public SearchProductsController() {</span>
-<span class="nc" id="L44">        productController = new ProductController();</span>
-<span class="nc" id="L45">    }</span>
+<span class="nc" id="L38">    public SearchProductsController() {</span>
+<span class="nc" id="L39">        productController = new ProductController();</span>
+<span class="nc" id="L40">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdateEntityFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Booktopia</a> &gt; <a href="index.source.html" class="el_package">filter</a> &gt; <span class="el_source">UpdateEntityFilter.java</span></div><h1>UpdateEntityFilter.java</h1><pre class="source lang-java linenums">package filter;
+
+import controller.CategoryController;
+import controller.ProductController;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.Category;
+import model.Product;
+import utils.RequestBuilderUtil;
+import utils.ValidatorUtil;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static utils.RequestAttributeUtil.*;
+import static utils.RequestParameterUtil.CATEGORY;
+import static utils.RequestParameterUtil.ID;
+
+@WebFilter(urlPatterns = {&quot;/edit-book&quot;, &quot;/edit-category&quot;})
+<span class="nc" id="L22">public class UpdateEntityFilter implements Filter {</span>
+    private ProductController productController;
+    private CategoryController categoryController;
+    private Product product;
+    private Category category;
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+<span class="nc" id="L30">        HttpServletRequest httpRequest = (HttpServletRequest) request;</span>
+<span class="nc" id="L31">        String path = httpRequest.getServletPath();</span>
+        RequestDispatcher dispatcher;
+        Map&lt;String, String&gt; errors;
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (&quot;POST&quot;.equalsIgnoreCase(httpRequest.getMethod())) {</span>
+<span class="nc" id="L35">            errors = ValidatorUtil.validateEntityId(httpRequest, ID);</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">            if (!errors.isEmpty()) {</span>
+<span class="nc" id="L37">                httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Home&quot;);</span>
+<span class="nc" id="L38">                ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+            } else {
+<span class="nc bnc" id="L40" title="All 2 branches missed.">                if (path.equals(&quot;/edit-book&quot;)) {</span>
+<span class="nc" id="L41">                    product = productController.findById(Long.parseLong(request.getParameter(&quot;id&quot;)));</span>
+                } else {
+<span class="nc" id="L43">                    category = categoryController.findById(Long.parseLong(request.getParameter(&quot;id&quot;)));</span>
+                }
+<span class="nc bnc" id="L45" title="All 8 branches missed.">                if (product == null &amp;&amp; path.equals(&quot;/edit-book&quot;) || category == null &amp;&amp; path.equals(&quot;/edit-category&quot;)) {</span>
+<span class="nc" id="L46">                    httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Home&quot;);</span>
+<span class="nc" id="L47">                    ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+                } else {
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                    if (path.equals(&quot;/edit-book&quot;)) {</span>
+<span class="nc" id="L50">                        request.setAttribute(PRODUCT, product);</span>
+<span class="nc" id="L51">                        errors = ValidatorUtil.validateUpdateBook(httpRequest);</span>
+
+                    } else {
+<span class="nc" id="L54">                        request.setAttribute(CATEGORY, category);</span>
+<span class="nc" id="L55">                        errors = ValidatorUtil.validateUpdateCategory(httpRequest);</span>
+                    }
+<span class="nc bnc" id="L57" title="All 2 branches missed.">                    if (!errors.isEmpty()) {</span>
+<span class="nc" id="L58">                        request.setAttribute(ERROR, errors.get(ERROR));</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">                        if (path.equals(&quot;/edit-book&quot;)) {</span>
+<span class="nc" id="L60">                            dispatcher = request.getRequestDispatcher(&quot;edit-book.jsp&quot;);</span>
+<span class="nc" id="L61">                            httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Edit a book&quot;);</span>
+                        } else {
+<span class="nc" id="L63">                            dispatcher = request.getRequestDispatcher(&quot;edit-category.jsp&quot;);</span>
+<span class="nc" id="L64">                            httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Edit a category&quot;);</span>
+                        }
+<span class="nc" id="L66">                        dispatcher.forward(request, response);</span>
+                    } else {
+<span class="nc bnc" id="L68" title="All 2 branches missed.">                        if (path.equals(&quot;/edit-book&quot;)) {</span>
+<span class="nc" id="L69">                            product = RequestBuilderUtil.updateProductFromRequest(httpRequest);</span>
+<span class="nc" id="L70">                            request.setAttribute(PRODUCT, product);</span>
+                        } else {
+<span class="nc" id="L72">                            category = RequestBuilderUtil.updateCategoryFromRequest(httpRequest);</span>
+<span class="nc" id="L73">                            request.setAttribute(CATEGORY, category);</span>
+                        }
+<span class="nc" id="L75">                        chain.doFilter(request, response);</span>
+                    }
+                }
+            }
+        } else {
+<span class="nc" id="L80">            errors = ValidatorUtil.validateEntityId(httpRequest, &quot;p&quot;);</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (!errors.isEmpty()) {</span>
+<span class="nc" id="L82">                httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Home&quot;);</span>
+<span class="nc" id="L83">                ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+            } else {
+<span class="nc bnc" id="L85" title="All 2 branches missed.">                if (path.equals(&quot;/edit-book&quot;)) {</span>
+<span class="nc" id="L86">                    product = productController.findById(Long.parseLong(request.getParameter(&quot;p&quot;)));</span>
+                } else {
+<span class="nc" id="L88">                    category = categoryController.findById(Long.parseLong(request.getParameter(&quot;p&quot;)));</span>
+                }
+<span class="nc bnc" id="L90" title="All 8 branches missed.">                if (product == null &amp;&amp; path.equals(&quot;/edit-book&quot;) || category == null &amp;&amp; path.equals(&quot;/edit-category&quot;)) {</span>
+<span class="nc" id="L91">                    httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Home&quot;);</span>
+<span class="nc" id="L92">                    ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+                } else {
+<span class="nc bnc" id="L94" title="All 2 branches missed.">                    if (path.equals(&quot;/edit-book&quot;)) {</span>
+<span class="nc" id="L95">                        request.setAttribute(PRODUCT, product);</span>
+                    } else {
+<span class="nc" id="L97">                        request.setAttribute(CATEGORY, category);</span>
+                    }
+<span class="nc" id="L99">                    chain.doFilter(request, response);</span>
+                }
+            }
+        }
+<span class="nc" id="L103">    }</span>
+
+    @Override
+    public void init(FilterConfig filterConfig) {
+<span class="nc" id="L107">        productController = new ProductController();</span>
+<span class="nc" id="L108">        categoryController = new CategoryController();</span>
+<span class="nc" id="L109">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

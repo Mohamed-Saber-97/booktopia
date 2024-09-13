@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import static utils.RequestAttributeUtil.ADMIN;
 
-@WebFilter(urlPatterns = {&quot;/books&quot;, &quot;/add-book&quot;, &quot;/edit-book&quot;, &quot;/delete-book&quot;, &quot;/categories&quot;, &quot;/add-category&quot;, &quot;/edit-category&quot;, &quot;/delete-category&quot;, &quot;/users&quot;})
+@WebFilter(urlPatterns = {&quot;/books&quot;, &quot;/add-book&quot;, &quot;/edit-book&quot;, &quot;/delete-book&quot;, &quot;/categories&quot;, &quot;/add-category&quot;, &quot;/edit-category&quot;, &quot;/delete-category&quot;, &quot;/buyers&quot;, &quot;/buyer-profile&quot;, &quot;/buyer-orders&quot;, &quot;/next-buyer-orders&quot;, &quot;/buyer-order-products&quot;})
 <span class="nc" id="L13">public class AdminFilter implements Filter {</span>
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

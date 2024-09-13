@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DeleteCategoryFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Booktopia</a> &gt; <a href="index.source.html" class="el_package">filter</a> &gt; <span class="el_source">DeleteCategoryFilter.java</span></div><h1>DeleteCategoryFilter.java</h1><pre class="source lang-java linenums">package filter;
+
+import controller.CategoryController;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.Category;
+import utils.ValidatorUtil;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static utils.RequestAttributeUtil.ERROR;
+import static utils.RequestAttributeUtil.PAGE_TITLE;
+import static utils.RequestParameterUtil.CATEGORY;
+import static utils.RequestParameterUtil.ID;
+
+@WebFilter(urlPatterns = &quot;/delete-category&quot;)
+<span class="nc" id="L20">public class DeleteCategoryFilter implements Filter {</span>
+    private CategoryController categoryController;
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+<span class="nc" id="L25">        HttpServletRequest httpRequest = (HttpServletRequest) request;</span>
+<span class="nc" id="L26">        String method = httpRequest.getMethod();</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (&quot;POST&quot;.equalsIgnoreCase(method)) {</span>
+<span class="nc" id="L28">            Map&lt;String, String&gt; errors = ValidatorUtil.validateEntityId(httpRequest, ID);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">            if (!errors.isEmpty()) {</span>
+<span class="nc" id="L30">                request.setAttribute(ERROR, errors.get(ERROR));</span>
+<span class="nc" id="L31">                RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;categories.jsp&quot;);</span>
+<span class="nc" id="L32">                httpRequest.getSession().setAttribute(PAGE_TITLE, &quot;Categories&quot;);</span>
+<span class="nc" id="L33">                dispatcher.forward(request, response);</span>
+<span class="nc" id="L34">            } else {</span>
+<span class="nc" id="L35">                Category category = categoryController.findById(Long.parseLong(httpRequest.getParameter(ID)));</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">                if (category != null) {</span>
+<span class="nc" id="L37">                    request.setAttribute(CATEGORY, category);</span>
+<span class="nc" id="L38">                    chain.doFilter(request, response);</span>
+                } else {
+<span class="nc" id="L40">                    ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+                }
+            }
+<span class="nc" id="L43">        } else {</span>
+<span class="nc" id="L44">            ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + &quot;/&quot;);</span>
+        }
+<span class="nc" id="L46">    }</span>
+
+    @Override
+    public void init(FilterConfig filterConfig) {
+<span class="nc" id="L50">        categoryController = new CategoryController();</span>
+<span class="nc" id="L51">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

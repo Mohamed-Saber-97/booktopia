@@ -3,6 +3,10 @@
 import base.BaseRepository;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import model.Buyer;
 import model.Order;
 import model.Product;
@@ -12,176 +16,193 @@ import java.util.Collections;
 import java.util.List;
 
 import static utils.RequestParameterUtil.EMAIL;
+import static utils.RequestParameterUtil.IS_DELETED;
 
 public class BuyerRepository extends BaseRepository&lt;Buyer, Long&gt; {
     public BuyerRepository() {
-<span class="nc" id="L18">        super(Buyer.class);</span>
-<span class="nc" id="L19">    }</span>
+<span class="nc" id="L23">        super(Buyer.class);</span>
+<span class="nc" id="L24">    }</span>
 
     public List&lt;Order&gt; findOrdersByBuyerId(Long buyerId) {
-<span class="nc" id="L22">        Buyer buyer = findById(buyerId).orElse(null);</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">        if (buyer != null) {</span>
-<span class="nc" id="L24">            return new ArrayList&lt;&gt;(buyer.getOrders());</span>
+<span class="nc" id="L27">        Buyer buyer = findById(buyerId).orElse(null);</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (buyer != null) {</span>
+<span class="nc" id="L29">            return new ArrayList&lt;&gt;(buyer.getOrders());</span>
         }
-<span class="nc" id="L26">        return Collections.emptyList();</span>
+<span class="nc" id="L31">        return Collections.emptyList();</span>
     }
 
     public boolean existsByEmail(String email) {
-<span class="nc bnc" id="L30" title="All 2 branches missed.">        return entityManager.createQuery(&quot;SELECT COUNT(b) FROM Buyer b WHERE b.account.email = :email&quot;, Long.class).setParameter(&quot;email&quot;, email).getSingleResult() &gt; 0;</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        return entityManager.createQuery(&quot;SELECT COUNT(b) FROM Buyer b WHERE b.account.email = :email&quot;, Long.class).setParameter(&quot;email&quot;, email).getSingleResult() &gt; 0;</span>
     }
 
     public boolean existsByPhoneNumber(String phoneNumber) {
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        return entityManager.createQuery(&quot;SELECT COUNT(b) FROM Buyer b WHERE b.account.phoneNumber = :phoneNumber&quot;, Long.class).setParameter(&quot;phoneNumber&quot;, phoneNumber).getSingleResult() &gt; 0;</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        return entityManager.createQuery(&quot;SELECT COUNT(b) FROM Buyer b WHERE b.account.phoneNumber = :phoneNumber&quot;, Long.class).setParameter(&quot;phoneNumber&quot;, phoneNumber).getSingleResult() &gt; 0;</span>
     }
 
     public List&lt;Product&gt; findInterestsByBuyerId(Long buyerId) {
-<span class="nc" id="L38">        Buyer buyer = findById(buyerId).orElse(null);</span>
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (buyer != null) {</span>
-<span class="nc" id="L40">            TypedQuery&lt;Product&gt; query = entityManager.createQuery(&quot;SELECT p FROM Product p JOIN Category c ON p MEMBER OF c.products JOIN Buyer b ON c MEMBER OF b.interests WHERE b.id = :buyerId AND p.isDeleted = false AND c.isDeleted = false&quot;, Product.class);</span>
-<span class="nc" id="L41">            query.setParameter(&quot;buyerId&quot;, buyerId);</span>
-<span class="nc" id="L42">            return query.getResultList();</span>
+<span class="nc" id="L43">        Buyer buyer = findById(buyerId).orElse(null);</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (buyer != null) {</span>
+<span class="nc" id="L45">            TypedQuery&lt;Product&gt; query = entityManager.createQuery(&quot;SELECT p FROM Product p JOIN Category c ON p MEMBER OF c.products JOIN Buyer b ON c MEMBER OF b.interests WHERE b.id = :buyerId AND p.isDeleted = false AND c.isDeleted = false&quot;, Product.class);</span>
+<span class="nc" id="L46">            query.setParameter(&quot;buyerId&quot;, buyerId);</span>
+<span class="nc" id="L47">            return query.getResultList();</span>
         }
-<span class="nc" id="L44">        return Collections.emptyList();</span>
+<span class="nc" id="L49">        return Collections.emptyList();</span>
     }
 
     public Buyer findByEmail(String email) {
-<span class="nc" id="L48">        String jpql = &quot;SELECT b FROM Buyer b WHERE b.account.email = :email and b.isDeleted = false&quot;;</span>
-<span class="nc" id="L49">        TypedQuery&lt;Buyer&gt; query = entityManager.createQuery(jpql, Buyer.class);</span>
-<span class="nc" id="L50">        query.setParameter(EMAIL, email);</span>
-<span class="nc" id="L51">        return query.getSingleResult();</span>
+<span class="nc" id="L53">        String jpql = &quot;SELECT b FROM Buyer b WHERE b.account.email = :email and b.isDeleted = false&quot;;</span>
+<span class="nc" id="L54">        TypedQuery&lt;Buyer&gt; query = entityManager.createQuery(jpql, Buyer.class);</span>
+<span class="nc" id="L55">        query.setParameter(EMAIL, email);</span>
+<span class="nc" id="L56">        return query.getSingleResult();</span>
     }
 
     public void addProductToCart(Buyer buyer, Product product, int quantity) {
-<span class="nc" id="L55">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L60">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L57">            transaction.begin();</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">            if (!buyer.getCart().containsKey(product)) {</span>
-<span class="nc" id="L59">                buyer.addToCart(product, quantity);</span>
-<span class="nc" id="L60">                buyer = entityManager.merge(buyer);</span>
+<span class="nc" id="L62">            transaction.begin();</span>
+<span class="nc" id="L63">            buyer.addCartItem(product, quantity);</span>
+<span class="nc" id="L64">            transaction.commit();</span>
+<span class="nc" id="L65">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L67">                transaction.rollback();</span>
             }
-<span class="nc" id="L62">            transaction.commit();</span>
-<span class="nc" id="L63">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L65">                transaction.rollback();</span>
-            }
-<span class="nc" id="L67">            throw e;</span>
-<span class="nc" id="L68">        }</span>
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L69">            throw e;</span>
+<span class="nc" id="L70">        }</span>
+<span class="nc" id="L71">    }</span>
 
     public void removeProductFromCart(Buyer buyer, Product product) {
-<span class="nc" id="L72">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L74">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L74">            transaction.begin();</span>
-<span class="nc" id="L75">            buyer.removeFromCart(product);</span>
-<span class="nc" id="L76">            buyer = entityManager.merge(buyer);</span>
-<span class="nc" id="L77">            transaction.commit();</span>
-<span class="nc" id="L78">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L80">                transaction.rollback();</span>
+<span class="nc" id="L76">            transaction.begin();</span>
+<span class="nc" id="L77">            buyer.removeFromCart(product);</span>
+<span class="nc" id="L78">            buyer = entityManager.merge(buyer);</span>
+<span class="nc" id="L79">            transaction.commit();</span>
+<span class="nc" id="L80">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L82">                transaction.rollback();</span>
             }
-<span class="nc" id="L82">            throw e;</span>
-<span class="nc" id="L83">        }</span>
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L84">            throw e;</span>
+<span class="nc" id="L85">        }</span>
+<span class="nc" id="L86">    }</span>
 
     public int incrementProductQuantity(Buyer buyer, Product product) {
-<span class="nc" id="L87">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L89">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L89">            transaction.begin();</span>
-<span class="nc" id="L90">            int qty = buyer.addToCart(product, 1);</span>
-<span class="nc" id="L91">            buyer = entityManager.merge(buyer);</span>
-<span class="nc" id="L92">            transaction.commit();</span>
-<span class="nc" id="L93">            return qty;</span>
-<span class="nc" id="L94">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L96">                transaction.rollback();</span>
+<span class="nc" id="L91">            transaction.begin();</span>
+<span class="nc" id="L92">            int qty = buyer.addToCart(product, 1);</span>
+<span class="nc" id="L93">            buyer = entityManager.merge(buyer);</span>
+<span class="nc" id="L94">            transaction.commit();</span>
+<span class="nc" id="L95">            return qty;</span>
+<span class="nc" id="L96">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L98">                transaction.rollback();</span>
             }
-<span class="nc" id="L98">            throw e;</span>
+<span class="nc" id="L100">            throw e;</span>
         }
     }
 
     public int decrementProductQuantity(Buyer buyer, Product product) {
-<span class="nc" id="L103">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L105">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L105">            transaction.begin();</span>
-<span class="nc" id="L106">            int currentQuantity = buyer.getCart().getOrDefault(product, 0);</span>
-<span class="nc" id="L107">            int qty = 1;</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">            if (currentQuantity &gt; 1) {</span>
-<span class="nc" id="L109">                qty = buyer.addToCart(product, -1);</span>
-<span class="nc" id="L110">                buyer = entityManager.merge(buyer);</span>
+<span class="nc" id="L107">            transaction.begin();</span>
+<span class="nc" id="L108">            int currentQuantity = buyer.getCart().getOrDefault(product, 0);</span>
+<span class="nc" id="L109">            int qty = 1;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (currentQuantity &gt; 1) {</span>
+<span class="nc" id="L111">                qty = buyer.addToCart(product, -1);</span>
+<span class="nc" id="L112">                buyer = entityManager.merge(buyer);</span>
             }
-<span class="nc" id="L112">            transaction.commit();</span>
-<span class="nc" id="L113">            return qty;</span>
-<span class="nc" id="L114">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L116">                transaction.rollback();</span>
+<span class="nc" id="L114">            transaction.commit();</span>
+<span class="nc" id="L115">            return qty;</span>
+<span class="nc" id="L116">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L118">                transaction.rollback();</span>
             }
-<span class="nc" id="L118">            throw e;</span>
+<span class="nc" id="L120">            throw e;</span>
         }
     }
 
     public void clearCart(Buyer buyer) {
-<span class="nc" id="L123">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L125">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L125">            transaction.begin();</span>
-<span class="nc" id="L126">            buyer.clearCart();</span>
-<span class="nc" id="L127">            buyer = entityManager.merge(buyer);</span>
-<span class="nc" id="L128">            transaction.commit();</span>
-<span class="nc" id="L129">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L131">                transaction.rollback();</span>
+<span class="nc" id="L127">            transaction.begin();</span>
+<span class="nc" id="L128">            buyer.clearCart();</span>
+<span class="nc" id="L129">            buyer = entityManager.merge(buyer);</span>
+<span class="nc" id="L130">            transaction.commit();</span>
+<span class="nc" id="L131">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L133">                transaction.rollback();</span>
             }
-<span class="nc" id="L133">            throw e;</span>
-<span class="nc" id="L134">        }</span>
-<span class="nc" id="L135">    }</span>
+<span class="nc" id="L135">            throw e;</span>
+<span class="nc" id="L136">        }</span>
+<span class="nc" id="L137">    }</span>
 
     public void setProductQuantity(Buyer buyer, Product product, int quantity) {
-<span class="nc" id="L138">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L140">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L140">            transaction.begin();</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">            if (quantity &gt; 0) {</span>
-<span class="nc" id="L142">                buyer.getCart().put(product, quantity);</span>
+<span class="nc" id="L142">            transaction.begin();</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">            if (quantity &gt; 0) {</span>
+<span class="nc" id="L144">                buyer.getCart().put(product, quantity);</span>
             } else {
-<span class="nc" id="L144">                buyer.getCart().remove(product);</span>
+<span class="nc" id="L146">                buyer.getCart().remove(product);</span>
             }
-<span class="nc" id="L146">            update(buyer);</span>
-<span class="nc" id="L147">            transaction.commit();</span>
-<span class="nc" id="L148">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L149" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L150">                transaction.rollback();</span>
+<span class="nc" id="L148">            update(buyer);</span>
+<span class="nc" id="L149">            transaction.commit();</span>
+<span class="nc" id="L150">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L152">                transaction.rollback();</span>
             }
-<span class="nc" id="L152">            throw e;</span>
-<span class="nc" id="L153">        }</span>
-<span class="nc" id="L154">    }</span>
+<span class="nc" id="L154">            throw e;</span>
+<span class="nc" id="L155">        }</span>
+<span class="nc" id="L156">    }</span>
 
     public void addToWishlist(Buyer buyer, Product product) {
-<span class="nc" id="L157">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L159">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L159">            transaction.begin();</span>
-<span class="nc" id="L160">            buyer.addToWishlist(product);</span>
-<span class="nc" id="L161">            buyer = entityManager.merge(buyer);</span>
-<span class="nc" id="L162">            transaction.commit();</span>
-<span class="nc" id="L163">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L164" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L165">                transaction.rollback();</span>
+<span class="nc" id="L161">            transaction.begin();</span>
+<span class="nc" id="L162">            buyer.addToWishlist(product);</span>
+<span class="nc" id="L163">            buyer = entityManager.merge(buyer);</span>
+<span class="nc" id="L164">            transaction.commit();</span>
+<span class="nc" id="L165">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L167">                transaction.rollback();</span>
             }
-<span class="nc" id="L167">            throw e;</span>
-<span class="nc" id="L168">        }</span>
-<span class="nc" id="L169">    }</span>
+<span class="nc" id="L169">            throw e;</span>
+<span class="nc" id="L170">        }</span>
+<span class="nc" id="L171">    }</span>
 
     public void removeFromWishlist(Buyer buyer, Product product) {
-<span class="nc" id="L172">        EntityTransaction transaction = entityManager.getTransaction();</span>
+<span class="nc" id="L174">        EntityTransaction transaction = entityManager.getTransaction();</span>
         try {
-<span class="nc" id="L174">            transaction.begin();</span>
-<span class="nc" id="L175">            buyer.removeFromWishlist(product);</span>
-<span class="nc" id="L176">            buyer = entityManager.merge(buyer);</span>
-<span class="nc" id="L177">            transaction.commit();</span>
-<span class="nc" id="L178">        } catch (Exception e) {</span>
-<span class="nc bnc" id="L179" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
-<span class="nc" id="L180">                transaction.rollback();</span>
+<span class="nc" id="L176">            transaction.begin();</span>
+<span class="nc" id="L177">            buyer.removeFromWishlist(product);</span>
+<span class="nc" id="L178">            buyer = entityManager.merge(buyer);</span>
+<span class="nc" id="L179">            transaction.commit();</span>
+<span class="nc" id="L180">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">            if (transaction.isActive()) {</span>
+<span class="nc" id="L182">                transaction.rollback();</span>
             }
-<span class="nc" id="L182">            throw e;</span>
-<span class="nc" id="L183">        }</span>
-<span class="nc" id="L184">    }</span>
+<span class="nc" id="L184">            throw e;</span>
+<span class="nc" id="L185">        }</span>
+<span class="nc" id="L186">    }</span>
 
+    public List&lt;Buyer&gt; search(int pageNumber, int pageSize) {
+<span class="nc" id="L189">        CriteriaBuilder cb = entityManager.getCriteriaBuilder();</span>
+<span class="nc" id="L190">        CriteriaQuery&lt;Buyer&gt; query = cb.createQuery(Buyer.class);</span>
+<span class="nc" id="L191">        Root&lt;Buyer&gt; buyerRoot = query.from(Buyer.class);</span>
+<span class="nc" id="L192">        Predicate predicate = cb.equal(buyerRoot.get(IS_DELETED), false);</span>
+<span class="nc" id="L193">        query.select(buyerRoot).where(predicate);</span>
+<span class="nc" id="L194">        return entityManager.createQuery(query).setFirstResult(pageNumber * pageSize).setMaxResults(pageSize).getResultList();</span>
+    }
+
+    public List&lt;Order&gt; searchOrders(Long buyerId, int pageNumber, int pageSize) {
+<span class="nc" id="L198">        entityManager.clear();</span>
+<span class="nc" id="L199">        CriteriaBuilder cb = entityManager.getCriteriaBuilder();</span>
+<span class="nc" id="L200">        CriteriaQuery&lt;Order&gt; query = cb.createQuery(Order.class);</span>
+<span class="nc" id="L201">        Root&lt;Order&gt; orderRoot = query.from(Order.class);</span>
+<span class="nc" id="L202">        Predicate predicate = cb.equal(orderRoot.get(&quot;buyer&quot;).get(&quot;id&quot;), buyerId);</span>
+<span class="nc" id="L203">        predicate = cb.and(predicate, cb.equal(orderRoot.get(IS_DELETED), false));</span>
+<span class="nc" id="L204">        query.select(orderRoot).where(predicate);</span>
+<span class="nc" id="L205">        return entityManager.createQuery(query).setFirstResult(pageNumber * pageSize).setMaxResults(pageSize).getResultList();</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

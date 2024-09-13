@@ -19,5 +19,17 @@ public class CategoryController {
     public Category save(Category category) {
 <span class="nc" id="L20">        return categoryService.save(category);</span>
     }
+
+    public Category findById(Long id) {
+<span class="nc" id="L24">        return categoryService.findById(id);</span>
+    }
+
+    public boolean existsByName(String name) {
+<span class="nc" id="L28">        return categoryService.existsByName(name);</span>
+    }
+
+    public Category update(Category category) {
+<span class="nc" id="L32">        return categoryService.update(category);</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -40,5 +40,25 @@ public class ProductService {
     public Product findAvailableProductById(Long id) {
 <span class="nc" id="L41">        return productRepository.findAvailableProductById(id);</span>
     }
+
+    public Product save(Product product) {
+<span class="nc" id="L45">        return productRepository.save(product);</span>
+    }
+
+    public Product update(Product product) {
+<span class="nc" id="L49">        return productRepository.update(product);</span>
+    }
+
+    public boolean existsByIsbn(String isbn) {
+<span class="nc" id="L53">        return productRepository.existsByIsbn(isbn);</span>
+    }
+
+    public List&lt;Product&gt; findByIds(Iterable&lt;Long&gt; ids) {
+<span class="nc" id="L57">        return productRepository.findByIds(ids);</span>
+    }
+
+    public Map&lt;Product, Integer&gt; findByIdsWithQuantities(Iterable&lt;Long&gt; ids) {
+<span class="nc" id="L61">        return productRepository.findByIdsWithQuantities(ids);</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
