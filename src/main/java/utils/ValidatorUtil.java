@@ -82,6 +82,7 @@ public class ValidatorUtil {
         String email = request.getParameter(EMAIL);
         String creditLimit = request.getParameter(CREDIT_LIMIT);
         String phoneNumber = request.getParameter(PHONE_NUMBER);
+        String[] interests = request.getParameterValues(CATEGORIES);
 
         if (!UniqueEmailValidator.isValid(email)) {
             errors.put(ERROR, UniqueEmailValidator.ERROR_MESSAGE);
@@ -89,6 +90,8 @@ public class ValidatorUtil {
             errors.put(ERROR, CreditLimitValidator.ERROR_MESSAGE);
         } else if (!UniquePhoneNumberValidator.isValid(phoneNumber)) {
             errors.put(ERROR, UniquePhoneNumberValidator.ERROR_MESSAGE);
+        } else if (!CategoryValidator.isValid(interests)) {
+            errors.put(ERROR, CategoryValidator.ERROR_MESSAGE);
         }
         return errors;
     }
