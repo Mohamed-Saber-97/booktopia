@@ -37,7 +37,8 @@
                     <c:if test="${sessionScope.buyer != null}">
                         <div class="bor8 m-b-20">
                             <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0"
-                                name="creditLimit" placeholder="Credit Limit" value="${user.getCreditLimit()}">
+                                name="creditLimit" placeholder="Credit Limit" value="${user.getCreditLimit()}"
+                                step="0.01">
                         </div>
                     </c:if>
                     <div class="bor8 m-b-20">
@@ -81,7 +82,7 @@
                         <c:forEach items="${categories}" var="category">
                             <div class="form-check d-flex align-items-center" style="padding: 5px 0;">
                                 <input type="checkbox" id="category${category.getId()}" name="categories"
-                                    form="signupForm" value="${category.getId()}" class="form-check-input mr-2"
+                                    form="updateProfileForm" value="${category.getId()}" class="form-check-input mr-2"
                                     style="margin: 0;" ${user.getInterests().contains(category) ? 'checked' : '' }>
                                 <label for="category${category.getId()}" class="form-check-label" style="margin: 0;">
                                     ${category.getName()}

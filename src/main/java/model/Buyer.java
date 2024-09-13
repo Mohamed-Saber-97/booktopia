@@ -61,7 +61,8 @@ public class Buyer extends BaseEntity<Long> {
     }
 
     public void setInterests(Set<Category> interests) {
-        this.interests = interests;
+        this.interests.clear();
+        this.interests.addAll(interests);
     }
 
     public void addToWishlist(Product product) {

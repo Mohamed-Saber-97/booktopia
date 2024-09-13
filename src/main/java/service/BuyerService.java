@@ -45,6 +45,7 @@ public class BuyerService {
         existingBuyer.getAccount().setAddress(newBuyer.getAccount().getAddress());
         existingBuyer.setAccount(newBuyer.getAccount());
         existingBuyer.setCreditLimit(newBuyer.getCreditLimit());
+        existingBuyer.setInterests(newBuyer.getInterests());
         return buyerRepository.update(existingBuyer);
     }
 
@@ -121,8 +122,6 @@ public class BuyerService {
     public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
         buyerRepository.removeFromWishlist(buyer, product);
     }
-
-
 
 
     public List<Buyer> search(int pageNumber, int pageSize) {

@@ -131,6 +131,13 @@ public class ValidatorUtil {
         if (!CreditLimitValidator.isValid(creditLimit)) {
             errors.put(ERROR, CreditLimitValidator.ERROR_MESSAGE);
         }
+
+        String[] interests = request.getParameterValues(CATEGORIES);
+        if (!NotEmptyValidator.isValid(interests)) {
+            errors.put(ERROR, NotEmptyValidator.ERROR_MESSAGE);
+        } else if (!CategoryValidator.isValid(interests)) {
+            errors.put(ERROR, CategoryValidator.ERROR_MESSAGE);
+        }
         return errors;
     }
 
