@@ -28,7 +28,7 @@ public class LogoutController extends HttpServlet {
             request.setAttribute(SUCCESS, "Thank you for managing the site, %s".formatted(adminObject.getAccount().getName()));
         }
         request.getSession().invalidate();
+        request.setAttribute(PAGE_TITLE, "Home");
         dispatcher.forward(request, response);
-
     }
 }
