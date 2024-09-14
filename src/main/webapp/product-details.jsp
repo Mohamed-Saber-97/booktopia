@@ -1,7 +1,7 @@
 <%@include file="header.jsp" %>
 
 <div class="alert alert-danger text-center m-t-20 mx-auto pos-fixed"
-     style="width: fit-content; display: none; left: 50%; transform: translateX(-50%); z-index: 9999;">
+    style="width: fit-content; display: none; left: 50%; transform: translateX(-50%); z-index: 9999;">
 </div>
 
 <!-- Product Detail -->
@@ -20,7 +20,7 @@
                                     <img src="${product.getImagePath()}" alt="IMG-PRODUCT">
 
                                     <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                       href="${product.getImagePath()}">
+                                        href="${product.getImagePath()}">
                                         <i class="fa fa-expand"></i>
                                     </a>
                                 </div>
@@ -70,53 +70,53 @@
                     <div class="p-t-33">
                         <div class="flex-w flex-r-m p-b-10">
                             <c:if test="${sessionScope.buyer != null}">
-                            <div class="size-204 flex-w flex-m respon6-next">
-                                <div class="wrap-num-product flex-w m-r-20 m-tb-10">
-                                    <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                        <i class="fs-16 zmdi zmdi-minus"></i>
-                                    </div>
+                                <div class="size-204 flex-w flex-m respon6-next">
+                                    <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                                        <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                            <i class="fs-16 zmdi zmdi-minus"></i>
+                                        </div>
 
-                                    <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product"
-                                           value="1">
+                                        <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                            name="num-product" value="1">
 
-                                    <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                        <i class="fs-16 zmdi zmdi-plus"></i>
+                                        <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                            <i class="fs-16 zmdi zmdi-plus"></i>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- js-addcart-detail -->
+                                    <!-- js-addcart-detail -->
                                     <%--								<c:if test="${sessionScope.buyer != null}">--%>
-                                <button id="addToCart" data-product-id="${product.getId()}"
+                                    <button id="addToCart" data-product-id="${product.getId()}"
                                         class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                    <c:if test="${!sessionScope.user.getCart().containsKey(product)}">
-                                        Add to cart
+                                        <c:if test="${!sessionScope.user.getCart().containsKey(product)}">
+                                            Add to cart
+                                        </c:if>
+                                        <c:if test="${sessionScope.user.getCart().containsKey(product)}">
+                                            Remove from cart
+                                        </c:if>
+                                    </button>
+                            </c:if>
+                            <c:if test="${sessionScope.buyer != null}">
+                                <button id="addToWishlist" data-product-id="${product.getId()}"
+                                    class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 m-t-10">
+                                    <c:if test="${!sessionScope.user.getWishlist().contains(product)}">
+                                        Add to wishlist
                                     </c:if>
-                                    <c:if test="${sessionScope.user.getCart().containsKey(product)}">
-                                        Remove from cart
+                                    <c:if test="${sessionScope.user.getWishlist().contains(product)}">
+                                        Remove from wishlist
                                     </c:if>
                                 </button>
-                                </c:if>
-                                <c:if test="${sessionScope.buyer != null}">
-                                    <button id="addToWishlist" data-product-id="${product.getId()}"
-                                            class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 m-t-10">
-                                        <c:if test="${!sessionScope.user.getWishlist().contains(product)}">
-                                            Add to wishlist
-                                        </c:if>
-                                        <c:if test="${sessionScope.user.getWishlist().contains(product)}">
-                                            Remove from wishlist
-                                        </c:if>
-                                    </button>
-                                </c:if>
-                                <c:if test="${sessionScope.user == null}">
-                                    <button form="loginForm"
-                                            class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                        Login to add to cart
-                                    </button>
-                                </c:if>
-                            </div>
+                            </c:if>
+                            <c:if test="${sessionScope.user == null}">
+                                <button form="loginForm"
+                                    class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                    Login to add to cart
+                                </button>
+                            </c:if>
                         </div>
                     </div>
-                    <form action="login" method="GET" id="loginForm"></form>
-                    <!-- <c:if test="${sessionScope.buyer != null}">
+                </div>
+                <form action="login" method="GET" id="loginForm"></form>
+                <!-- <c:if test="${sessionScope.buyer != null}">
 						<div class="flex-w flex-m p-l-100 p-t-40 respon7">
 							<div class="flex-m p-r-10 m-r-11">
 								<a href="#"
@@ -127,9 +127,9 @@
 							</div>
 						</div>
 					</c:if> -->
-                </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 
