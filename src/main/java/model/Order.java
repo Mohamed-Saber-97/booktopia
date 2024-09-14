@@ -3,10 +3,7 @@ package model;
 import base.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,10 +24,11 @@ public class Order extends BaseEntity<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id", nullable = false)
+    @Setter
     private Buyer buyer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderProduct> orderProducts = new HashSet<>();
+    private final Set<OrderProduct> orderProducts = new HashSet<>();
 
     public Order(Buyer buyer) {
         if (buyer == null) {
@@ -45,7 +43,12 @@ public class Order extends BaseEntity<Long> {
         }
         this.status = newStatus;
     }
-
+public void addOrderProduct(OrderProduct orderProduct) {
+        if (orderProduct == null) {
+            throw new IllegalArgumentException("OrderProduct cannot be null");
+        }
+        this.orderProducts.add(orderProduct);
+}
     public enum OrderStatus {
         UNSHIPPED, SHIPPED, CANCELLED
     }
