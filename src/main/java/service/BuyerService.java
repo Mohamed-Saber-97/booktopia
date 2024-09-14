@@ -37,6 +37,8 @@ public class BuyerService {
 
     public Buyer update(Buyer newBuyer) {
         Buyer existingBuyer = buyerRepository.findById(newBuyer.getId()).orElse(null);
+        System.out.println("Existing Buyer: " + existingBuyer.getInterests());
+        System.out.println("New Buyer: " + newBuyer.getInterests());
         if (existingBuyer == null) {
             return null;
         }
