@@ -17,8 +17,7 @@ public class ViewProfileController extends HttpServlet {
     private transient CategoryController categoryController;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
+    public void init() {
         categoryController = new CategoryController();
     }
 
