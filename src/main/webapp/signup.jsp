@@ -30,6 +30,7 @@
                                     <%@include file="form-components/job.jsp" %>
                                     <%@include file="form-components/signup-email.jsp" %>
                                     <%@include file="form-components/password.jsp" %>
+                                    <%@include file="form-components/confirm-password.jsp" %>
                                     <%@include file="form-components/credit-limit.jsp" %>
                                     <%@include file="form-components/phone-number.jsp" %>
                                 </div>
@@ -53,5 +54,5 @@
         </div>
     </div>
 </section>
-<script src="./js/validation.js"></script>
+<script src="./js/signup-validation.js"></script>
 <%@include file="footer.jsp" %>
