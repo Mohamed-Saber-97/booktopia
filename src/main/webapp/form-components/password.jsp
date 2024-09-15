@@ -13,10 +13,3 @@
     <small id="passwordHelp" class="form-text text-muted" style="visibility: hidden;">Password must be at least 6
         characters long.</small>
 </div>
-
-<div class="form-group">
-    <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30 form-control" type="password" name="confirmPassword"
-           placeholder="Confirm Password" id="confirmPasswordInput" aria-describedby="confirmPasswordHelp">
-    <small id="confirmPasswordHelp" class="form-text text-muted" style="visibility: hidden;">Passwords must
-        match.</small>
-</div>
