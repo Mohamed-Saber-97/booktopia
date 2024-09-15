@@ -1,8 +1,7 @@
 $(document).ready(function () {
     // Initialize popovers for fields
     $('[data-bs-toggle="popover"]').popover({
-        placement: 'right',
-        trigger: 'manual'
+        placement: 'right', trigger: 'manual'
     });
 
     // Name field validation
@@ -114,9 +113,9 @@ $(document).ready(function () {
 
     // Email validation function
     function validateEmail() {
-        var email = $("#emailInput").val();
-        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        var isValid = true;
+        let email = $("#emailInput").val();
+        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        let isValid = true;
 
         // Clear previous validation states
         $("#emailInput").removeClass("is-invalid is-valid");
@@ -132,12 +131,43 @@ $(document).ready(function () {
         return isValid;
     }
 
+    // Function for email validation with AJAX
+    function validateEmailWithAjax() {
+        const deferred = $.Deferred();
+
+        if (validateEmail()) {
+            $.ajax({
+                url: "/check-unique-email",
+                method: "POST", data: { email: $("#emailInput").val() }, success: function (response) {
+                    if (response === "true") {
+                        $("#emailInput").removeClass("is-invalid").addClass("is-valid");
+                        $("#emailHelp").text("Email available").css({ "color": "green", "visibility": "visible" });
+                        deferred.resolve(true); // Resolve when email is valid
+                    } else {
+                        $("#emailInput").addClass("is-invalid").removeClass("is-valid");
+                        $("#emailHelp").text("Email already exists").css({ "color": "red", "visibility": "visible" });
+                        deferred.resolve(false); // Resolve when email is invalid
+                    }
+                }, error: function (error) {
+                    console.error("Error checking email:", error);
+                    $("#emailInput").addClass("is-invalid").removeClass("is-valid");
+                    $("#emailHelp").text("Email already exists").css({ "color": "red", "visibility": "visible" });
+                    deferred.resolve(false); // Resolve when there's an error
+                }
+            });
+        } else {
+            deferred.resolve(false); // Resolve immediately if format is invalid
+        }
+
+        return deferred.promise();
+    }
+
     // Password validation function
     function validatePassword() {
-        var isValid = true;
-        var passwordField = $('#passwordInput');
-        var passwordValue = passwordField.val();
-        var passwordHelp = $('#passwordHelp');
+        let isValid = true;
+        let passwordField = $('#passwordInput');
+        let passwordValue = passwordField.val();
+        let passwordHelp = $('#passwordHelp');
 
         // Clear previous validation states
         passwordField.removeClass('is-invalid is-valid');
@@ -154,14 +184,15 @@ $(document).ready(function () {
 
         return isValid;
     }
+
     // Confirm password validation function
     function validateConfirmPassword() {
-        var isValid = true;
-        var passwordField = $('#passwordInput');
-        var confirmPasswordField = $('#confirmPasswordInput');
-        var passwordValue = passwordField.val();
-        var confirmPasswordValue = confirmPasswordField.val();
-        var confirmPasswordHelp = $('#confirmPasswordHelp');
+        let isValid = true;
+        let passwordField = $('#passwordInput');
+        let confirmPasswordField = $('#confirmPasswordInput');
+        let passwordValue = passwordField.val();
+        let confirmPasswordValue = confirmPasswordField.val();
+        let confirmPasswordHelp = $('#confirmPasswordHelp');
 
         // Clear previous validation states
         confirmPasswordField.removeClass('is-invalid is-valid');
@@ -185,9 +216,9 @@ $(document).ready(function () {
 
     // Phone number validation function
     function validatePhoneNumber() {
-        var phoneNumber = $("#phoneNumberInput").val();
-        var phoneRegex = /^01[0-25]\d{8}$/; // Assuming this is an Egyptian phone number format
-        var isValid = true;
+        let phoneNumber = $("#phoneNumberInput").val();
+        let phoneRegex = /^01[0-25]\d{8}$/; // Assuming this is an Egyptian phone number format
+        let isValid = true;
 
         // Clear previous validation states
         $("#phoneNumberInput").removeClass("is-invalid is-valid");
@@ -202,20 +233,65 @@ $(document).ready(function () {
 
         return isValid;
     }
+    // Function for phone number validation with AJAX
+    function validatePhoneWithAjax() {
+        const deferred = $.Deferred();
+
+        if (validatePhoneNumber()) {
+            $.ajax({
+                url: "/check-phone-number",
+                method: "POST",
+                data: { phoneNumber: $("#phoneNumberInput").val() },
+                success: function (response) {
+                    if (response === "true") {
+                        $("#phoneNumberInput").removeClass("is-invalid").addClass("is-valid");
+                        $("#phoneNumberHelp").text("Phone number available").css({
+                            "visibility": "visible", "color": "green"
+                        });
+                        deferred.resolve(true); // Resolve when phone number is valid
+                    } else if (response === "Phone number already exists") {
+                        $("#phoneNumberInput").addClass("is-invalid").removeClass("is-valid");
+                        $("#phoneNumberHelp").text("Phone number already exists").css({
+                            "visibility": "visible", "color": "red"
+                        });
+                        deferred.resolve(false); // Resolve when phone number is invalid
+                    } else {
+                        $("#phoneNumberInput").addClass("is-invalid").removeClass("is-valid");
+                        $("#phoneNumberHelp").text("Phone number already exists").css({
+                            "visibility": "visible", "color": "red"
+                        });
+                        deferred.resolve(false); // Resolve when there's an error
+                    }
+                },
+                error: function (error) {
+                    console.error("Error checking phone number:", error);
+                    $("#phoneNumberInput").addClass("is-invalid").removeClass("is-valid");
+                    $("#phoneNumberHelp").text("Phone number already exists").css({
+                        "visibility": "visible", "color": "red"
+                    });
+                    deferred.resolve(false); // Resolve when there's an error
+                }
+            });
+        } else {
+            deferred.resolve(false); // Resolve immediately if format is invalid
+        }
+
+        return deferred.promise();
+    }
 
     // Credit limit validation function
     function validateCreditLimit() {
-        var isValid = true;
-        var creditLimitField = $('#creditLimitInput');
-        var creditLimitValue = creditLimitField.val();
-        var creditLimitHelp = $('#creditLimitHelp');
+        let isValid = true;
+        let creditLimitField = $('#creditLimitInput');
+        let creditLimitValue = creditLimitField.val();
+        let creditLimitHelp = $('#creditLimitHelp');
 
         // Clear previous validation states
         creditLimitField.removeClass('is-invalid is-valid');
         creditLimitHelp.css('visibility', 'hidden');
 
         // Validate credit limit format and value
-        var creditLimitRegex = /^\d+(\.\d+)?$/;
+        let creditLimitRegex = /^\d+(\.\d+)?$/;
         if (!creditLimitRegex.test(creditLimitValue) || parseFloat(creditLimitValue) < 0) {
             creditLimitField.addClass('is-invalid');
             creditLimitHelp.text('Credit limit must be a non-negative number.').css('visibility', 'visible');
@@ -229,9 +305,9 @@ $(document).ready(function () {
 
     // Country validation function
     function validateCountry() {
-        var isValid = true;
-        var countryField = $('#countryInput');
-        var countryHelp = $('#countryHelp');
+        let isValid = true;
+        let countryField = $('#countryInput');
+        let countryHelp = $('#countryHelp');
 
         // Clear previous validation states
         countryField.removeClass('is-invalid is-valid');  // Remove previous states
@@ -257,10 +333,10 @@ $(document).ready(function () {
     // City validation function
     function validateCity() {
         console.log('Validating city...');
-        var isValid = true;
-        var cityField = $('#cityInput');
-        var cityValue = cityField.val().trim();
-        var cityHelp = $('#cityHelp');
+        let isValid = true;
+        let cityField = $('#cityInput');
+        let cityValue = cityField.val().trim();
+        let cityHelp = $('#cityHelp');
 
         // Clear previous validation states
         cityField.removeClass('is-invalid is-valid');
@@ -292,10 +368,10 @@ $(document).ready(function () {
 
     // Street validation function
     function validateStreet() {
-        var isValid = true;
-        var streetField = $('#streetInput');
-        var streetValue = streetField.val().trim();
-        var streetHelp = $('#streetHelp');
+        let isValid = true;
+        let streetField = $('#streetInput');
+        let streetValue = streetField.val().trim();
+        let streetHelp = $('#streetHelp');
 
         // Clear previous validation states
         streetField.removeClass('is-invalid is-valid');  // Remove previous states
@@ -326,10 +402,10 @@ $(document).ready(function () {
 
     // ZIP Code validation function
     function validateZipCode() {
-        var isValid = true;
-        var zipCodeField = $('#zipCodeInput');
-        var zipCodeValue = zipCodeField.val().trim();
-        var zipCodeHelp = $('#zipCodeHelp');
+        let isValid = true;
+        let zipCodeField = $('#zipCodeInput');
+        let zipCodeValue = zipCodeField.val().trim();
+        let zipCodeHelp = $('#zipCodeHelp');
 
         // Clear previous validation states
         zipCodeField.removeClass('is-invalid is-valid');  // Remove previous states
@@ -357,10 +433,11 @@ $(document).ready(function () {
 
         return isValid;
     }
+
     function validateCategories() {
-        var isValid = true;
-        var categoriesField = $('.interest-bubble input[type="checkbox"]');
-        var categoriesHelp = $('#categoriesHelp');
+        let isValid = true;
+        let categoriesField = $('.interest-bubble input[type="checkbox"]');
+        let categoriesHelp = $('#categoriesHelp');
 
         // Clear previous validation states
         categoriesHelp.css('visibility', 'hidden');
@@ -382,18 +459,16 @@ $(document).ready(function () {
     validations.push(validateName);
     validations.push(validateDOB);
     validations.push(validateJob);
-    validations.push(validateEmail);
+    validations.push(validateEmailWithAjax);
     validations.push(validatePassword);
     validations.push(validateConfirmPassword);
-    validations.push(validatePhoneNumber);
+    validations.push(validatePhoneWithAjax);
     validations.push(validateCreditLimit);
     validations.push(validateCountry);
     validations.push(validateCity);
     validations.push(validateStreet);
     validations.push(validateZipCode);
     validations.push(validateCategories);
-
-
 
     // Validate each input field on change
     $('#nameInput').on('input', function () {
@@ -411,66 +486,7 @@ $(document).ready(function () {
     $('#confirmPasswordInput').on('input blur', function () {
         validateConfirmPassword();
     });
-    $('#emailInput').on('blur', function () {
-        validateEmail();
 
-        // Proceed with AJAX if format is valid
-        if (validateEmail()) {
-            $.ajax({
-                url: "/check-unique-email",
-                method: "POST",
-                data: { email: $("#emailInput").val() },
-                success: function (response) {
-                    if (response === "true") {
-                        $("#emailInput").removeClass("is-invalid").addClass("is-valid");
-                        $("#emailHelp").text("Email available").css({ "color": "green", "visibility": "visible" });
-                    } else {
-                        $("#emailInput").addClass("is-invalid").removeClass("is-valid");
-                        $("#emailHelp").text("Email already exists").css({ "color": "red", "visibility": "visible" });
-                    }
-                },
-                error: function (error) {
-                    console.error("Error checking email:", error);
-                    $("#emailInput").addClass("is-invalid").removeClass("is-valid");
-                    $("#emailHelp").text("Error checking email. Please try again later.").css({ "color": "red", "visibility": "visible" });
-                }
-            });
-        }
-    });
-
-    // Phone number input blur validation
-    $("#phoneNumberInput").on("blur", function () {
-
-        // Proceed with AJAX if format is valid
-        if (validatePhoneNumber()) {
-            // AJAX call to check unique phone number
-            $.ajax({
-                url: "/check-phone-number",
-                method: "POST",
-                data: { phoneNumber: $("#phoneNumberInput").val() },
-                success: function (response) {
-                    if (response === "true") {
-                        // Phone number is available
-                        $("#phoneNumberInput").removeClass("is-invalid").addClass("is-valid");
-                        $("#phoneNumberHelp").text("Phone number available").css({ "visibility": "visible", "color": "green" });
-                    } else if (response === "Phone number already exists") {
-                        // Phone number already exists
-                        $("#phoneNumberInput").addClass("is-invalid").removeClass("is-valid");
-                        $("#phoneNumberHelp").text("Phone number already exists").css({ "visibility": "visible", "color": "red" });
-                    } else {
-                        // Handle any other error cases
-                        $("#phoneNumberInput").addClass("is-invalid").removeClass("is-valid");
-                        $("#phoneNumberHelp").text("Error checking phone number. Please try again later.").css({ "visibility": "visible", "color": "red" });
-                    }
-                },
-                error: function (error) {
-                    console.error("Error checking phone number:", error);
-                    $("#phoneNumberInput").addClass("is-invalid").removeClass("is-valid");
-                    $("#phoneNumberHelp").text("Error checking phone number. Please try again later.").css({ "visibility": "visible", "color": "red" });
-                }
-            });
-        }
-    });
     $('#creditLimitInput').on('input blur', function () {
         validateCreditLimit();
     });
@@ -492,20 +508,32 @@ $(document).ready(function () {
     $('#zipCodeInput').on('input', function () {
         validateZipCode();
     });
+    $('#emailInput').on('blur', function () {
+        validateEmailWithAjax();
+    });
+    // Phone validation with AJAX on blur
+    $('#phoneNumberInput').on('blur', function () {
+        validatePhoneWithAjax();
+    });
+
     // Validate on form submit
     $('#signupForm').on('submit', function (event) {
+        event.preventDefault(); // Prevent default submission until validation completes
         let isValid = true;
 
-        // Loop through all validations
+        // Validate all fields except email and phone first
         validations.forEach(function (validate) {
-            if (!validate()) {
+            if (validate !== validateEmailWithAjax && validate !== validatePhoneWithAjax && !validate()) {
                 isValid = false;
             }
         });
 
-        // Prevent form submission if any validation fails
-        if (!isValid) {
-            event.preventDefault();
-        }
+        // Wait for the email validation via AJAX
+        $.when(validateEmailWithAjax(), validatePhoneWithAjax()).then(function (emailValid, phoneValid) {
+            if (isValid && emailValid && phoneValid) {
+                // All validations passed, proceed with form submission
+                $('#signupForm').off('submit').submit(); // Unbind and trigger form submit
+            }
+        });
     });
 });
