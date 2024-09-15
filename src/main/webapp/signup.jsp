@@ -1,89 +1,57 @@
-<%@include file="header.jsp"%>
+<%@include file="header.jsp" %>
 <%@include file="notifications.jsp" %>
+
 <section class="bg0 p-t-104 p-b-116">
     <div class="container">
-        <div class="flex-w flex-tr">
-            <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
-                <form action="signup" method="post" id="signupForm">
-                    <h4 class="mtext-105 cl2 txt-center p-b-30">
-                        Sign up
-                    </h4>
-
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="name"
-                            placeholder="Name">
-                    </div>
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="birthday"
-                            onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Birthday">
-                    </div>
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="job"
-                            placeholder="Job">
-                    </div>
-                    <div class="bor8 m-b-20 how-pos4-parent">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email"
-                            placeholder="Email Address">
-                    </div>
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="password" name="password"
-                            placeholder="Password">
-                    </div>
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="password" name="confirmPassword"
-                            placeholder="Confirm Password">
-                    </div>
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0"
-                            name="creditLimit" placeholder="Credit Limit" step="0.01">
-                    </div>
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="phoneNumber"
-                            placeholder="Phone Number">
-                    </div>
-                </form>
+        <div class="row align-items-center mb-4">
+            <div class="col-md-4">
+                <!-- Placeholder for potential left-aligned content -->
             </div>
-            <div class="size-210 bor10 flex-w flex-col-m p-lr-93 p-tb-30 p-lr-15-lg w-full-md">
-                <div class="bor8 m-b-20">
-                    <select class="bor8 m-b-20 stext-111 cl2 plh3 size-116 p-l-62 p-r-30" id="countries" name="country"
-                        form="signupForm">
-                        <option value="" disabled selected>Country</option>
-                        <c:forEach items="${countries}" var="country">
-                            <option value="${country}">${country}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div class="bor8 m-b-20">
-                    <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="city" form="signupForm"
-                        placeholder="City">
-                </div>
-                <div class="bor8 m-b-20">
-                    <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="street" form="signupForm"
-                        placeholder="Street">
-                </div>
-                <div class="bor8 m-b-20">
-                    <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="zipcode"
-                        form="signupForm" placeholder="Zipcode">
-                </div>
-                <div class="m-b-20" style="max-height: 200px; overflow-y: auto; padding-right: 10px;">
-                    <label for="categories"><b>Interests</b></label>
-                    <c:forEach items="${categories}" var="category">
-                        <div class="form-check d-flex align-items-center" style="padding: 5px 0;">
-                            <input type="checkbox" id="category${category.getId()}" name="categories" form="signupForm"
-                                value="${category.getId()}" class="form-check-input mr-2" style="margin: 0;">
-                            <label for="category${category.getId()}" class="form-check-label" style="margin: 0;">
-                                ${category.getName()}
-                            </label>
+            <div class="col-md-4 text-center">
+                <h4 class="mtext-105 cl2">
+                    Sign up
+                </h4>
+            </div>
+            <div class="col-md-4">
+                <!-- Placeholder for potential right-aligned content -->
+            </div>
+        </div>
+        <div class="row">
+            <!-- Form with all inputs -->
+            <div class="col-md-12">
+                <div class="p-lr-70 p-t-55 p-b-70 p-lr-15-lg">
+                    <form action="signup" method="post" id="signupForm">
+                        <div class="row">
+                            <!-- First part of the form (Left side) -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <%@include file="form-components/name.jsp" %>
+                                    <%@include file="form-components/date-of-birth.jsp" %>
+                                    <%@include file="form-components/job.jsp" %>
+                                    <%@include file="form-components/signup-email.jsp" %>
+                                    <%@include file="form-components/password.jsp" %>
+                                    <%@include file="form-components/credit-limit.jsp" %>
+                                    <%@include file="form-components/phone-number.jsp" %>
+                                </div>
+                            </div>
+
+                            <!-- Second part of the form (Right side) -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <%@include file="form-components/country.jsp" %>
+                                    <%@include file="form-components/city.jsp" %>
+                                    <%@include file="form-components/street.jsp" %>
+                                    <%@include file="form-components/zipcode.jsp" %>
+                                    <%@include file="form-components/category.jsp" %>
+                                    <%@include file="form-components/submit-button.jsp" %>
+                                </div>
+                            </div>
                         </div>
-                    </c:forEach>
+                    </form>
                 </div>
-                <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
-                    form="signupForm">
-                    Submit
-                </button>
             </div>
         </div>
     </div>
 </section>
-
-<%@include file="footer.jsp"%>
+<script src="./js/validation.js"></script>
+<%@include file="footer.jsp" %>
