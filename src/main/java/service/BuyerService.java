@@ -31,6 +31,10 @@ public class BuyerService {
         return buyerRepository.findAll();
     }
 
+    public Buyer findByPhoneNumber(String phoneNumber) {
+        return buyerRepository.findByPhoneNumber(phoneNumber);
+    }
+
     public Buyer save(Buyer buyer) {
         return buyerRepository.save(buyer);
     }
