@@ -132,21 +132,52 @@ $(document).ready(function () {
         return isValid;
     }
 
+    // // Password validation function
+    // function validatePassword() {
+    //     var isValid = true;
+    //     var passwordField = $('#passwordInput');
+    //     var confirmPasswordField = $('#confirmPasswordInput');
+    //     var passwordValue = passwordField.val();
+    //     var confirmPasswordValue = confirmPasswordField.val();
+    //     var passwordHelp = $('#passwordHelp');
+    //     var confirmPasswordHelp = $('#confirmPasswordHelp');
+
+    //     // Clear previous validation states
+    //     passwordField.removeClass('is-invalid is-valid');
+    //     confirmPasswordField.removeClass('is-invalid is-valid');
+    //     passwordHelp.css('visibility', 'hidden');
+    //     confirmPasswordHelp.css('visibility', 'hidden');
+
+    //     // Validate password length
+    //     if (passwordValue.length < 6) {
+    //         passwordField.addClass('is-invalid');
+    //         passwordHelp.text('Password must be at least 6 characters long.').css('visibility', 'visible');
+    //         isValid = false;
+    //     } else {
+    //         passwordField.addClass('is-valid');
+    //     }
+
+    //     // Validate confirm password match
+    //     if (passwordValue !== confirmPasswordValue) {
+    //         confirmPasswordField.addClass('is-invalid');
+    //         confirmPasswordHelp.text('Passwords must match.').css('visibility', 'visible');
+    //         isValid = false;
+    //     } else if (confirmPasswordValue.length >= 6) {
+    //         confirmPasswordField.addClass('is-valid');
+    //     }
+
+    //     return isValid;
+    // }
     // Password validation function
     function validatePassword() {
         var isValid = true;
         var passwordField = $('#passwordInput');
-        var confirmPasswordField = $('#confirmPasswordInput');
         var passwordValue = passwordField.val();
-        var confirmPasswordValue = confirmPasswordField.val();
         var passwordHelp = $('#passwordHelp');
-        var confirmPasswordHelp = $('#confirmPasswordHelp');
 
         // Clear previous validation states
         passwordField.removeClass('is-invalid is-valid');
-        confirmPasswordField.removeClass('is-invalid is-valid');
         passwordHelp.css('visibility', 'hidden');
-        confirmPasswordHelp.css('visibility', 'hidden');
 
         // Validate password length
         if (passwordValue.length < 6) {
@@ -157,17 +188,37 @@ $(document).ready(function () {
             passwordField.addClass('is-valid');
         }
 
-        // Validate confirm password match
-        if (passwordValue !== confirmPasswordValue) {
+        return isValid;
+    }
+    // Confirm password validation function
+    function validateConfirmPassword() {
+        var isValid = true;
+        var passwordField = $('#passwordInput');
+        var confirmPasswordField = $('#confirmPasswordInput');
+        var passwordValue = passwordField.val();
+        var confirmPasswordValue = confirmPasswordField.val();
+        var confirmPasswordHelp = $('#confirmPasswordHelp');
+
+        // Clear previous validation states
+        confirmPasswordField.removeClass('is-invalid is-valid');
+        confirmPasswordHelp.css('visibility', 'hidden');
+
+        // Validate confirm password length and match
+        if (confirmPasswordValue.length < 6) {
+            confirmPasswordField.addClass('is-invalid');
+            confirmPasswordHelp.text('Confirm password must be at least 6 characters long.').css('visibility', 'visible');
+            isValid = false;
+        } else if (passwordValue !== confirmPasswordValue) {
             confirmPasswordField.addClass('is-invalid');
             confirmPasswordHelp.text('Passwords must match.').css('visibility', 'visible');
             isValid = false;
-        } else if (confirmPasswordValue.length >= 6) {
+        } else {
             confirmPasswordField.addClass('is-valid');
         }
 
         return isValid;
     }
+
     // Phone number validation function
     function validatePhoneNumber() {
         var phoneNumber = $("#phoneNumberInput").val();
@@ -369,6 +420,7 @@ $(document).ready(function () {
     validations.push(validateJob);
     validations.push(validateEmail);
     validations.push(validatePassword);
+    validations.push(validateConfirmPassword);
     validations.push(validatePhoneNumber);
     validations.push(validateCreditLimit);
     validations.push(validateCountry);
@@ -389,10 +441,12 @@ $(document).ready(function () {
     $('#jobInput').on('input', function () {
         validateJob();
     });
-    $('#passwordInput, #confirmPasswordInput').on('input blur', function () {
+    $('#passwordInput').on('input blur', function () {
         validatePassword();
     });
-
+    $('#confirmPasswordInput').on('input blur', function () {
+        validateConfirmPassword();
+    });
     $('#emailInput').on('blur', function () {
         validateEmail();
 
