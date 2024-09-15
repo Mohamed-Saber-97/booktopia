@@ -8,24 +8,16 @@
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
                         Login
                     </h4>
+                    <%@include file="form-components/login-email.jsp" %>
 
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email"
-                               placeholder="Email Address" required>
-                    </div>
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="password" name="password"
-                               placeholder="Password" required>
-                    </div>
+                    <%@include file="form-components/password.jsp" %>
 
-                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
-                            form="buyerLoginForm">
-                        Login
-                    </button>
+                    <%@include file="form-components/login-button.jsp" %>
                 </form>
             </div>
         </div>
     </div>
+    <script src="js/login-validation.js"></script>
 </section>
 
 <%@include file="footer.jsp" %>
