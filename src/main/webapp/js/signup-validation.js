@@ -132,42 +132,6 @@ $(document).ready(function () {
         return isValid;
     }
 
-    // // Password validation function
-    // function validatePassword() {
-    //     var isValid = true;
-    //     var passwordField = $('#passwordInput');
-    //     var confirmPasswordField = $('#confirmPasswordInput');
-    //     var passwordValue = passwordField.val();
-    //     var confirmPasswordValue = confirmPasswordField.val();
-    //     var passwordHelp = $('#passwordHelp');
-    //     var confirmPasswordHelp = $('#confirmPasswordHelp');
-
-    //     // Clear previous validation states
-    //     passwordField.removeClass('is-invalid is-valid');
-    //     confirmPasswordField.removeClass('is-invalid is-valid');
-    //     passwordHelp.css('visibility', 'hidden');
-    //     confirmPasswordHelp.css('visibility', 'hidden');
-
-    //     // Validate password length
-    //     if (passwordValue.length < 6) {
-    //         passwordField.addClass('is-invalid');
-    //         passwordHelp.text('Password must be at least 6 characters long.').css('visibility', 'visible');
-    //         isValid = false;
-    //     } else {
-    //         passwordField.addClass('is-valid');
-    //     }
-
-    //     // Validate confirm password match
-    //     if (passwordValue !== confirmPasswordValue) {
-    //         confirmPasswordField.addClass('is-invalid');
-    //         confirmPasswordHelp.text('Passwords must match.').css('visibility', 'visible');
-    //         isValid = false;
-    //     } else if (confirmPasswordValue.length >= 6) {
-    //         confirmPasswordField.addClass('is-valid');
-    //     }
-
-    //     return isValid;
-    // }
     // Password validation function
     function validatePassword() {
         var isValid = true;
