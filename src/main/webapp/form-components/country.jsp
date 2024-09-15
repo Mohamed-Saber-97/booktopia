@@ -12,7 +12,13 @@
             data-bs-toggle="popover" data-bs-trigger="manual">
         <option value="" disabled selected>Country</option>
         <c:forEach items="${countries}" var="country">
-            <option value="${country}">${country}</option>
+            <option value="${country}"
+                    <c:if
+                            test="${country.equals(user.getAccount().getAddress().getCountry())}">
+                        selected
+                    </c:if>>
+                    ${country}
+            </option>
         </c:forEach>
     </select>
     <small id="countryHelp" class="form-text text-muted" style="visibility: hidden;">Please select a country.</small>

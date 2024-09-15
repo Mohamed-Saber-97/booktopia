@@ -37,17 +37,23 @@
         color: white;
     }
 </style>
-
+<c:if test="${sessionScope.admin == null}">
 <div class="form-group">
     <label><b>Interests</b></label>
     <div class="d-flex flex-wrap">
         <c:forEach items="${categories}" var="category">
             <div class="interest-bubble">
-                <input type="checkbox" id="category${category.getId()}" name="categories" value="${category.getId()}">
+                <input type="checkbox"
+                       id="category${category.getId()}"
+                       name="categories"
+                       value="${category.getId()}"
+                       <c:if test="${user.getInterests().contains(category)}">checked</c:if>>
                 <label for="category${category.getId()}">${category.getName()}</label>
             </div>
         </c:forEach>
     </div>
-    <small id="categoriesHelp" class="form-text text-muted" style="visibility: hidden;">Please select at least one
-        category.</small>
+    <small id="categoriesHelp" class="form-text text-muted" style="visibility: hidden;">
+        Please select at least one category.
+    </small>
 </div>
+</c:if>

@@ -34,4 +34,7 @@ public class AdminService {
     public Admin findByEmail(String email) {
         return adminRepository.findByEmail(email);
     }
+    public Admin findByPhoneNumber(String phoneNumber) {
+        return adminRepository.findByPhoneNumber(phoneNumber);
+    }
 }

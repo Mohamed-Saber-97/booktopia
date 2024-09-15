@@ -137,8 +137,7 @@ $(document).ready(function () {
 
         if (validateEmail()) {
             $.ajax({
-                url: "/check-unique-email",
-                method: "POST", data: { email: $("#emailInput").val() }, success: function (response) {
+                url: emailUrl, method: "POST", data: { email: $("#emailInput").val() }, success: function (response) {
                     if (response === "true") {
                         $("#emailInput").removeClass("is-invalid").addClass("is-valid");
                         $("#emailHelp").text("Email available").css({ "color": "green", "visibility": "visible" });
@@ -239,7 +238,7 @@ $(document).ready(function () {
 
         if (validatePhoneNumber()) {
             $.ajax({
-                url: "/check-phone-number",
+                url: phoneUrl,
                 method: "POST",
                 data: { phoneNumber: $("#phoneNumberInput").val() },
                 success: function (response) {
@@ -517,7 +516,7 @@ $(document).ready(function () {
     });
 
     // Validate on form submit
-    $('#signupForm').on('submit', function (event) {
+    $('#updateProfile').on('submit', function (event) {
         event.preventDefault(); // Prevent default submission until validation completes
         let isValid = true;
 
@@ -532,7 +531,7 @@ $(document).ready(function () {
         $.when(validateEmailWithAjax(), validatePhoneWithAjax()).then(function (emailValid, phoneValid) {
             if (isValid && emailValid && phoneValid) {
                 // All validations passed, proceed with form submission
-                $('#signupForm').off('submit').submit(); // Unbind and trigger form submit
+                $('#updateProfile').off('submit').submit(); // Unbind and trigger form submit
             }
         });
     });

@@ -62,7 +62,7 @@ function validateEmail() {
 
 
     // Validate on form submit
-    $('#buyerLoginForm').on('submit', function (event) {
+    $('#adminLoginForm').on('submit', function (event) {
         let isValid = true;
 
         // Loop through all validations

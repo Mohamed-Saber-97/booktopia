@@ -6,6 +6,7 @@ import jakarta.persistence.TypedQuery;
 import model.Admin;
 
 import static utils.RequestParameterUtil.EMAIL;
+import static utils.RequestParameterUtil.PHONE_NUMBER;
 
 public class AdminRepository extends BaseRepository<Admin, Long> {
     public AdminRepository() {
@@ -21,5 +22,16 @@ public class AdminRepository extends BaseRepository<Admin, Long> {
         } catch (NoResultException e) {
             return null;
         }
+    }
+    public Admin findByPhoneNumber(String phoneNumber) {
+        String jpql = "SELECT a FROM Admin a WHERE a.account.phoneNumber = :phoneNumber and a.isDeleted = false";
+        TypedQuery<Admin> query = entityManager.createQuery(jpql, Admin.class);
+        Admin result = null;
+        try {
+            result = query.setParameter(PHONE_NUMBER, phoneNumber).getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
     }
 }
