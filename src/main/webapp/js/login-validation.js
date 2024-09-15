@@ -5,25 +5,29 @@ $(document).ready(function () {
         trigger: 'manual'
     });
 
-    // Email validation function
-    function validateEmail() {
-        var email = $("#emailInput").val();
-        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        var isValid = true;
+// Email validation function
+function validateEmail() {
+    var email = $("#emailInput").val();
+    var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    var isValid = true;
 
-        // Clear previous validation states
-        $("#emailInput").removeClass("is-invalid is-valid");
-        $("#emailHelp").css("visibility", "hidden");
+    // Clear previous validation states
+    $("#emailInput").removeClass("is-invalid is-valid");
+    $("#emailHelp").css("visibility", "hidden");
 
-        // Check email format
-        if (!emailRegex.test(email)) {
-            $("#emailInput").addClass("is-invalid");
-            $("#emailHelp").text("Invalid email format").css("visibility", "visible");
-            isValid = false;
-        }
-
-        return isValid;
+    // Check email format
+    if (!emailRegex.test(email)) {
+        $("#emailInput").addClass("is-invalid");
+        $("#emailHelp").text("Invalid email format").css({"color": "red", "visibility": "visible"});
+        isValid = false;
+    } else {
+        $("#emailInput").addClass("is-valid");
+        $("#emailHelp").text("Correct email format").css({"color": "green", "visibility": "visible"});
     }
+
+    return isValid;
+}
+
     function validatePassword() {
         var isValid = true;
         var passwordField = $('#passwordInput');
@@ -49,7 +53,7 @@ $(document).ready(function () {
     // Array of validation functions
     const validations = [validateEmail,validatePassword];
 
-        $('#emailInput').on('blur', function () {
+        $('#emailInput').on('input blur', function () {
             validateEmail();
         });
     $('#passwordInput').on('input blur', function () {
