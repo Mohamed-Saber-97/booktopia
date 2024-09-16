@@ -55,18 +55,26 @@
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
                         Add A New Book
                     </h4>
+                    <form action="add-book" method="post" id="add-book-form"></form>
                     <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" name="price"
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0" name="price" id="price"
                                placeholder="Price" step="0.01">
                     </div>
+                    <small id="priceHelp" class="form-text text-muted" style="visibility: hidden;">.</small>
+
                     <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0" name="quantity"
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0" name="quantity" id="qty"
                                placeholder="Quantity">
                     </div>
+                    <small id="qtyHelp" class="form-text text-muted" style="visibility: hidden;">.</small>
+
                     <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="releaseDate"
-                               onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Release Date">
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30 form-control" type="date" name="rd" 
+                        id="releaseDate" data-bs-toggle="popover" data-bs-trigger="manual" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Release Date">
+
                     </div>
+                    <small id="rdHelp" class="form-text text-muted" style="visibility: hidden;">.</small>
+
                     <select class="bor8 m-b-20 stext-111 cl2 plh3 size-116 p-l-62 p-r-30" name="categoryId">
                         <option value="" disabled selected>Category</option>
                         <c:forEach items="${categories}" var="category">
@@ -74,21 +82,29 @@
                         </c:forEach>
                     </select>
                     <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="isbn"
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="isbn" id="isbn"
                                placeholder="ISBN">
                     </div>
+                    <small id="isbnHELP" class="form-text text-muted" style="visibility: hidden;">.</small>
+
                     <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="author"
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="author"id="author"
                                placeholder="Author">
                     </div>
+                    <small id="authorHELP" class="form-text text-muted" style="visibility: hidden;">.</small>
+
                     <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="name"
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="name" id="name"
                                placeholder="Name">
                     </div>
+                    <small id="nameHELP" class="form-text text-muted" style="visibility: hidden;">.</small>
+
                     <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="description"
-                               placeholder="Description">
+                        <textarea class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="description" id="desc"
+                               placeholder="Description"></textarea>
                     </div>
+                    <small id="descHELP" class="form-text text-muted" style="visibility: hidden;">.</small>
+
 
                     <div class="file-upload-container">
                         <div class="file-upload-wrapper">
@@ -109,7 +125,7 @@
                     </div> -->
 
 
-                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
+                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer" type="submit" id="submitBtn">
                         Add Book
                     </button>
                 </form>
@@ -132,6 +148,9 @@
             });
         });
     </script>
+
+<script src="./js/add-book-validation.js"></script>
+
 
     <!-- <div class="bor8 m-b-20">
         <label for="imagePath" class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30">Choose an
