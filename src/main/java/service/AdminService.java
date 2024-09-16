@@ -16,9 +16,6 @@ public class AdminService {
         if (existingAdmin == null) {
             return null;
         }
-//        if (existingAdmin.hashCode() == newAdmin.hashCode()) {
-//            return existingAdmin;
-//        }
         existingAdmin.getAccount().setAddress(newAdmin.getAccount().getAddress());
         existingAdmin.setAccount(newAdmin.getAccount());
         existingAdmin.getAccount().setPassword(PasswordUtil.hashPassword(newAdmin.getAccount().getPassword()));

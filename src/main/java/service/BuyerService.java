@@ -46,9 +46,6 @@ public class BuyerService {
         if (existingBuyer == null) {
             return null;
         }
-        if (existingBuyer.hashCode() == newBuyer.hashCode()) {
-            return existingBuyer;
-        }
         existingBuyer.getAccount().setAddress(newBuyer.getAccount().getAddress());
         existingBuyer.setAccount(newBuyer.getAccount());
         existingBuyer.getAccount().setPassword(PasswordUtil.hashPassword(newBuyer.getAccount().getPassword()));
