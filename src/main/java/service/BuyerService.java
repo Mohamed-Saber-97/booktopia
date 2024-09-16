@@ -10,6 +10,7 @@ import model.OrderProduct;
 import model.Product;
 import repository.BuyerRepository;
 import utils.EMFactory;
+import utils.PasswordUtil;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -36,6 +37,7 @@ public class BuyerService {
     }
 
     public Buyer save(Buyer buyer) {
+        buyer.getAccount().setPassword(PasswordUtil.hashPassword(buyer.getAccount().getPassword()));
         return buyerRepository.save(buyer);
     }
 
@@ -49,6 +51,7 @@ public class BuyerService {
         }
         existingBuyer.getAccount().setAddress(newBuyer.getAccount().getAddress());
         existingBuyer.setAccount(newBuyer.getAccount());
+        existingBuyer.getAccount().setPassword(PasswordUtil.hashPassword(newBuyer.getAccount().getPassword()));
         existingBuyer.setCreditLimit(newBuyer.getCreditLimit());
         existingBuyer.setInterests(newBuyer.getInterests());
         return buyerRepository.update(existingBuyer);
@@ -82,10 +85,11 @@ public class BuyerService {
 
     public boolean checkValidLoginCredentials(String email, String password) {
         Buyer buyer = findByEmail(email);
-        if (buyer == null) {
-            return false;
+        if (buyer != null) {
+            return PasswordUtil.checkPassword(password, buyer.getAccount().getPassword());
         }
-        return buyer.getAccount().getPassword().equals(password);
+        return false;
+
     }
 
     public Buyer findById(Long id) {

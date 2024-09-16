@@ -2,6 +2,7 @@ package service;
 
 import model.Admin;
 import repository.AdminRepository;
+import utils.PasswordUtil;
 
 public class AdminService {
     private final AdminRepository adminRepository;
@@ -15,20 +16,21 @@ public class AdminService {
         if (existingAdmin == null) {
             return null;
         }
-        if (existingAdmin.hashCode() == newAdmin.hashCode()) {
-            return existingAdmin;
-        }
+//        if (existingAdmin.hashCode() == newAdmin.hashCode()) {
+//            return existingAdmin;
+//        }
         existingAdmin.getAccount().setAddress(newAdmin.getAccount().getAddress());
         existingAdmin.setAccount(newAdmin.getAccount());
+        existingAdmin.getAccount().setPassword(PasswordUtil.hashPassword(newAdmin.getAccount().getPassword()));
         return adminRepository.update(existingAdmin);
     }
 
     public boolean checkValidLoginCredentials(String email, String password) {
         Admin admin = adminRepository.findByEmail(email);
-        if (admin == null) {
-            return false;
+        if (admin != null) {
+            return PasswordUtil.checkPassword(password, admin.getAccount().getPassword());
         }
-        return admin.getAccount().getPassword().equals(password);
+        return false;
     }
 
     public Admin findByEmail(String email) {
