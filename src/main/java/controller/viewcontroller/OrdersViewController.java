@@ -1,17 +1,20 @@
 package controller.viewcontroller;
 
 import controller.BuyerController;
+import dto.OrderDto;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import mapper.OrderToOrderDto;
 import model.Buyer;
 import model.Order;
 import model.OrderProduct;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static utils.RequestAttributeUtil.*;
@@ -28,9 +31,14 @@ public class OrdersViewController extends HttpServlet {
         } else {
             List<Order> orders = buyerController.searchOrders(buyer.getId(), 0, 16);
             orders.forEach(order -> order.getOrderProducts().removeIf(OrderProduct::getIsDeleted));
+            List<OrderDto> orderDtos = new ArrayList<>();
+            OrderToOrderDto orderToOrderDto = new OrderToOrderDto();
+            for (Order order : orders) {
+                orderDtos.add(orderToOrderDto.convert(order));
+            }
             RequestDispatcher dispatcher = request.getRequestDispatcher("orders.jsp");
             request.getSession().setAttribute(PAGE_TITLE, "Orders");
-            request.setAttribute(ORDERS, orders);
+            request.setAttribute(ORDERS, orderDtos);
             dispatcher.forward(request, response);
         }
     }
