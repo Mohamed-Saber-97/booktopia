@@ -32,9 +32,10 @@ public class AdminLoginViewController extends HttpServlet {
             session.setAttribute(USER, admin);
             session.setAttribute(ADMIN, YES);
             session.setAttribute(PAGE_TITLE, "Home");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-            request.setAttribute(SUCCESS, "Welcome back, %s".formatted(admin.getAccount().getName()));
-            dispatcher.forward(request, response);
+//            RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+            request.getSession().setAttribute(SUCCESS, "Welcome back, %s".formatted(admin.getAccount().getName()));
+//            dispatcher.forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 }
