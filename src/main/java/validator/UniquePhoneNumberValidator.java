@@ -10,6 +10,8 @@ import service.BuyerService;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static utils.RequestParameterUtil.PHONE_NUMBER;
+
 @WebServlet("/check-phone-number")
 public class UniquePhoneNumberValidator extends HttpServlet {
     public static final String ERROR_MESSAGE = "Phone number already exists";
@@ -24,7 +26,7 @@ public class UniquePhoneNumberValidator extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String phoneNumber = request.getParameter("phoneNumber");
+        String phoneNumber = request.getParameter(PHONE_NUMBER);
         String responseText = UniquePhoneNumberValidator.isValid(phoneNumber) ? "true" : ERROR_MESSAGE;
         response.setContentType("text/plain");
         response.getWriter().write(responseText);

@@ -1,5 +1,5 @@
-<%@include file="header.jsp"%>
-
+<%@include file="header.jsp" %>
+<%@include file="notifications.jsp" %>
 <style>
     /* Make the container a flexbox to center the content */
     .file-upload-container {
@@ -46,31 +46,73 @@
         text-align: center;
     }
 </style>
-
-<c:if test="${not empty error}">
-    <div class="alert alert-danger text-center" style="width: fit-content; margin: 0 auto;">
-        ${error}
-    </div>
-</c:if>
 <section class="bg0 p-t-104 p-b-116">
     <div class="container">
         <div class="flex-w flex-tr">
             <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md" style="margin: 0 auto;">
-                <form action="add-category" method="post">
+                <form action="add-category" method="post" id="addCategoryForm">
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
                         Add A New Category
                     </h4>
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="name"
-                            placeholder="Name">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="name" placeholder="Name" id="nameInput"
+                               data-bs-toggle="popover" data-bs-trigger="manual">
+                        <small id="nameHelp" class="form-text text-muted" style="visibility: hidden;">Name should not
+                            exceed 100 characters.</small>
                     </div>
-                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
-                        Add Category
-                    </button>
+                    <%@include file="form-components/submit-button.jsp" %>
                 </form>
             </div>
         </div>
     </div>
 </section>
+<script>
+    $(document).ready(function () {
+        $('#nameInput').on('blur', function () {
+            let categoryName = $('#nameInput').val();
 
-<%@include file="footer.jsp"%>
+            // Proceed with AJAX if category name is not empty
+            if (categoryName.trim() !== "") {
+                $.ajax({
+                    url: '/unique-category-name', // URL of your servlet
+                    method: 'POST',
+                    data: {name: categoryName},
+                    success: function (response) {
+                        if (response === "true") {
+                            // Category name is unique (valid)
+                            $('#nameInput').removeClass('is-invalid').addClass('is-valid');
+                            $('#nameHelp').text("Category name is available").css({
+                                "color": "green",
+                                "visibility": "visible"
+                            });
+                        } else {
+                            // Category name already exists (invalid)
+                            $('#nameInput').addClass('is-invalid').removeClass('is-valid');
+                            $('#nameHelp').text(response).css({
+                                "color": "red",
+                                "visibility": "visible"
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error checking category name:", error);
+                        $('#nameInput').addClass('is-invalid').removeClass('is-valid');
+                        $('#nameHelp').text("Error checking category name. Please try again later.").css({
+                            "color": "red",
+                            "visibility": "visible"
+                        });
+                    }
+                });
+            }
+        });
+
+        // Form submission handler
+        $('#addCategoryForm').on('submit', function (event) {
+            // Prevent form submission if the category name is invalid
+            if ($('#nameInput').hasClass('is-invalid')) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+<%@include file="footer.jsp" %>
