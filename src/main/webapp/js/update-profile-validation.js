@@ -137,20 +137,20 @@ $(document).ready(function () {
 
         if (validateEmail()) {
             $.ajax({
-                url: emailUrl, method: "POST", data: { email: $("#emailInput").val() }, success: function (response) {
+                url: emailUrl, method: "POST", data: {email: $("#emailInput").val()}, success: function (response) {
                     if (response === "true") {
                         $("#emailInput").removeClass("is-invalid").addClass("is-valid");
-                        $("#emailHelp").text("Email available").css({ "color": "green", "visibility": "visible" });
+                        $("#emailHelp").text("Email available").css({"color": "green", "visibility": "visible"});
                         deferred.resolve(true); // Resolve when email is valid
                     } else {
                         $("#emailInput").addClass("is-invalid").removeClass("is-valid");
-                        $("#emailHelp").text("Email already exists").css({ "color": "red", "visibility": "visible" });
+                        $("#emailHelp").text("Email already exists").css({"color": "red", "visibility": "visible"});
                         deferred.resolve(false); // Resolve when email is invalid
                     }
                 }, error: function (error) {
                     console.error("Error checking email:", error);
                     $("#emailInput").addClass("is-invalid").removeClass("is-valid");
-                    $("#emailHelp").text("Email already exists").css({ "color": "red", "visibility": "visible" });
+                    $("#emailHelp").text("Email already exists").css({"color": "red", "visibility": "visible"});
                     deferred.resolve(false); // Resolve when there's an error
                 }
             });
@@ -221,17 +221,18 @@ $(document).ready(function () {
 
         // Clear previous validation states
         $("#phoneNumberInput").removeClass("is-invalid is-valid");
-        $("#phoneNumberHelp").css({ "visibility": "hidden", "color": "" });
+        $("#phoneNumberHelp").css({"visibility": "hidden", "color": ""});
 
         // Check phone number format
         if (!phoneRegex.test(phoneNumber)) {
             $("#phoneNumberInput").addClass("is-invalid");
-            $("#phoneNumberHelp").text("Invalid phone number format").css({ "visibility": "visible", "color": "red" });
+            $("#phoneNumberHelp").text("Invalid phone number format").css({"visibility": "visible", "color": "red"});
             isValid = false;
         }
 
         return isValid;
     }
+
     // Function for phone number validation with AJAX
     function validatePhoneWithAjax() {
         const deferred = $.Deferred();
@@ -240,7 +241,7 @@ $(document).ready(function () {
             $.ajax({
                 url: phoneUrl,
                 method: "POST",
-                data: { phoneNumber: $("#phoneNumberInput").val() },
+                data: {phoneNumber: $("#phoneNumberInput").val()},
                 success: function (response) {
                     if (response === "true") {
                         $("#phoneNumberInput").removeClass("is-invalid").addClass("is-valid");
@@ -280,6 +281,7 @@ $(document).ready(function () {
 
     // Credit limit validation function
     function validateCreditLimit() {
+        if (emailUrl.includes("admin")) return true;
         let isValid = true;
         let creditLimitField = $('#creditLimitInput');
         let creditLimitValue = creditLimitField.val();
@@ -331,7 +333,6 @@ $(document).ready(function () {
 
     // City validation function
     function validateCity() {
-        console.log('Validating city...');
         let isValid = true;
         let cityField = $('#cityInput');
         let cityValue = cityField.val().trim();
@@ -344,14 +345,12 @@ $(document).ready(function () {
 
         // Validate that the field is not empty and does not exceed 100 characters
         if (cityValue === '') {
-            console.log('City is empty');
             cityField.addClass('is-invalid');
             cityField.attr('data-bs-content', 'City cannot be empty.');
             cityField.popover('show');
             cityHelp.text('City cannot be empty.').css('visibility', 'visible');
             isValid = false;
         } else if (cityValue.length > 100) {
-            console.log('City is too long');
             cityField.addClass('is-invalid');
             cityField.attr('data-bs-content', 'City should not exceed 100 characters.');
             cityField.popover('show');
@@ -434,6 +433,7 @@ $(document).ready(function () {
     }
 
     function validateCategories() {
+        if (emailUrl.includes("admin")) return true;
         let isValid = true;
         let categoriesField = $('.interest-bubble input[type="checkbox"]');
         let categoriesHelp = $('#categoriesHelp');

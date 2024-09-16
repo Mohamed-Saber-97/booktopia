@@ -10,7 +10,7 @@
             </div>
             <div class="col-md-4 text-center">
                 <h4 class="mtext-105 cl2">
-                    Sign up
+                    Update Profile
                 </h4>
             </div>
             <div class="col-md-4">
