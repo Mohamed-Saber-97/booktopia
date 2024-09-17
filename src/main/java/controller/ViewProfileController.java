@@ -10,14 +10,15 @@ import validator.CountryValidator;
 
 import java.io.IOException;
 
-import static utils.RequestAttributeUtil.COUNTRIES;
-import static utils.RequestAttributeUtil.PAGE_TITLE;
+import static utils.RequestAttributeUtil.*;
 
 @WebServlet(value = "/profile")
 public class ViewProfileController extends HttpServlet {
+    private transient CategoryController categoryController;
+
     @Override
-    public void init() throws ServletException {
-        super.init();
+    public void init() {
+        categoryController = new CategoryController();
     }
 
     @Override
@@ -25,6 +26,7 @@ public class ViewProfileController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("profile.jsp");
         request.getSession().setAttribute(PAGE_TITLE, "My Profile");
         request.getSession().setAttribute(COUNTRIES, CountryValidator.getCountries());
+        request.getSession().setAttribute(CATEGORIES, categoryController.findAll());
         dispatcher.forward(request, response);
     }
 }

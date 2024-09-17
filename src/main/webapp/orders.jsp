@@ -1,4 +1,8 @@
 <%@include file="header.jsp" %>
+<!-- include date time classes to convert dates -->
+<%@ page import="java.time.ZoneId" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+
 <c:set var="i" value="1" />
 <c:choose>
     <c:when test="${not empty orders}">
@@ -19,13 +23,13 @@
                                 <c:forEach items="${orders}" var="item">
                                     <tr class="table_row">
                                         <td class="column-1">${i}</td>
-                                        <td class="column-3">${item.getStatus()}</td>
+                                        <td class="column-3">${item.status()}</td>
                                         <td class="column-3"></td>
-                                        <td class="column-3">${item.getCreatedDate()}</td>
-                                        <td class="column-2">${item.getOrderProducts().size()}</td>
+                                        <td class="column-3">${item.createdDate()}</td>
+                                        <td class="column-2">${item.numberOfProducts()}</td>
                                         <td class="column-3">
                                             <form action="order-products" method="get" style="display:inline;">
-                                                <input type="hidden" name="order" value="${item.getId()}">
+                                                <input type="hidden" name="order" value="${item.id()}">
                                                 <button type="submit" class="btn btn-link">View</button>
                                             </form>
                                         </td>

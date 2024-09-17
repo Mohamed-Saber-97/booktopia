@@ -30,32 +30,32 @@
                                             <td class="column-1">
                                                 <div class="how-itemcart1">
                                                     <img src="${item.key.getImagePath()}" alt="IMG"
-                                                         class="remove-cart-item" data-product-id="${item.key.getId()}">
+                                                        class="remove-cart-item" data-product-id="${item.key.getId()}">
                                                 </div>
                                             </td>
                                             <td class="column-2">${item.key.getName()}</td>
                                             <td class="column-3 price" data-product-id="${item.key.getId()}">
-                                                    ${item.key.getPrice()}</td>
+                                                ${item.key.getPrice()}</td>
                                             <td class="column-4">
                                                 <div class="wrap-num-product flex-w m-l-auto m-r-0">
                                                     <div class="btn-num-product-down cart-single-operation cl8 hov-btn3 trans-04 flex-c-m"
-                                                         data-product-id="${item.key.getId()}"
-                                                         data-operation="decrement">
+                                                        data-product-id="${item.key.getId()}"
+                                                        data-operation="decrement">
                                                         <i class="fs-16 zmdi zmdi-minus"></i>
                                                     </div>
                                                     <input class="mtext-104 cl3 txt-center num-product quantity"
-                                                           type="number" data-product-id="${item.key.getId()}"
-                                                           name="quantity[]" value="${item.value}">
+                                                        type="number" data-product-id="${item.key.getId()}"
+                                                        name="quantity[]" value="${item.value}">
 
                                                     <div class="btn-num-product-up cart-single-operation cl8 hov-btn3 trans-04 flex-c-m"
-                                                         data-product-id="${item.key.getId()}"
-                                                         data-operation="increment">
+                                                        data-product-id="${item.key.getId()}"
+                                                        data-operation="increment">
                                                         <i class="fs-16 zmdi zmdi-plus"></i>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="column-5 totals" data-product-id="${item.key.getId()}">$
-                                                    ${item.key.getPrice() * item.value}</td>
+                                                ${item.key.getPrice() * item.value}</td>
                                             <input type="hidden" name="id[]" value="${item.key.getId()}">
                                         </tr>
                                     </c:forEach>
@@ -79,9 +79,9 @@
                         <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
                             <div class="flex-w flex-t p-t-27 p-b-33">
                                 <div class="size-208">
-									<span class="mtext-101 cl2">
-										Total:
-									</span>
+                                    <span class="mtext-101 cl2">
+                                        Total:
+                                    </span>
                                 </div>
 
                                 <div class="size-209 p-t-1">
@@ -132,8 +132,9 @@
                 success: function (response) {
                     response = response.trim();
                     $('.quantity[data-product-id=' + productId + ']').val(response);
-                    let price = $('.price[data-product-id=' + productId + ']').text().replace(
-                        '$', '').trim();
+                    let price = $('.price[data-product-id=' + productId + ']').text()
+                        .replace(
+                            '$', '').trim();
                     let quantity = $('.quantity[data-product-id=' + productId + ']').val()
                         .trim();
                     $(`.totals[data-product-id=` + productId + `]`).text(
@@ -170,8 +171,12 @@
                 success: function (response) {
                     response = response.trim();
                     if (response === 'success') {
-                        $('.remove-cart-item[data-product-id=' + productId + ']').closest('.table_row')
+                        $('.remove-cart-item[data-product-id=' + productId + ']').closest(
+                                '.table_row')
                             .remove();
+                        $('.cart').attr('data-notify', parseInt($('.cart').attr(
+                                'data-notify')) -
+                            1);
                         grandTotal = 0;
                         $('.totals').each(function () {
                             grandTotal += parseFloat($(this).text().replace('$', ''));

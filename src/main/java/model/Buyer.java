@@ -16,7 +16,7 @@ import java.util.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false, exclude = {"interests", "wishlist", "cart", "orders"})
+@EqualsAndHashCode(callSuper = false, exclude = {"wishlist", "cart", "orders"})
 @ToString(exclude = {"interests", "wishlist", "cart", "orders"})
 public class Buyer extends BaseEntity<Long> {
 
@@ -58,6 +58,11 @@ public class Buyer extends BaseEntity<Long> {
 
     public Set<Category> getInterests() {
         return Collections.unmodifiableSet(this.interests);
+    }
+
+    public void setInterests(Set<Category> interests) {
+        this.interests.clear();
+        this.interests.addAll(interests);
     }
 
     public void addToWishlist(Product product) {

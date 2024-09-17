@@ -6,9 +6,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import model.Buyer;
 import model.Order;
+import model.OrderProduct;
 import model.Product;
 import repository.BuyerRepository;
 import utils.EMFactory;
+import utils.PasswordUtil;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -30,7 +32,12 @@ public class BuyerService {
         return buyerRepository.findAll();
     }
 
+    public Buyer findByPhoneNumber(String phoneNumber) {
+        return buyerRepository.findByPhoneNumber(phoneNumber);
+    }
+
     public Buyer save(Buyer buyer) {
+        buyer.getAccount().setPassword(PasswordUtil.hashPassword(buyer.getAccount().getPassword()));
         return buyerRepository.save(buyer);
     }
 
@@ -39,12 +46,11 @@ public class BuyerService {
         if (existingBuyer == null) {
             return null;
         }
-        if (existingBuyer.hashCode() == newBuyer.hashCode()) {
-            return existingBuyer;
-        }
         existingBuyer.getAccount().setAddress(newBuyer.getAccount().getAddress());
         existingBuyer.setAccount(newBuyer.getAccount());
+        existingBuyer.getAccount().setPassword(PasswordUtil.hashPassword(newBuyer.getAccount().getPassword()));
         existingBuyer.setCreditLimit(newBuyer.getCreditLimit());
+        existingBuyer.setInterests(newBuyer.getInterests());
         return buyerRepository.update(existingBuyer);
     }
 
@@ -76,10 +82,11 @@ public class BuyerService {
 
     public boolean checkValidLoginCredentials(String email, String password) {
         Buyer buyer = findByEmail(email);
-        if (buyer == null) {
-            return false;
+        if (buyer != null) {
+            return PasswordUtil.checkPassword(password, buyer.getAccount().getPassword());
         }
-        return buyer.getAccount().getPassword().equals(password);
+        return false;
+
     }
 
     public Buyer findById(Long id) {
@@ -121,8 +128,6 @@ public class BuyerService {
     public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
         buyerRepository.removeFromWishlist(buyer, product);
     }
-
-
 
 
     public List<Buyer> search(int pageNumber, int pageSize) {
@@ -194,6 +199,8 @@ public class BuyerService {
         try {
             transaction.begin();
             Map<Product, Integer> currentCart = buyer.getCart();
+            Order order = new Order(buyer);
+            order = entityManager.merge(order);
             for (Map.Entry<Product, Integer> entry : currentCart.entrySet()) {
                 Product product = entry.getKey();
                 //--- Check if stock sufficient
@@ -213,8 +220,11 @@ public class BuyerService {
                 }
                 buyer.setCreditLimit(buyerCreditLimit.subtract(orderPrice));
                 buyer.removeFromCart(product);
-                //Add it to Orders
                 entityManager.merge(buyer);
+                //-- Add it to Orders
+                OrderProduct orderProduct = new OrderProduct(order, entry);
+                order.addOrderProduct(orderProduct);
+                entityManager.merge(order);
             }
             transaction.commit();
             return buyer.getCart().isEmpty();

@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static utils.RequestParameterUtil.EMAIL;
-import static utils.RequestParameterUtil.IS_DELETED;
+import static utils.RequestParameterUtil.*;
 
 public class BuyerRepository extends BaseRepository<Buyer, Long> {
     public BuyerRepository() {
@@ -39,7 +38,20 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         return entityManager.createQuery("SELECT COUNT(b) FROM Buyer b WHERE b.account.phoneNumber = :phoneNumber", Long.class).setParameter("phoneNumber", phoneNumber).getSingleResult() > 0;
     }
 
+    public Buyer findByPhoneNumber(String phoneNumber) {
+        String jpql = "SELECT b FROM Buyer b WHERE b.account.phoneNumber = :phoneNumber";
+        TypedQuery<Buyer> query = entityManager.createQuery(jpql, Buyer.class);
+        Buyer result = null;
+        try {
+            result = query.setParameter(PHONE_NUMBER, phoneNumber).getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
+    }
+
     public List<Product> findInterestsByBuyerId(Long buyerId) {
+        entityManager.clear();
         Buyer buyer = findById(buyerId).orElse(null);
         if (buyer != null) {
             TypedQuery<Product> query = entityManager.createQuery("SELECT p FROM Product p JOIN Category c ON p MEMBER OF c.products JOIN Buyer b ON c MEMBER OF b.interests WHERE b.id = :buyerId AND p.isDeleted = false AND c.isDeleted = false", Product.class);
@@ -50,7 +62,7 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
     }
 
     public Buyer findByEmail(String email) {
-        String jpql = "SELECT b FROM Buyer b WHERE b.account.email = :email and b.isDeleted = false";
+        String jpql = "SELECT b FROM Buyer b WHERE b.account.email = :email";
         TypedQuery<Buyer> query = entityManager.createQuery(jpql, Buyer.class);
         query.setParameter(EMAIL, email);
         return query.getSingleResult();

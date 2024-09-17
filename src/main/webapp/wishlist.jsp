@@ -88,6 +88,9 @@
                         $('.remove-wishlist-item[data-product-id=' + productId + ']').closest(
                             '.table_row')
                             .remove();
+                        $('.wishlist').attr('data-notify', parseInt($('.wishlist').attr(
+                                'data-notify')) -
+                            1);
                     }
                 }
             });

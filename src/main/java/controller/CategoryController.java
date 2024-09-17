@@ -31,4 +31,7 @@ public class CategoryController {
     public Category update(Category category) {
         return categoryService.update(category);
     }
+    public Category findByName(String name) {
+        return categoryService.findByName(name);
+    }
 }

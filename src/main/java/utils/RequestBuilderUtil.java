@@ -1,19 +1,31 @@
 package utils;
 
+import controller.CategoryController;
 import jakarta.servlet.ServletRequest;
 import model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
-import static utils.RequestAttributeUtil.PRODUCT;
-import static utils.RequestAttributeUtil.USER;
+import static utils.RequestAttributeUtil.*;
 import static utils.RequestParameterUtil.*;
 
 public class RequestBuilderUtil {
+    private static CategoryController categoryController = new CategoryController();
 
     private RequestBuilderUtil() {
 
+    }
+
+    private static Set<Category> getInterests(ServletRequest request) {
+        String[] categoryIds = request.getParameterValues(CATEGORIES);
+        Set<Category> categories = new HashSet<>();
+        for (String categoryId : categoryIds) {
+            categories.add(categoryController.findById(Long.parseLong(categoryId)));
+        }
+        return categories;
     }
 
     public static Buyer createBuyerFromRequest(ServletRequest request) {
@@ -21,6 +33,7 @@ public class RequestBuilderUtil {
         Account account = buildAccountFromRequest(request);
         buyer.setAccount(account);
         buyer.setCreditLimit(BigDecimal.valueOf(Double.parseDouble(request.getParameter(CREDIT_LIMIT))));
+        buyer.setInterests(getInterests(request));
         return buyer;
     }
 
@@ -29,6 +42,7 @@ public class RequestBuilderUtil {
         Account account = buildAccountFromRequest(request);
         buyer.setAccount(account);
         buyer.setCreditLimit(BigDecimal.valueOf(Double.parseDouble(request.getParameter(CREDIT_LIMIT))));
+        buyer.setInterests(getInterests(request));
         return buyer;
     }
 

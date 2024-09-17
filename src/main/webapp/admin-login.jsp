@@ -9,23 +9,16 @@
                         Admin Login
                     </h4>
 
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email"
-                            placeholder="Email Address">
-                    </div>
-                    <div class="bor8 m-b-20">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="password" name="password"
-                            placeholder="Password">
-                    </div>
+                    <%@include file="form-components/login-email.jsp" %>
 
-                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
-                        form="adminLoginForm">
-                        Login
-                    </button>
+                    <%@include file="form-components/password.jsp" %>
+
+                    <%@include file="form-components/login-button.jsp" %>
                 </form>
             </div>
         </div>
     </div>
+    <script src="js/admin-login-validation.js"></script>
 </section>
 
 <%@include file="footer.jsp"%>
