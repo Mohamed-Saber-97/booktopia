@@ -17,15 +17,15 @@ import static utils.RequestAttributeUtil.*;
 public class WishlistViewController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
-        if (!WishlistValidator.isValid(buyer)) {
-            request.setAttribute(ERROR, WishlistValidator.ERROR_MESSAGE);
-            request.getSession().setAttribute(USER, buyer);
-        } else {
-            request.setAttribute(SUCCESS, "Your Wishlist is Up to Date!");
-        }
+//        Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
+//        if (!WishlistValidator.isValid(buyer)) {
+//            request.setAttribute(ERROR, WishlistValidator.ERROR_MESSAGE);
+//            request.getSession().setAttribute(USER, buyer);
+//        } else {
+//            request.setAttribute(SUCCESS, "Your Wishlist is Up to Date!");
+//        }
         RequestDispatcher dispatcher = request.getRequestDispatcher("wishlist.jsp");
         request.getSession().setAttribute(PAGE_TITLE, "Wishlist");
-        dispatcher.forward(request, response);
+            dispatcher.forward(request, response);
     }
 }

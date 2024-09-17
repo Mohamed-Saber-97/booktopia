@@ -1,6 +1,7 @@
 package repository;
 
 import base.BaseRepository;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -53,10 +54,15 @@ public class ProductRepository extends BaseRepository<Product, Long> {
     }
 
     public Product findAvailableProductById(Long id) {
-        String jpql = "SELECT p FROM Product p WHERE p.id = :id AND p.isDeleted = false AND p.quantity > 0";
+        String jpql = "SELECT p FROM Product p WHERE p.id = :id AND p.isDeleted = false";
         TypedQuery<Product> query = entityManager.createQuery(jpql, Product.class);
-        query.setParameter("id", id);
-        return query.getSingleResult();
+        Product product = null;
+        try {
+            product = query.setParameter("id", id).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+        return product;
     }
 
     public boolean existsByIsbn(String isbn) {
