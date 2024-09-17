@@ -182,13 +182,15 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         }
     }
 
-    public void removeFromWishlist(Buyer buyer, Product product) {
+    public Buyer removeFromWishlist(Buyer buyer, Product product) {
         EntityTransaction transaction = entityManager.getTransaction();
+        buyer = entityManager.find(Buyer.class, buyer.getId());
         try {
             transaction.begin();
             buyer.removeFromWishlist(product);
             buyer = entityManager.merge(buyer);
             transaction.commit();
+            return buyer;
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

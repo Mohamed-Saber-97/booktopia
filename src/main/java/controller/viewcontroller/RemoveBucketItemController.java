@@ -36,7 +36,8 @@ public class RemoveBucketItemController extends HttpServlet {
                 if (bucket.equals("cart")) {
                     buyerController.removeProductFromCart(buyer, product);
                 } else if (bucket.equals("wishlist")) {
-                    buyerController.removeProductFromBuyerWishlist(buyer, product);
+                    buyer = buyerController.removeProductFromBuyerWishlist(buyer, product);
+                    request.getSession().setAttribute(USER, buyer);
                 }
                 out.print("success");
             } else {

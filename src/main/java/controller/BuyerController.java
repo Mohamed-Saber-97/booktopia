@@ -54,8 +54,8 @@ public class BuyerController {
         buyerService.addProductToBuyerWishlist(buyer, product);
     }
 
-    public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
-        buyerService.removeProductFromBuyerWishlist(buyer, product);
+    public Buyer removeProductFromBuyerWishlist(Buyer buyer, Product product) {
+        return buyerService.removeProductFromBuyerWishlist(buyer, product);
     }
 
     public List<Buyer> search(int pageNumber, int pageSize) {

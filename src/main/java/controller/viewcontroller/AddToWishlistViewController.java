@@ -14,6 +14,8 @@ import validator.NotEmptyValidator;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static utils.RequestAttributeUtil.USER;
+
 @WebServlet(value = "/addToWishlist")
 public class AddToWishlistViewController extends HttpServlet {
     private ProductController productController;
@@ -32,7 +34,8 @@ public class AddToWishlistViewController extends HttpServlet {
             if (product == null) {
                 out.println("Product not found");
             } else if (buyer.getWishlist().contains(product)) {
-                buyerController.removeProductFromBuyerWishlist(buyer, product);
+                buyer = buyerController.removeProductFromBuyerWishlist(buyer, product);
+                request.getSession().setAttribute(USER, buyer);
                 out.println("Product removed from wishlist");
             } else {
                 buyerController.addProductToBuyerWishlist(buyer, product);

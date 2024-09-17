@@ -35,7 +35,7 @@ public class Buyer extends BaseEntity<Long> {
     @JoinTable(name = "buyer_interest", joinColumns = @JoinColumn(name = "buyer_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> interests = HashSet.newHashSet(16);
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "buyer_wishlist", catalog = "booktopia", joinColumns = @JoinColumn(name = "buyer_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "product_id", nullable = false))
     private Set<Product> wishlist = HashSet.newHashSet(16);
 
