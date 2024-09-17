@@ -31,6 +31,7 @@ public abstract class BaseRepository<T, ID> {
     }
 
     public Optional<T> findById(ID id) {
+        entityManager.clear();
         String jpql = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e.id = :id AND e.isDeleted = false";
         TypedQuery<T> query = entityManager.createQuery(jpql, entityClass);
         query.setParameter("id", id);

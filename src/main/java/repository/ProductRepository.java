@@ -22,6 +22,7 @@ public class ProductRepository extends BaseRepository<Product, Long> {
     }
 
     public List<Product> search(Map<String, String> queryParameters, int pageNumber, int pageSize) {
+        entityManager.clear();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Product> query = cb.createQuery(Product.class);
         Root<Product> productRoot = query.from(Product.class);
@@ -45,6 +46,7 @@ public class ProductRepository extends BaseRepository<Product, Long> {
     }
 
     public List<Product> findAllAvailable() {
+        entityManager.clear();
         String jpql = "SELECT p FROM Product p WHERE p.isDeleted = false AND p.quantity > 0";
         TypedQuery<Product> query = entityManager.createQuery(jpql, Product.class);
         return query.getResultList();

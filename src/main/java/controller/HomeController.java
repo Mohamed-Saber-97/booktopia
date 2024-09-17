@@ -25,6 +25,8 @@ public class HomeController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
         request.getSession().setAttribute(PAGE_TITLE, "Home");
+        request.setAttribute(SUCCESS, request.getSession().getAttribute(SUCCESS));
+        request.getSession().removeAttribute(SUCCESS);
         List<Product> interests;
         if (request.getSession().getAttribute(BUYER) != null) {
             interests = buyerService.findInterestsByBuyerId(((Buyer) request.getSession().getAttribute(USER)).getId());

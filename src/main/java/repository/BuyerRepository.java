@@ -51,6 +51,7 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
     }
 
     public List<Product> findInterestsByBuyerId(Long buyerId) {
+        entityManager.clear();
         Buyer buyer = findById(buyerId).orElse(null);
         if (buyer != null) {
             TypedQuery<Product> query = entityManager.createQuery("SELECT p FROM Product p JOIN Category c ON p MEMBER OF c.products JOIN Buyer b ON c MEMBER OF b.interests WHERE b.id = :buyerId AND p.isDeleted = false AND c.isDeleted = false", Product.class);

@@ -4,7 +4,6 @@ import base.BaseRepository;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import model.Admin;
-import model.Buyer;
 
 import static utils.RequestParameterUtil.EMAIL;
 import static utils.RequestParameterUtil.PHONE_NUMBER;

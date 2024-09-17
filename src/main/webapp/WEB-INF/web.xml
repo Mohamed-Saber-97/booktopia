@@ -1,8 +1,8 @@
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
-    version="5.0"
-    metadata-complete="false">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0"
+         metadata-complete="false">
     <filter>
         <filter-name>guest-filter</filter-name>
         <filter-class>filter.GuestFilter</filter-class>
@@ -36,4 +36,9 @@
         <filter-name>update-profile</filter-name>
         <url-pattern>/update-profile</url-pattern>
     </filter-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/pages/errors/404.jsp</location>
+    </error-page>
 </web-app>

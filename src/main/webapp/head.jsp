@@ -9,8 +9,7 @@
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
 
 <head>
-    <title><%= session.getAttribute("pageTitle") %>
-    </title>
+    <title>${pageTitle}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
