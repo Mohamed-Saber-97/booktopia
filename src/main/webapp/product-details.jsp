@@ -154,6 +154,7 @@
                     quantity: numProduct
                 },
                 success: function (response) {
+                    console.log(response);
                     if (response.trim() == "Product added to cart") {
                         $('.cart').attr('data-notify', parseInt($('.cart').attr(
                                 'data-notify')) +

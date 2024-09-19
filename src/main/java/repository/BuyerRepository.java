@@ -73,7 +73,7 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         try {
             transaction.begin();
             buyer.addCartItem(product, quantity);
-            buyer = entityManager.merge(buyer);
+            entityManager.merge(buyer);
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) {
