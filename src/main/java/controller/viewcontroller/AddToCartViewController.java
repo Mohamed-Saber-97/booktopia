@@ -26,6 +26,7 @@ public class AddToCartViewController extends HttpServlet {
         String quantity = request.getParameter("quantity");
         PrintWriter out = response.getWriter();
         Buyer buyer = (Buyer) request.getSession().getAttribute("user");
+        buyer = buyerController.findById(buyer.getId());
         if (!NotEmptyValidator.isValid(productId, quantity)) {
             out.println("Invalid input");
         } else {

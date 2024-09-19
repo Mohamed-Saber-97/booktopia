@@ -26,6 +26,7 @@ public class AddToWishlistViewController extends HttpServlet {
         String productId = request.getParameter("productId");
         PrintWriter out = response.getWriter();
         Buyer buyer = (Buyer) request.getSession().getAttribute("user");
+        buyer = buyerController.findById(buyer.getId());
         if (!NotEmptyValidator.isValid(productId)) {
             out.println("Invalid input");
         } else {
