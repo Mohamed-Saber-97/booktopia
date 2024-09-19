@@ -73,7 +73,7 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         try {
             transaction.begin();
             buyer.addCartItem(product, quantity);
-            entityManager.merge(buyer);
+            buyer = entityManager.merge(buyer);
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) {
@@ -185,7 +185,6 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
 
     public Buyer removeFromWishlist(Buyer buyer, Product product) {
         EntityTransaction transaction = entityManager.getTransaction();
-        buyer = entityManager.find(Buyer.class, buyer.getId());
         try {
             transaction.begin();
             buyer.removeFromWishlist(product);

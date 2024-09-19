@@ -36,10 +36,12 @@ public class AddToWishlistViewController extends HttpServlet {
                 out.println("Product not found");
             } else if (buyer.getWishlist().contains(product)) {
                 buyer = buyerController.removeProductFromBuyerWishlist(buyer, product);
+                System.out.println("Product already in wishlist");
                 request.getSession().setAttribute(USER, buyer);
                 out.println("Product removed from wishlist");
             } else {
                 buyerController.addProductToBuyerWishlist(buyer, product);
+                System.out.println("Product added to wishlist");
                 request.getSession().setAttribute(USER, buyer);
                 out.println("Product added to wishlist");
             }
