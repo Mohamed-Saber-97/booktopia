@@ -37,11 +37,13 @@ public class AddToCartViewController extends HttpServlet {
                 out.println("Product not found");
             } else if (buyer.getCart().containsKey(product)) {
                 buyerController.removeProductFromCart(buyer, product);
+                request.getSession().setAttribute("user", buyer);
                 out.println("Product removed from cart");
             } else if (qty <= 0 || qty > product.getQuantity()) {
                 out.println("Invalid quantity");
             } else {
                 buyerController.addProductToBuyerCart(buyer, product, qty);
+                request.getSession().setAttribute("user", buyer);
                 out.println("Product added to cart");
             }
         }

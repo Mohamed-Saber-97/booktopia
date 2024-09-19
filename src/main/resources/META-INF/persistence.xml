@@ -4,16 +4,16 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <!-- Jakarta properties -->
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/booktopia"/>
-            <property name="jakarta.persistence.jdbc.user" value="root"/>
-            <property name="jakarta.persistence.jdbc.password" value=""/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://booktopia.cz8e2ae4cxio.eu-north-1.rds.amazonaws.com:3306/booktopia"/>
+            <property name="jakarta.persistence.jdbc.user" value="booktopia"/>
+            <property name="jakarta.persistence.jdbc.password" value="jOB3iye0uBKAYRcVYcfN"/>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
 
 
             <!-- Hibernate properties -->
-<!--            <property name="hibernate.show_sql" value="true"/>-->
-<!--            <property name="hibernate.format_sql" value="true"/>-->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.use_sql_comments" value="true"/>
 
             <!-- HikariCP configuration -->
