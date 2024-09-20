@@ -26,7 +26,6 @@ public class AddToCartViewController extends HttpServlet {
         String quantity = request.getParameter("quantity");
         PrintWriter out = response.getWriter();
         Buyer buyer = (Buyer) request.getSession().getAttribute("user");
-        buyer = buyerController.findById(buyer.getId());
         if (!NotEmptyValidator.isValid(productId, quantity)) {
             out.println("Invalid input");
         } else {
@@ -38,6 +37,7 @@ public class AddToCartViewController extends HttpServlet {
             } else if (buyer.getCart().containsKey(product)) {
                 System.out.println("Product already in cart");
                 buyerController.removeProductFromCart(buyer, product);
+                buyer = buyerController.findById(buyer.getId());
                 request.getSession().setAttribute("user", buyer);
                 out.println("Product removed from cart");
             } else if (qty <= 0 || qty > product.getQuantity()) {
@@ -46,6 +46,7 @@ public class AddToCartViewController extends HttpServlet {
             } else {
                 System.out.println("Product added to cart");
                 buyerController.addProductToBuyerCart(buyer, product, qty);
+                buyer = buyerController.findById(buyer.getId());
                 request.getSession().setAttribute("user", buyer);
                 out.println("Product added to cart");
             }

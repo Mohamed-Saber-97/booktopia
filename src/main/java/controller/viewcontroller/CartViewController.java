@@ -21,8 +21,8 @@ public class CartViewController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
-        request.getSession().setAttribute(USER, buyerController.findById(buyer.getId()));
-//        request.getSession().setAttribute(USER, buyer);
+        buyer = buyerController.findById(buyer.getId());
+        request.getSession().setAttribute(USER, buyer);
         RequestDispatcher dispatcher = request.getRequestDispatcher("cart.jsp");
         request.getSession().setAttribute(PAGE_TITLE, "Cart");
         if (!CartValidator.isValid(buyer)) {

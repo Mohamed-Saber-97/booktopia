@@ -31,6 +31,7 @@ public class CategoryService {
     public Category update(Category category) {
         return categoryRepository.update(category);
     }
+
     public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }

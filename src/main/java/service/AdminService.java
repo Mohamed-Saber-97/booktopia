@@ -11,6 +11,10 @@ public class AdminService {
         this.adminRepository = new AdminRepository();
     }
 
+    public Admin findById(Long id) {
+        return adminRepository.findById(id).orElse(null);
+    }
+
     public Admin update(Admin newAdmin) {
         Admin existingAdmin = adminRepository.findById(newAdmin.getId()).orElse(null);
         if (existingAdmin == null) {
@@ -33,6 +37,7 @@ public class AdminService {
     public Admin findByEmail(String email) {
         return adminRepository.findByEmail(email);
     }
+
     public Admin findByPhoneNumber(String phoneNumber) {
         return adminRepository.findByPhoneNumber(phoneNumber);
     }

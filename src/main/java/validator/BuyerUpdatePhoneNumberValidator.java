@@ -25,6 +25,7 @@ public class BuyerUpdatePhoneNumberValidator extends HttpServlet {
     public static boolean isValid(HttpServletRequest request) {
         String newPhoneNumber = request.getParameter(PHONE_NUMBER);
         Buyer current = (Buyer) request.getSession().getAttribute(USER);
+        current = new BuyerService().findById(current.getId());
         if (current == null) {
             return false;
         }

@@ -125,8 +125,8 @@ public class BuyerService {
         buyerRepository.addToWishlist(buyer, product);
     }
 
-    public Buyer removeProductFromBuyerWishlist(Buyer buyer, Product product) {
-        return buyerRepository.removeFromWishlist(buyer, product);
+    public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
+        buyerRepository.removeFromWishlist(buyer, product);
     }
 
 
@@ -228,8 +228,9 @@ public class BuyerService {
                 entityManager.merge(order);
             }
             buyer.clearCart();
-            buyer = entityManager.merge(buyer);
+//            buyer = entityManager.merge(buyer);
             transaction.commit();
+            entityManager.close();
             return buyer;
         } catch (InsufficientStock | InsufficientFunds e) {
             if (transaction.isActive()) {

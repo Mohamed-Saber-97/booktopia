@@ -1,6 +1,7 @@
 package repository;
 
 import base.BaseRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.TypedQuery;
@@ -23,7 +24,7 @@ public class ProductRepository extends BaseRepository<Product, Long> {
     }
 
     public List<Product> search(Map<String, String> queryParameters, int pageNumber, int pageSize) {
-        entityManager.clear();
+        EntityManager entityManager = getEntityManager();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Product> query = cb.createQuery(Product.class);
         Root<Product> productRoot = query.from(Product.class);
@@ -42,43 +43,57 @@ public class ProductRepository extends BaseRepository<Product, Long> {
         }
         predicate = cb.and(predicate, cb.equal(productRoot.get(IS_DELETED), false));
         query.select(productRoot).where(predicate);
-        return entityManager.createQuery(query).setFirstResult(pageNumber * pageSize).setMaxResults(pageSize).getResultList();
-//        return entityManager.createQuery(query).getResultList();
+        List<Product> result = entityManager.createQuery(query).setFirstResult(pageNumber * pageSize).setMaxResults(pageSize).getResultList();
+        closeEntityManager(entityManager);
+        return result;
     }
 
     public List<Product> findAllAvailable() {
-        entityManager.clear();
+        EntityManager entityManager = getEntityManager();
         String jpql = "SELECT p FROM Product p WHERE p.isDeleted = false AND p.quantity > 0";
         TypedQuery<Product> query = entityManager.createQuery(jpql, Product.class);
-        return query.getResultList();
+        List<Product> result = query.getResultList();
+        closeEntityManager(entityManager);
+        return result;
     }
 
     public Product findAvailableProductById(Long id) {
+        EntityManager entityManager = getEntityManager();
         String jpql = "SELECT p FROM Product p WHERE p.id = :id AND p.isDeleted = false";
         TypedQuery<Product> query = entityManager.createQuery(jpql, Product.class);
         Product product = null;
         try {
             product = query.setParameter("id", id).getSingleResult();
+            closeEntityManager(entityManager);
         } catch (NoResultException e) {
+            closeEntityManager(entityManager);
             return null;
         }
         return product;
     }
 
     public boolean existsByIsbn(String isbn) {
+        EntityManager entityManager = getEntityManager();
         String jpql = "SELECT COUNT(p) FROM Product p WHERE p.isbn = :isbn";
-        Long count = entityManager.createQuery(jpql, Long.class).setParameter("isbn", isbn).getSingleResult();
-        return count > 0;
+        boolean result = entityManager.createQuery(jpql, Long.class).setParameter("isbn", isbn).getSingleResult() > 0;
+        closeEntityManager(entityManager);
+        return result;
     }
 
     public List<Product> findByIds(Iterable<Long> ids) {
-        return entityManager.createQuery("SELECT product FROM Product product where product.id in :productIds AND product.isDeleted = false AND product.quantity > 0", Product.class).setParameter("productIds", ids).getResultList();
+        EntityManager entityManager = getEntityManager();
+        List<Product> result = entityManager.createQuery("SELECT product FROM Product product where product.id in :productIds AND product.isDeleted = false AND product.quantity > 0", Product.class).setParameter("productIds", ids).getResultList();
+        closeEntityManager(entityManager);
+        return result;
     }
 
     public Map<Product, Integer> findByIdsWithQuantities(Iterable<Long> ids) {
+        EntityManager entityManager = getEntityManager();
         TypedQuery<Tuple> query = entityManager.createQuery("SELECT product, product.quantity FROM Product product WHERE product.id IN :productIds AND product.isDeleted = false AND product.quantity > 0", Tuple.class);
         query.setParameter("productIds", ids);
         List<Tuple> results = query.getResultList();
-        return results.stream().collect(Collectors.toMap(tuple -> tuple.get(0, Product.class), tuple -> tuple.get(1, Integer.class)));
+        Map<Product, Integer> result = results.stream().collect(Collectors.toMap(tuple -> tuple.get(0, Product.class), tuple -> tuple.get(1, Integer.class)));
+        closeEntityManager(entityManager);
+        return result;
     }
 }

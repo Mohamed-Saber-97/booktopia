@@ -25,6 +25,7 @@ public class AdminUpdatePhoneNumberValidator extends HttpServlet {
     public static boolean isValid(HttpServletRequest request) {
         String newPhoneNumber = request.getParameter(PHONE_NUMBER);
         Admin current = (Admin) request.getSession().getAttribute(USER);
+        current = new AdminService().findById(current.getId());
         if (current == null) {
             return false;
         }

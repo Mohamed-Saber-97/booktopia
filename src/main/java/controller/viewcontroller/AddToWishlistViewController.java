@@ -26,7 +26,6 @@ public class AddToWishlistViewController extends HttpServlet {
         String productId = request.getParameter("productId");
         PrintWriter out = response.getWriter();
         Buyer buyer = (Buyer) request.getSession().getAttribute("user");
-        buyer = buyerController.findById(buyer.getId());
         if (!NotEmptyValidator.isValid(productId)) {
             out.println("Invalid input");
         } else {
@@ -35,13 +34,15 @@ public class AddToWishlistViewController extends HttpServlet {
             if (product == null) {
                 out.println("Product not found");
             } else if (buyer.getWishlist().contains(product)) {
-                buyer = buyerController.removeProductFromBuyerWishlist(buyer, product);
+                buyerController.removeProductFromBuyerWishlist(buyer, product);
                 System.out.println("Product already in wishlist");
+                buyer = buyerController.findById(buyer.getId());
                 request.getSession().setAttribute(USER, buyer);
                 out.println("Product removed from wishlist");
             } else {
                 buyerController.addProductToBuyerWishlist(buyer, product);
                 System.out.println("Product added to wishlist");
+                buyer = buyerController.findById(buyer.getId());
                 request.getSession().setAttribute(USER, buyer);
                 out.println("Product added to wishlist");
             }

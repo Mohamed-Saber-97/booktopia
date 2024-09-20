@@ -25,11 +25,12 @@ public class BuyerUpdateEmailValidator extends HttpServlet {
     public static boolean isValid(HttpServletRequest request) {
         String newEmail = request.getParameter(EMAIL);
         Buyer current = (Buyer) request.getSession().getAttribute(USER);
+        current = new BuyerService().findById(current.getId());
         if (current == null) {
             return false;
         }
         Buyer entity = new BuyerService().findByEmail(newEmail);
-        if(entity == null)
+        if (entity == null)
             return true;
 //        String newEmail = requestedBuyer.getAccount().getEmail();
         return Objects.equals(current.getId(), entity.getId());

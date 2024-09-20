@@ -25,6 +25,7 @@ public class AdminUpdateEmailValidator extends HttpServlet {
     public static boolean isValid(HttpServletRequest request) {
         String newEmail = request.getParameter(EMAIL);
         Admin current = (Admin) request.getSession().getAttribute(USER);
+        current = new AdminService().findById(current.getId());
         if (current == null) {
             return false;
         }

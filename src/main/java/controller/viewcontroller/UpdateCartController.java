@@ -1,5 +1,6 @@
 package controller.viewcontroller;
 
+import controller.BuyerController;
 import error.InsufficientFunds;
 import error.InsufficientStock;
 import jakarta.servlet.ServletException;
@@ -18,10 +19,12 @@ import static utils.RequestAttributeUtil.*;
 
 @WebServlet(value = "/update-cart")
 public class UpdateCartController extends HttpServlet {
+    private BuyerController buyerController;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
+        buyer = buyerController.findById(buyer.getId());
         if (!CheckoutValidator.isValid(buyer)) {
             request.setAttribute(ERROR, CartValidator.ERROR_MESSAGE);
         } else {
@@ -35,5 +38,10 @@ public class UpdateCartController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/cart");
             }
         }
+    }
+
+    @Override
+    public void init() {
+        buyerController = new BuyerController();
     }
 }

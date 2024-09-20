@@ -39,6 +39,8 @@ public class CartSingleOperationController extends HttpServlet {
                 } else {
                     qty = buyerController.decrementProductQuantity(buyer, product);
                 }
+                buyer = buyerController.findById(buyer.getId());
+                request.getSession().setAttribute(USER, buyer);
                 out.print(qty);
             } else {
                 out.print("Product not found");
