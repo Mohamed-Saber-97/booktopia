@@ -14,12 +14,12 @@ public class AdminRepository extends BaseRepository<Admin, Long> {
     }
 
     public Admin findByEmail(String email) {
-        List<Admin> result = findByField(EMAIL, email);
+        List<Admin> result = findByField("account.email", email);
         return result.isEmpty() ? null : result.getFirst();
     }
 
     public Admin findByPhoneNumber(String phoneNumber) {
-        List<Admin> result = findByField("phone_number", phoneNumber);
+        List<Admin> result = findByField("account.phone_number", phoneNumber);
         return result.isEmpty() ? null : result.getFirst();
     }
 }

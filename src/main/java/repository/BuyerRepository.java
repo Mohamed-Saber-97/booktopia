@@ -38,12 +38,12 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
     }
 
     public Buyer findByPhoneNumber(String phoneNumber) {
-        List<Buyer> result = findByField("phone_number", phoneNumber);
+        List<Buyer> result = findByField("account.phone_number", phoneNumber);
         return result.isEmpty() ? null : result.getFirst();
     }
 
     public Buyer findByEmail(String email) {
-        List<Buyer> result = findByField("email", email);
+        List<Buyer> result = findByField("account.email", email);
         return result.isEmpty() ? null : result.getFirst();
     }
 

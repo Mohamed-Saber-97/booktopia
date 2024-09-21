@@ -20,6 +20,7 @@ import static utils.RequestAttributeUtil.*;
 public class HomeController extends HttpServlet {
     private transient BuyerService buyerService;
     private transient ProductService productService;
+    private transient BuyerController buyerController;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,6 +29,10 @@ public class HomeController extends HttpServlet {
         request.setAttribute(SUCCESS, request.getSession().getAttribute(SUCCESS));
         request.getSession().removeAttribute(SUCCESS);
         List<Product> interests;
+        Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
+        buyer = buyerController.findById(buyer.getId());
+        System.out.println(buyer.getCart().size());
+        request.getSession().setAttribute(USER, buyer);
         if (request.getSession().getAttribute(BUYER) != null) {
             interests = buyerService.findInterestsByBuyerId(((Buyer) request.getSession().getAttribute(USER)).getId());
             request.setAttribute(INTERESTS, interests);
@@ -42,5 +47,6 @@ public class HomeController extends HttpServlet {
     public void init() throws ServletException {
         buyerService = new BuyerService();
         productService = new ProductService();
+        buyerController = new BuyerController();
     }
 }
