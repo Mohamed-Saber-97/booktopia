@@ -64,8 +64,8 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
     public Buyer findByEmail(String email) {
         String jpql = "SELECT b FROM Buyer b WHERE b.account.email = :email";
         TypedQuery<Buyer> query = entityManager.createQuery(jpql, Buyer.class);
-        query.setParameter(EMAIL, email);
-        return query.getSingleResult();
+        Buyer buyer = query.setParameter(EMAIL, email).getSingleResult();
+        return findById(buyer.getId()).orElse(null);
     }
 
     public void addProductToCart(Buyer buyer, Product product, int quantity) {
@@ -73,6 +73,7 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         try {
             transaction.begin();
             buyer.addCartItem(product, quantity);
+            buyer = entityManager.merge(buyer);
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) {
@@ -182,13 +183,14 @@ public class BuyerRepository extends BaseRepository<Buyer, Long> {
         }
     }
 
-    public void removeFromWishlist(Buyer buyer, Product product) {
+    public Buyer removeFromWishlist(Buyer buyer, Product product) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
             buyer.removeFromWishlist(product);
             buyer = entityManager.merge(buyer);
             transaction.commit();
+            return buyer;
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

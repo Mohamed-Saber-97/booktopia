@@ -327,7 +327,7 @@ $(document).ready(function () {
 
         // Wait for the email validation via AJAX
         $.when(validateISBNWithAjax()).then(function (emailValid, phoneValid) {
-            if (isValid && emailValid && phoneValid) {
+            if (isValid) {
                 // All validations passed, proceed with form submission
                 $('#add-book').off('submit').submit(); // Unbind and trigger form submit
             }

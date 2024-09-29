@@ -24,9 +24,9 @@ public class AddToCartViewController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String productId = request.getParameter("productId");
         String quantity = request.getParameter("quantity");
-        System.out.println("Product ID: " + productId);
         PrintWriter out = response.getWriter();
         Buyer buyer = (Buyer) request.getSession().getAttribute("user");
+        buyer = buyerController.findById(buyer.getId());
         if (!NotEmptyValidator.isValid(productId, quantity)) {
             out.println("Invalid input");
         } else {
@@ -36,12 +36,17 @@ public class AddToCartViewController extends HttpServlet {
             if (product == null) {
                 out.println("Product not found");
             } else if (buyer.getCart().containsKey(product)) {
+                System.out.println("Product already in cart");
                 buyerController.removeProductFromCart(buyer, product);
+                request.getSession().setAttribute("user", buyer);
                 out.println("Product removed from cart");
             } else if (qty <= 0 || qty > product.getQuantity()) {
+                System.out.println("Invalid quantity");
                 out.println("Invalid quantity");
             } else {
+                System.out.println("Product added to cart");
                 buyerController.addProductToBuyerCart(buyer, product, qty);
+                request.getSession().setAttribute("user", buyer);
                 out.println("Product added to cart");
             }
         }

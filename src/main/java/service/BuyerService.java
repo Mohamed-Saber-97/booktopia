@@ -125,8 +125,8 @@ public class BuyerService {
         buyerRepository.addToWishlist(buyer, product);
     }
 
-    public void removeProductFromBuyerWishlist(Buyer buyer, Product product) {
-        buyerRepository.removeFromWishlist(buyer, product);
+    public Buyer removeProductFromBuyerWishlist(Buyer buyer, Product product) {
+        return buyerRepository.removeFromWishlist(buyer, product);
     }
 
 
@@ -192,10 +192,12 @@ public class BuyerService {
         return false;
     }
 
-    public boolean checkout(Buyer buyer) throws InsufficientStock, InsufficientFunds {
-        if (buyer == null || buyer.getCart() == null) return false;
+    public Buyer checkout(Buyer buyer) throws InsufficientStock, InsufficientFunds {
+        if (buyer == null || buyer.getCart() == null) return buyer;
         EntityManager entityManager = EMFactory.getEMF("booktopia").createEntityManager();
+
         EntityTransaction transaction = entityManager.getTransaction();
+        buyer = entityManager.find(Buyer.class, buyer.getId());
         try {
             transaction.begin();
             Map<Product, Integer> currentCart = buyer.getCart();
@@ -219,15 +221,16 @@ public class BuyerService {
                     throw new InsufficientFunds("Transaction declined insufficient funds");
                 }
                 buyer.setCreditLimit(buyerCreditLimit.subtract(orderPrice));
-                buyer.removeFromCart(product);
-                entityManager.merge(buyer);
+
                 //-- Add it to Orders
                 OrderProduct orderProduct = new OrderProduct(order, entry);
                 order.addOrderProduct(orderProduct);
                 entityManager.merge(order);
             }
+            buyer.clearCart();
+            buyer = entityManager.merge(buyer);
             transaction.commit();
-            return buyer.getCart().isEmpty();
+            return buyer;
         } catch (InsufficientStock | InsufficientFunds e) {
             if (transaction.isActive()) {
                 transaction.rollback();

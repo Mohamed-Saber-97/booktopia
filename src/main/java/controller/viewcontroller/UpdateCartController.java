@@ -2,7 +2,6 @@ package controller.viewcontroller;
 
 import error.InsufficientFunds;
 import error.InsufficientStock;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,15 +26,14 @@ public class UpdateCartController extends HttpServlet {
             request.setAttribute(ERROR, CartValidator.ERROR_MESSAGE);
         } else {
             try {
-                new BuyerService().checkout(buyer);
+                buyer = new BuyerService().checkout(buyer);
                 request.getSession().setAttribute(USER, buyer);
-                request.setAttribute(SUCCESS, "Thank you for your purchase!");
+                request.getSession().setAttribute(SUCCESS, "Thank you for your purchase!");
+                response.sendRedirect(request.getContextPath() + "/");
             } catch (InsufficientStock | InsufficientFunds e) {
-                request.setAttribute(ERROR, e.getMessage());
+                request.getSession().setAttribute(ERROR, e.getMessage());
+                response.sendRedirect(request.getContextPath() + "/cart");
             }
         }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("cart.jsp");
-        request.getSession().setAttribute(PAGE_TITLE, "Cart");
-        dispatcher.forward(request, response);
     }
 }
