@@ -3,7 +3,7 @@ package org.example.booktopia.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.booktopia.error.IllegalQuantityException;
+import org.example.booktopia.error.IllegalValueException;
 
 @Getter
 @Setter
@@ -21,7 +21,6 @@ public class CartItem {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
     @Column(name = "quantity")
-    @Setter
     private Integer quantity;
 
     public CartItem() {
@@ -42,6 +41,6 @@ public class CartItem {
 
     public void setQuantity(Integer quantity) {
         if (quantity < 0)
-            throw new IllegalQuantityException(quantity.toString());
+            throw new IllegalValueException("Quantity", quantity.toString());
     }
 }
