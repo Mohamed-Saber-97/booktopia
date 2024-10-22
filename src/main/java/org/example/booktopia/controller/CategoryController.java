@@ -1,8 +1,8 @@
 package org.example.booktopia.controller;
 
-import org.example.booktopia.converters.CategoryDtoToCategoryConverter;
-import org.example.booktopia.dtos.CategoryDto;
+import org.example.booktopia.dtos.CategoryDTO;
 import org.example.booktopia.error.ErrorMessage;
+import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.model.Category;
 import org.example.booktopia.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        List<CategoryDto> categories = categoryService.findAllAvailableCategories();
+    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
+        List<CategoryDTO> categories = categoryService.findAllAvailableCategories();
         return ResponseEntity.ok(categories);
     }
 
@@ -34,56 +34,59 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
-        CategoryDto category = categoryService.findById(id);
+        CategoryDTO category = categoryService.findById(id);
         if (category == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Category with id " + id + " not found", 404);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body(new ErrorMessage("Category with id " + id + " not found", HttpStatus.NOT_FOUND));
         }
         return ResponseEntity.ok(category);
     }
 
     @PostMapping
-    public ResponseEntity<?> saveCategory(@RequestBody CategoryDto categoryDto) {
-        Category category = CategoryDtoToCategoryConverter.convert(categoryDto);
-        CategoryDto savedCategoryDto = categoryService.save(category);
+    public ResponseEntity<?> saveCategory(@RequestBody CategoryDTO categoryDto) {
+        Category category = CategoryMapper.INSTANCE.toEntity(categoryDto);
+        CategoryDTO savedCategoryDto = categoryService.save(category);
         if (savedCategoryDto == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Category with name " + categoryDto.name() + " already exists", 409);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessage);
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                                 .body(new ErrorMessage("Category with name " + categoryDto.name() + " already exists",
+                                                        HttpStatus.CONFLICT));
         }
         return ResponseEntity.ok(savedCategoryDto);
     }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getCategoryByName(@PathVariable String name) {
-        CategoryDto categoryDto = categoryService.findByName(name);
+        CategoryDTO categoryDto = categoryService.findByName(name);
         if (categoryDto == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Category with name " + name + " not found", 404);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body(new ErrorMessage("Category with name " + name + " not found",
+                                                        HttpStatus.NOT_FOUND));
         }
         return ResponseEntity.ok(categoryDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
-        Category category = CategoryDtoToCategoryConverter.convert(categoryDto);
+    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDto) {
+        Category category = CategoryMapper.INSTANCE.toEntity(categoryDto);
         category.setId(id);
 
-        CategoryDto updatedCategoryDto = categoryService.update(category);
+        CategoryDTO updatedCategoryDto = categoryService.update(category);
         if (updatedCategoryDto == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Category with id " + id + " not found", 404);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body(new ErrorMessage("Category with id " + id + " not found", HttpStatus.NOT_FOUND));
         }
         return ResponseEntity.ok(updatedCategoryDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
-        CategoryDto categoryDto = categoryService.findById(id);
+        CategoryDTO categoryDto = categoryService.findById(id);
         if (categoryDto == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Category with id " + id + " not found", 404);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body(new ErrorMessage("Category with id " + id + " not found", HttpStatus.NOT_FOUND));
         }
         categoryService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                             .build();
     }
 }
