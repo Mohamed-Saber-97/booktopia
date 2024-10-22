@@ -22,4 +22,10 @@ public class BuyerWishlist {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    public BuyerWishlist() {
+    }
+
+    public BuyerWishlist(Buyer buyer, Product product) {
+        this.id = new BuyerWishlistId(buyer.getId(), product.getId());
+    }
 }
