@@ -25,6 +25,6 @@ public class ProductService {
 
     public Product findProductById(Long id) {
         return productRepository.findById(id)
-                                .orElseThrow(() -> new RecordNotFoundException("id", id.toString()));
+                                .orElseThrow(() -> new RecordNotFoundException("Product", "ID", id.toString()));
     }
 }
