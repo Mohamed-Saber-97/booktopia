@@ -25,7 +25,6 @@ public class productController {
     @GetMapping("{/id}")
     public ResponseEntity<Product> getProductByID(@PathVariable long id){
         return productService.getProductById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-
     }
 
 }
