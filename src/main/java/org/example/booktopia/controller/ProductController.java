@@ -1,15 +1,13 @@
 package org.example.booktopia.controller;
 
 import lombok.RequiredArgsConstructor;
+//import org.example.booktopia.DTOs.ProductDTO;
 import org.example.booktopia.model.Product;
 import org.example.booktopia.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,19 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK)
                              .body(productService.findProductById(id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
+
+//    @PostMapping
+//    public ResponseEntity<Product> addProduct(@RequestBody ProductDTO productDTO) {
+//        Product product = productService.addProduct(productDTO);
+//        return ResponseEntity.ok(product);
+//    }
+
+
 
 }

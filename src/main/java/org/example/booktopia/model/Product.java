@@ -34,7 +34,7 @@ public class Product extends BaseEntity {
     private String description;
 
     @Size(max = 255)
-    @NotNull
+   // @NotNull
     @Column(name = "image_path", nullable = false)
     private String imagePath;
 
