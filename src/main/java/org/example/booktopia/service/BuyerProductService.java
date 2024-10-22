@@ -19,6 +19,6 @@ public class BuyerProductService {
     public List<Product> getBuyerInterestedProducts(Long buyerId) {
         List<Long> categoryIds = buyerInterestService.findCategoryIdsByBuyerId(buyerId);
         List<Long> availableCategoryIds = categoryService.findAllAvailableCategoriesById(categoryIds);
-        return productService.findAllProductsByCategoryIds(availableCategoryIds);
+        return productService.findAllProductsByCategoryIds(availableCategoryIds.iterator());
     }
 }
