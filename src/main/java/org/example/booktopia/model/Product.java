@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.booktopia.base.BaseEntity;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "product", schema = "booktopia")
-public class Product {
+public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
