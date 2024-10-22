@@ -12,11 +12,13 @@ import java.util.List;
 @Slf4j
 public class BuyerProductService {
     private final BuyerService buyerService;
+    private final CategoryService categoryService;
     private final ProductService productService;
     private final BuyerInterestService buyerInterestService;
 
     public List<Product> getBuyerInterestedProducts(Long buyerId) {
         List<Long> categoryIds = buyerInterestService.findCategoryIdsByBuyerId(buyerId);
-        return productService.findAllProductsByCategoryIds(categoryIds);
+        List<Long> availableCategoryIds = categoryService.findAllAvailableCategoriesById(categoryIds);
+        return productService.findAllProductsByCategoryIds(availableCategoryIds);
     }
 }
