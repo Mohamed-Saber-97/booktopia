@@ -2,8 +2,8 @@ package org.example.booktopia.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.booktopia.converters.CategoryToCategoryDtoConverter;
-import org.example.booktopia.dtos.CategoryDto;
+import org.example.booktopia.dtos.CategoryDTO;
+import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.model.Category;
 import org.example.booktopia.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -20,27 +20,25 @@ public class CategoryService {
         return categoryRepository.findAllIdByAndIsDeletedIsFalse(ids);
     }
 
-    public List<CategoryDto> findAllAvailableCategories() {
+    public List<CategoryDTO> findAllAvailableCategories() {
         List<Category> categories = categoryRepository.findAllAvailableCategories();
-        return categories.stream()
-                         .map(CategoryToCategoryDtoConverter::convert)
-                         .toList();
+        return CategoryMapper.INSTANCE.toDTOs(categories);
     }
 
-    public CategoryDto save(Category category) {
+    public CategoryDTO save(Category category) {
         Boolean exists = this.existsByName(category.getName());
         if (exists) {
             return null;
         }
         Category savedCategory = categoryRepository.save(category);
-        return CategoryToCategoryDtoConverter.convert(savedCategory);
+        return CategoryMapper.INSTANCE.toDTO(savedCategory);
     }
 
-    public CategoryDto findById(Long id) {
+    public CategoryDTO findById(Long id) {
         Category category = categoryRepository.findById(id)
                                               .orElse(null);
         if (category != null) {
-            return CategoryToCategoryDtoConverter.convert(category);
+            return CategoryMapper.INSTANCE.toDTO(category);
         }
         return null;
     }
@@ -49,21 +47,21 @@ public class CategoryService {
         return categoryRepository.existsByName(name);
     }
 
-    public CategoryDto findByName(String name) {
+    public CategoryDTO findByName(String name) {
         Category category = categoryRepository.findByName(name);
         if (category != null) {
-            return CategoryToCategoryDtoConverter.convert(category);
+            return CategoryMapper.INSTANCE.toDTO(category);
         }
         return null;
     }
 
-    public CategoryDto update(Category category) {
+    public CategoryDTO update(Category category) {
         Boolean exists = this.existsByName(category.getName());
         if (exists) {
             return null;
         }
         Category updatedCategory = categoryRepository.save(category);
-        return CategoryToCategoryDtoConverter.convert(updatedCategory);
+        return CategoryMapper.INSTANCE.toDTO(updatedCategory);
     }
 
     public void deleteById(Long id) {
