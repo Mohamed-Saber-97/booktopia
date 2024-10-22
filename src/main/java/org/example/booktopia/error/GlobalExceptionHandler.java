@@ -28,14 +28,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(error);
     }
 
-    @ExceptionHandler(DuplicateRecordFoundException.class)
-    public ResponseEntity<?> handleDuplicateRecordFound(DuplicateRecordFoundException ex) {
+    @ExceptionHandler(DuplicateRecordException.class)
+    public ResponseEntity<?> handleDuplicateRecordFound(DuplicateRecordException ex) {
 
         ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), Collections.singletonList(ex.getMessage()));
 
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(error);
+    }
+
+    @ExceptionHandler(IllegalValueException.class)
+    public ResponseEntity<?> handleIllegalValue(IllegalValueException ex) {
+        ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), Collections.singletonList(ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(error);
     }
 
     @Override
