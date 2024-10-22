@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.example.booktopia.base.BaseEntity;
 
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -27,11 +26,4 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category")
     private Set<Product> products = new LinkedHashSet<>();
 
-    public Set<Buyer> getBuyers() {
-        return Collections.unmodifiableSet(this.buyers);
-    }
-
-    public Set<Product> getProducts() {
-        return Collections.unmodifiableSet(this.products);
-    }
 }
