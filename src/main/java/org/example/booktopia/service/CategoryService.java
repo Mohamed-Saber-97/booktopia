@@ -13,7 +13,7 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    public List<Long> findAllAvailableCategoriesById(Iterable<Long> ids) {
+    public List<Long> findAllAvailableCategoriesById(List<Long> ids) {
         return categoryRepository.findAllIdByAndIsDeletedIsFalse(ids);
     }
 }

@@ -7,7 +7,6 @@ import org.example.booktopia.model.Product;
 import org.example.booktopia.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -16,8 +15,12 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public List<Product> findAllProductsByCategoryIds(Iterator<Long> categoryIds) {
+    public List<Product> findAllProductsByCategoryIds(List<Long> categoryIds) {
         return productRepository.findAllByCategoryIds(categoryIds);
+    }
+
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 
     public Product findProductById(Long id) {
