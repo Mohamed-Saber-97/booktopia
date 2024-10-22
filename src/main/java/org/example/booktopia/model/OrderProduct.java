@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.booktopia.base.BaseEntity;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
@@ -12,7 +13,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name = "order_product", schema = "booktopia")
-public class OrderProduct {
+public class OrderProduct extends BaseEntity {
     @EmbeddedId
     private OrderProductId id;
 
