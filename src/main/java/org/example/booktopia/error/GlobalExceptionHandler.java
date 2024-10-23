@@ -51,19 +51,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   WebRequest request) {
         List<String> errors = new ArrayList<String>();
         ex.getBindingResult()
-          .getFieldErrors()
-          .stream()
-          .map(FieldError::getDefaultMessage)
-          .forEach(errors::add);
+                .getFieldErrors()
+                .stream()
+                .map(FieldError::getDefaultMessage)
+                .forEach(errors::add);
         ex.getBindingResult()
-          .getGlobalErrors()
-          .stream()
-          .map(ObjectError::getDefaultMessage)
-          .forEach(errors::add);
+                .getGlobalErrors()
+                .stream()
+                .map(ObjectError::getDefaultMessage)
+                .forEach(errors::add);
         ErrorResponse error = new ErrorResponse(ex.toString(), errors);
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(error);
     }
+
+
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/categories")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
@@ -40,7 +40,7 @@ public class CategoryController {
         Category category = CategoryMapper.INSTANCE.toEntity(categoryDto);
         CategoryDTO savedCategoryDto = categoryService.save(category);
         return ResponseEntity.status(HttpStatus.CREATED)
-                             .body(savedCategoryDto);
+                .body(savedCategoryDto);
     }
 
     @GetMapping("/name/{name}")
@@ -58,7 +58,8 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long id) {
         categoryService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                             .build();
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }

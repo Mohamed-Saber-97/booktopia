@@ -28,11 +28,13 @@ public class CategoryService {
         return CategoryMapper.INSTANCE.toDTOs(categories);
     }
 
-    @Transactional
     public CategoryDTO save(Category category) {
-        Boolean exists = categoryRepository.existsByName(category.getName());
+        Boolean exists = this.existsByName(category.getName());
         if (exists) {
-            throw new DuplicateRecordException("Category", category.getName());
+            CategoryDTO existingCategory = this.findByName(category.getName());
+            if (!existingCategory.id().equals(category.getId())) {
+                throw new DuplicateRecordException("name", category.getName());
+            }
         }
         Category savedCategory = categoryRepository.save(category);
         return CategoryMapper.INSTANCE.toDTO(savedCategory);
@@ -41,25 +43,31 @@ public class CategoryService {
 
     public CategoryDTO findById(Long id) {
         Category category = categoryRepository.findById(id)
-                                              .orElseThrow(() -> new RecordNotFoundException("Category", "ID",
-                                                                                             id.toString()));
+                .orElseThrow(() -> new RecordNotFoundException("Category", "ID", id.toString()));
         return CategoryMapper.INSTANCE.toDTO(category);
     }
 
     public CategoryDTO findByName(String name) {
         Category category = categoryRepository.findByName(name)
-                                              .orElseThrow(() -> new RecordNotFoundException("Category", "Name", name));
+                .orElseThrow(() -> new RecordNotFoundException("Category", "Name", name));
         return CategoryMapper.INSTANCE.toDTO(category);
+    }
+
+    public Boolean existsByName(String name) {
+        return categoryRepository.existsByName(name);
     }
 
     @Transactional
     public CategoryDTO update(Long id, CategoryDTO categoryDto) {
         Category currentCategory = categoryRepository.findById(id)
-                                                     .orElseThrow(() -> new RecordNotFoundException("Category", "ID",
-                                                                                                    id.toString()));
-        Boolean nameConflict = categoryRepository.existsByNameAndIdNotAndIsDeletedIsFalse(categoryDto.name(), id);
+                .orElseThrow(() -> new RecordNotFoundException("Category", "ID", id.toString()));
+        Boolean nameConflict = this.existsByName(categoryDto.name());
+
         if (nameConflict) {
-            throw new DuplicateRecordException("Category", categoryDto.name());
+            CategoryDTO existingCategory = this.findByName(categoryDto.name());
+            if (!existingCategory.id().equals(id)) {
+                throw new DuplicateRecordException("name", categoryDto.name());
+            }
         }
 
         Category categoryToUpdate = CategoryMapper.INSTANCE.toEntity(categoryDto);
@@ -69,11 +77,10 @@ public class CategoryService {
         return CategoryMapper.INSTANCE.toDTO(updatedCategory);
     }
 
+
     @Transactional
     public void deleteById(Long id) {
-        Category category = categoryRepository.findById(id)
-                                              .orElseThrow(() -> new RecordNotFoundException("Category", "ID",
-                                                                                             id.toString()));
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Category", "id", id.toString()));
         category.setIsDeleted(true);
         categoryRepository.save(category);
     }
