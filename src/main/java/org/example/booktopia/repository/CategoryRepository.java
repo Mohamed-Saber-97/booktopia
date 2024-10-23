@@ -21,5 +21,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("select c from Category c where c.isDeleted = false")
     List<Category> findAllAvailableCategories();
 
-    Optional<Boolean> existsByNameAndIdNotAndIsDeletedIsFalse(String name, Long id);
+    Boolean existsByNameAndIdNotAndIsDeletedIsFalse(String name, Long id);
 }

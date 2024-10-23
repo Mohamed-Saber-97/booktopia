@@ -1,5 +1,6 @@
 package org.example.booktopia.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.dtos.CategoryDTO;
@@ -27,6 +28,7 @@ public class CategoryService {
         return CategoryMapper.INSTANCE.toDTOs(categories);
     }
 
+    @Transactional
     public CategoryDTO save(Category category) {
         Boolean exists = categoryRepository.existsByName(category.getName());
         if (exists) {
@@ -50,13 +52,15 @@ public class CategoryService {
         return CategoryMapper.INSTANCE.toDTO(category);
     }
 
+    @Transactional
     public CategoryDTO update(Long id, CategoryDTO categoryDto) {
         Category currentCategory = categoryRepository.findById(id)
                                                      .orElseThrow(() -> new RecordNotFoundException("Category", "ID",
                                                                                                     id.toString()));
-        Boolean nameConflict = categoryRepository.existsByNameAndIdNotAndIsDeletedIsFalse(categoryDto.name(), id)
-                                                 .orElseThrow(() -> new DuplicateRecordException("Category",
-                                                                                                 categoryDto.name()));
+        Boolean nameConflict = categoryRepository.existsByNameAndIdNotAndIsDeletedIsFalse(categoryDto.name(), id);
+        if (nameConflict) {
+            throw new DuplicateRecordException("Category", categoryDto.name());
+        }
 
         Category categoryToUpdate = CategoryMapper.INSTANCE.toEntity(categoryDto);
         categoryToUpdate.setId(id);
@@ -65,7 +69,7 @@ public class CategoryService {
         return CategoryMapper.INSTANCE.toDTO(updatedCategory);
     }
 
-
+    @Transactional
     public void deleteById(Long id) {
         Category category = categoryRepository.findById(id)
                                               .orElseThrow(() -> new RecordNotFoundException("Category", "ID",
