@@ -1,7 +1,7 @@
 package org.example.booktopia.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.example.booktopia.dtos.CategoryDTO;
-import org.example.booktopia.error.ErrorMessage;
 import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.model.Category;
 import org.example.booktopia.service.CategoryService;
@@ -13,12 +13,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
+@RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
@@ -33,58 +30,33 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
+    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
         CategoryDTO category = categoryService.findById(id);
-        if (category == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body(new ErrorMessage("Category with id " + id + " not found", HttpStatus.NOT_FOUND));
-        }
         return ResponseEntity.ok(category);
     }
 
     @PostMapping
-    public ResponseEntity<?> saveCategory(@RequestBody CategoryDTO categoryDto) {
+    public ResponseEntity<CategoryDTO> saveCategory(@RequestBody CategoryDTO categoryDto) {
         Category category = CategoryMapper.INSTANCE.toEntity(categoryDto);
         CategoryDTO savedCategoryDto = categoryService.save(category);
-        if (savedCategoryDto == null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                                 .body(new ErrorMessage("Category with name " + categoryDto.name() + " already exists",
-                                                        HttpStatus.CONFLICT));
-        }
-        return ResponseEntity.ok(savedCategoryDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                             .body(savedCategoryDto);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<?> getCategoryByName(@PathVariable String name) {
+    public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) {
         CategoryDTO categoryDto = categoryService.findByName(name);
-        if (categoryDto == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body(new ErrorMessage("Category with name " + name + " not found",
-                                                        HttpStatus.NOT_FOUND));
-        }
         return ResponseEntity.ok(categoryDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDto) {
-        Category category = CategoryMapper.INSTANCE.toEntity(categoryDto);
-        category.setId(id);
-
-        CategoryDTO updatedCategoryDto = categoryService.update(category);
-        if (updatedCategoryDto == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body(new ErrorMessage("Category with id " + id + " not found", HttpStatus.NOT_FOUND));
-        }
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDto) {
+        CategoryDTO updatedCategoryDto = categoryService.update(id, categoryDto);
         return ResponseEntity.ok(updatedCategoryDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
-        CategoryDTO categoryDto = categoryService.findById(id);
-        if (categoryDto == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body(new ErrorMessage("Category with id " + id + " not found", HttpStatus.NOT_FOUND));
-        }
         categoryService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                              .build();

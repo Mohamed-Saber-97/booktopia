@@ -3,6 +3,8 @@ package org.example.booktopia.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.dtos.CategoryDTO;
+import org.example.booktopia.error.DuplicateRecordException;
+import org.example.booktopia.error.RecordNotFoundException;
 import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.model.Category;
 import org.example.booktopia.repository.CategoryRepository;
@@ -26,50 +28,49 @@ public class CategoryService {
     }
 
     public CategoryDTO save(Category category) {
-        Boolean exists = this.existsByName(category.getName());
+        Boolean exists = categoryRepository.existsByName(category.getName());
         if (exists) {
-            return null;
+            throw new DuplicateRecordException("Category", category.getName());
         }
         Category savedCategory = categoryRepository.save(category);
         return CategoryMapper.INSTANCE.toDTO(savedCategory);
     }
 
+
     public CategoryDTO findById(Long id) {
         Category category = categoryRepository.findById(id)
-                                              .orElse(null);
-        if (category != null) {
-            return CategoryMapper.INSTANCE.toDTO(category);
-        }
-        return null;
-    }
-
-    public Boolean existsByName(String name) {
-        return categoryRepository.existsByName(name);
+                                              .orElseThrow(() -> new RecordNotFoundException("Category", "ID",
+                                                                                             id.toString()));
+        return CategoryMapper.INSTANCE.toDTO(category);
     }
 
     public CategoryDTO findByName(String name) {
-        Category category = categoryRepository.findByName(name);
-        if (category != null) {
-            return CategoryMapper.INSTANCE.toDTO(category);
-        }
-        return null;
+        Category category = categoryRepository.findByName(name)
+                                              .orElseThrow(() -> new RecordNotFoundException("Category", "Name", name));
+        return CategoryMapper.INSTANCE.toDTO(category);
     }
 
-    public CategoryDTO update(Category category) {
-        Boolean exists = this.existsByName(category.getName());
-        if (exists) {
-            return null;
-        }
-        Category updatedCategory = categoryRepository.save(category);
+    public CategoryDTO update(Long id, CategoryDTO categoryDto) {
+        Category currentCategory = categoryRepository.findById(id)
+                                                     .orElseThrow(() -> new RecordNotFoundException("Category", "ID",
+                                                                                                    id.toString()));
+        Boolean nameConflict = categoryRepository.existsByNameAndIdNotAndIsDeletedIsFalse(categoryDto.name(), id)
+                                                 .orElseThrow(() -> new DuplicateRecordException("Category",
+                                                                                                 categoryDto.name()));
+
+        Category categoryToUpdate = CategoryMapper.INSTANCE.toEntity(categoryDto);
+        categoryToUpdate.setId(id);
+
+        Category updatedCategory = categoryRepository.save(categoryToUpdate);
         return CategoryMapper.INSTANCE.toDTO(updatedCategory);
     }
 
+
     public void deleteById(Long id) {
         Category category = categoryRepository.findById(id)
-                                              .orElse(null);
-        if (category != null) {
-            category.setIsDeleted(true);
-            categoryRepository.save(category);
-        }
+                                              .orElseThrow(() -> new RecordNotFoundException("Category", "ID",
+                                                                                             id.toString()));
+        category.setIsDeleted(true);
+        categoryRepository.save(category);
     }
 }
