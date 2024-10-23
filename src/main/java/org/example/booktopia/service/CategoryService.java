@@ -1,5 +1,6 @@
 package org.example.booktopia.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.dtos.CategoryDTO;
@@ -39,6 +40,7 @@ public class CategoryService {
         return CategoryMapper.INSTANCE.toDTO(savedCategory);
     }
 
+
     public CategoryDTO findById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Category", "ID", id.toString()));
@@ -55,6 +57,7 @@ public class CategoryService {
         return categoryRepository.existsByName(name);
     }
 
+    @Transactional
     public CategoryDTO update(Long id, CategoryDTO categoryDto) {
         Category currentCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Category", "ID", id.toString()));
@@ -74,6 +77,8 @@ public class CategoryService {
         return CategoryMapper.INSTANCE.toDTO(updatedCategory);
     }
 
+
+    @Transactional
     public void deleteById(Long id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Category", "id", id.toString()));
         category.setIsDeleted(true);
