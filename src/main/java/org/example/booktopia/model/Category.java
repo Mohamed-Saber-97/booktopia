@@ -30,6 +30,6 @@ public class Category extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "buyer_id"))
     private Set<Buyer> buyers = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private Set<Product> products = new LinkedHashSet<>();
 }

@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.converters.CategoryToCategoryDtoConverter;
 import org.example.booktopia.dtos.CategoryDto;
+import org.example.booktopia.error.DuplicateRecordFoundException;
+import org.example.booktopia.error.RecordNotFoundException;
 import org.example.booktopia.model.Category;
 import org.example.booktopia.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -26,49 +28,47 @@ public class CategoryService {
         return categories.stream().map(CategoryToCategoryDtoConverter::convert).toList();
     }
 
-    public CategoryDto save(Category category) {
+    public Category save(Category category) {
         Boolean exists = this.existsByName(category.getName());
         if (exists) {
-            return null;
+            Category existingCategory = findByName(category.getName());
+            if (!existingCategory.getId().equals(category.getId())) {
+                throw new DuplicateRecordFoundException("name", category.getName());
+            }
         }
-        Category savedCategory = categoryRepository.save(category);
-        return CategoryToCategoryDtoConverter.convert(savedCategory);
+        return categoryRepository.save(category);
     }
 
-    public CategoryDto findById(Long id) {
-        Category category = categoryRepository.findById(id).orElse(null);
-        if (category != null) {
-            return CategoryToCategoryDtoConverter.convert(category);
-        }
-        return null;
+    public Category findById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("id", id.toString()));
     }
 
     public Boolean existsByName(String name) {
         return categoryRepository.existsByName(name);
     }
 
-    public CategoryDto findByName(String name) {
+    public Category findByName(String name) {
         Category category = categoryRepository.findByName(name);
-        if (category != null) {
-            return CategoryToCategoryDtoConverter.convert(category);
+        if (category == null) {
+            throw new RecordNotFoundException("name", name);
         }
-        return null;
+        return category;
     }
 
-    public CategoryDto update(Category category) {
-        Boolean exists = this.existsByName(category.getName());
-        if (exists) {
-            return null;
-        }
-        Category updatedCategory = categoryRepository.save(category);
-        return CategoryToCategoryDtoConverter.convert(updatedCategory);
-    }
+//    public Category update(Category category) {
+//        Boolean exists = this.existsByName(category.getName());
+//        if (exists) {
+//            Category existingCategory = findByName(category.getName());
+//            if (!existingCategory.getId().equals(category.getId())) {
+//                throw new DuplicateRecordFoundException("name", category.getName());
+//            }
+//        }
+//        return categoryRepository.save(category);
+//    }
 
     public void deleteById(Long id) {
-        Category category = categoryRepository.findById(id).orElse(null);
-        if (category != null) {
-            category.setIsDeleted(true);
-            categoryRepository.save(category);
-        }
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("id", id.toString()));
+        category.setIsDeleted(true);
+        categoryRepository.save(category);
     }
 }

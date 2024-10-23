@@ -1,8 +1,8 @@
 package org.example.booktopia.controller;
 
 import org.example.booktopia.converters.CategoryDtoToCategoryConverter;
+import org.example.booktopia.converters.CategoryToCategoryDtoConverter;
 import org.example.booktopia.dtos.CategoryDto;
-import org.example.booktopia.error.ErrorMessage;
 import org.example.booktopia.model.Category;
 import org.example.booktopia.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -33,56 +33,41 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
-        CategoryDto category = categoryService.findById(id);
-        if (category == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Category with id " + id + " not found", 404);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
-        }
-        return ResponseEntity.ok(category);
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable Long id) {
+        Category category = categoryService.findById(id);
+        CategoryDto categoryDto = CategoryToCategoryDtoConverter.convert(category);
+        return ResponseEntity.ok(categoryDto);
     }
 
     @PostMapping
-    public ResponseEntity<?> saveCategory(@RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<CategoryDto> saveCategory(@RequestBody CategoryDto categoryDto) {
         Category category = CategoryDtoToCategoryConverter.convert(categoryDto);
-        CategoryDto savedCategoryDto = categoryService.save(category);
-        if (savedCategoryDto == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Category with name " + categoryDto.name() + " already exists", 409);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessage);
-        }
+        Category savedCategory = categoryService.save(category);
+        CategoryDto savedCategoryDto = CategoryToCategoryDtoConverter.convert(savedCategory);
         return ResponseEntity.ok(savedCategoryDto);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<?> getCategoryByName(@PathVariable String name) {
-        CategoryDto categoryDto = categoryService.findByName(name);
-        if (categoryDto == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Category with name " + name + " not found", 404);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
-        }
+    public ResponseEntity<CategoryDto> getCategoryByName(@PathVariable String name) {
+        Category category = categoryService.findByName(name);
+        CategoryDto categoryDto = CategoryToCategoryDtoConverter.convert(category);
         return ResponseEntity.ok(categoryDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
-        Category category = CategoryDtoToCategoryConverter.convert(categoryDto);
-        category.setId(id);
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
+        Category category = categoryService.findById(id);
 
-        CategoryDto updatedCategoryDto = categoryService.update(category);
-        if (updatedCategoryDto == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Category with id " + id + " not found", 404);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+        if (categoryDto.name() != null) {
+            category.setName(categoryDto.name());
         }
+        Category updatedCategory = categoryService.save(category);
+        CategoryDto updatedCategoryDto = CategoryToCategoryDtoConverter.convert(updatedCategory);
         return ResponseEntity.ok(updatedCategoryDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
-        CategoryDto categoryDto = categoryService.findById(id);
-        if (categoryDto == null) {
-            ErrorMessage errorMessage = new ErrorMessage("Category with id " + id + " not found", 404);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
-        }
         categoryService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
