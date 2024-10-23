@@ -3,16 +3,19 @@ package org.example.booktopia.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Embeddable
-public class BuyerInterestId implements java.io.Serializable {
+public class BuyerInterestId implements Serializable {
     private static final long serialVersionUID = -6297751233471508002L;
     @NotNull
     @Column(name = "buyer_id", nullable = false)

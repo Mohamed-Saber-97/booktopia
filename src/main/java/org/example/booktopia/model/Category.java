@@ -17,6 +17,7 @@ public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @Getter
     private Long id;
 
     @Column(name = "name", unique = true, nullable = false, length = 100)

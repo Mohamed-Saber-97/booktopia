@@ -17,8 +17,6 @@ import java.util.Set;
 @Table(name = "buyer", schema = "booktopia")
 @NoArgsConstructor
 @AllArgsConstructor
-//@EqualsAndHashCode(callSuper = false, exclude = {"wishlist", "cart", "orders"})
-//@ToString(exclude = {"interests", "wishlist", "cart", "orders"})
 public class Buyer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

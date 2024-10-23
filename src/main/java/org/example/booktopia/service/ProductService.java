@@ -20,7 +20,11 @@ public class ProductService {
         return productRepository.findAllByCategoryIds(categoryIds);
     }
 
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
     public Product findProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("id", id.toString()));
+        return productRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Product", "id", id.toString()));
     }
 }

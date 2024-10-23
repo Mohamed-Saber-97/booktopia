@@ -1,8 +1,8 @@
 package org.example.booktopia.controller;
 
-import org.example.booktopia.converters.CategoryDtoToCategoryConverter;
-import org.example.booktopia.converters.CategoryToCategoryDtoConverter;
-import org.example.booktopia.dtos.CategoryDto;
+import lombok.RequiredArgsConstructor;
+import org.example.booktopia.dtos.CategoryDTO;
+import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.model.Category;
 import org.example.booktopia.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -13,16 +13,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
+@RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
 
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        List<CategoryDto> categories = categoryService.findAllAvailableCategories();
+    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
+        List<CategoryDTO> categories = categoryService.findAllAvailableCategories();
         return ResponseEntity.ok(categories);
     }
 
@@ -33,42 +30,36 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.findById(id);
-        CategoryDto categoryDto = CategoryToCategoryDtoConverter.convert(category);
-        return ResponseEntity.ok(categoryDto);
+    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
+        CategoryDTO category = categoryService.findById(id);
+        return ResponseEntity.ok(category);
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDto> saveCategory(@RequestBody CategoryDto categoryDto) {
-        Category category = CategoryDtoToCategoryConverter.convert(categoryDto);
-        Category savedCategory = categoryService.save(category);
-        CategoryDto savedCategoryDto = CategoryToCategoryDtoConverter.convert(savedCategory);
-        return ResponseEntity.ok(savedCategoryDto);
+    public ResponseEntity<CategoryDTO> saveCategory(@RequestBody CategoryDTO categoryDto) {
+        Category category = CategoryMapper.INSTANCE.toEntity(categoryDto);
+        CategoryDTO savedCategoryDto = categoryService.save(category);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(savedCategoryDto);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<CategoryDto> getCategoryByName(@PathVariable String name) {
-        Category category = categoryService.findByName(name);
-        CategoryDto categoryDto = CategoryToCategoryDtoConverter.convert(category);
+    public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) {
+        CategoryDTO categoryDto = categoryService.findByName(name);
         return ResponseEntity.ok(categoryDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<CategoryDto> updateCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
-        Category category = categoryService.findById(id);
-
-        if (categoryDto.name() != null) {
-            category.setName(categoryDto.name());
-        }
-        Category updatedCategory = categoryService.save(category);
-        CategoryDto updatedCategoryDto = CategoryToCategoryDtoConverter.convert(updatedCategory);
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDto) {
+        CategoryDTO updatedCategoryDto = categoryService.update(id, categoryDto);
         return ResponseEntity.ok(updatedCategoryDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         categoryService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }

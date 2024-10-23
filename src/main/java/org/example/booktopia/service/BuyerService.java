@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.error.RecordNotFoundException;
 import org.example.booktopia.model.Buyer;
 import org.example.booktopia.repository.BuyerRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +17,11 @@ public class BuyerService {
 
     public Buyer findById(Long id) {
         return buyerRepository.findById(id)
-                              .orElseThrow(() -> new RecordNotFoundException("id", id.toString()));
+                              .orElseThrow(() -> new RecordNotFoundException("Buyer", "ID", id.toString()));
+    }
+
+    public Page<Buyer> findAllByPage(int pageNumber, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        return buyerRepository.findAllByIsDeletedIsFalse(pageRequest);
     }
 }
