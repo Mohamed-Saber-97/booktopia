@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class OrderService {
     private final OrderRepository orderRepository;
 
-    public Page<Order> findAllByCustomerId(Long buyerId, int pageNumber, int pageSize) {
+    public Page<Order> findAllByBuyerId(Long buyerId, int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
         return orderRepository.findAllByBuyerIdAndIsDeletedIsFalse(buyerId, pageRequest);
     }
