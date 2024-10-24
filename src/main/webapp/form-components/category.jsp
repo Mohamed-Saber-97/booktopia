@@ -44,11 +44,11 @@
         <c:forEach items="${categories}" var="category">
             <div class="interest-bubble">
                 <input type="checkbox"
-                       id="category${category.getId()}"
+                       id="category${category.id()}"
                        name="categories"
-                       value="${category.getId()}"
+                       value="${category.id()}"
                        <c:if test="${user.getInterests().contains(category)}">checked</c:if>>
-                <label for="category${category.getId()}">${category.getName()}</label>
+                <label for="category${category.id()}">${category.name()}</label>
             </div>
         </c:forEach>
     </div>

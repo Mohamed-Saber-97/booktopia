@@ -48,7 +48,7 @@
 <body>
 <!-- Success Message -->
 <c:if test="${not empty success}">
-    <div class="alert-overlay alert-success">
+    <div class="alert-overlay alert-success" aria-live="assertive">
         <i class="fas fa-check-circle" style="font-size: 20px; margin-right: 10px;"></i>
         <strong>${success}</strong>
     </div>
@@ -57,7 +57,7 @@
 
 <!-- Error Message -->
 <c:if test="${not empty error}">
-    <div class="alert-overlay alert-danger">
+    <div class="alert-overlay alert-danger" aria-live="assertive">
         <i class="fas fa-exclamation-circle" style="font-size: 20px; margin-right: 10px;"></i>
         <strong>${error}</strong>
     </div>

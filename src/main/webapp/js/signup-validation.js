@@ -137,8 +137,8 @@ $(document).ready(function () {
 
         if (validateEmail()) {
             $.ajax({
-                url: "/check-unique-email",
-                method: "POST", data: { email: $("#emailInput").val() }, success: function (response) {
+                url: "/validator/check-unique-email",
+                method: "GET", data: { email: $("#emailInput").val() }, success: function (response) {
                     if (response === "true") {
                         $("#emailInput").removeClass("is-invalid").addClass("is-valid");
                         $("#emailHelp").text("Email available").css({ "color": "green", "visibility": "visible" });
@@ -239,8 +239,8 @@ $(document).ready(function () {
 
         if (validatePhoneNumber()) {
             $.ajax({
-                url: "/check-phone-number",
-                method: "POST",
+                url: "/validator/check-unique-phone-number",
+                method: "GET",
                 data: { phoneNumber: $("#phoneNumberInput").val() },
                 success: function (response) {
                     if (response === "true") {
