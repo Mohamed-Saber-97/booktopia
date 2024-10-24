@@ -13,7 +13,6 @@ import org.example.booktopia.repository.CategoryRepository;
 import org.example.booktopia.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Service

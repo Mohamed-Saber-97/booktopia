@@ -12,12 +12,12 @@ import org.w3c.dom.stylesheets.LinkStyle;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/buyer-product")
+@RequestMapping("/api/buyer-products")
 @RequiredArgsConstructor
 public class BuyerProductController {
 
     private final BuyerProductService buyerProductService;
-    
+
     @GetMapping
     public ResponseEntity<List<ProductDto>> getBuyerInterestedProducts(Long buyerId) {
         List<ProductDto> products = buyerProductService.getBuyerInterestedProducts(buyerId);
