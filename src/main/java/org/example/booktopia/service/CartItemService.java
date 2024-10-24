@@ -11,7 +11,6 @@ import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.mapper.ProductMapper;
 import org.example.booktopia.model.*;
 import org.example.booktopia.repository.CartItemRepository;
-import org.example.booktopia.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -60,8 +59,7 @@ public class CartItemService {
     public void incrementProductQuantity(Long buyerId, Long productId) {
         CartItemId cartItemId = new CartItemId(buyerId, productId);
         CartItem cartItem = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID",
-                        cartItemId.toString()));
+                .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID", cartItemId.toString()));
         cartItem.setQuantity(cartItem.getQuantity() + 1);
         cartItemRepository.save(cartItem);
     }
@@ -71,8 +69,7 @@ public class CartItemService {
     public void decrementProductQuantity(Long buyerId, Long productId) {
         CartItemId cartItemId = new CartItemId(buyerId, productId);
         CartItem cartItem = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID",
-                        cartItemId.toString()));
+                .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID", cartItemId.toString()));
 
         int newQuantity = cartItem.getQuantity() - 1;
         if (newQuantity < 1) {
@@ -84,6 +81,7 @@ public class CartItemService {
 
     @Transactional
     public void clearCart(Long buyerId) {
+        buyerService.findById(buyerId);
         cartItemRepository.clearCartByBuyerId(buyerId);
         log.info("Cart cleared for Buyer with ID: {}", buyerId);
     }

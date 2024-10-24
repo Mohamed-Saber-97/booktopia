@@ -23,4 +23,22 @@ public class CartItemController {
         cartItemService.removeCartItem(buyerId, productId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @PostMapping("/increment/{buyerId}/{productId}")
+    public ResponseEntity<?> incrementProductQuantity(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId) {
+        cartItemService.incrementProductQuantity(buyerId, productId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/decrement/{buyerId}/{productId}")
+    public ResponseEntity<?> decrementProductQuantity(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId) {
+        cartItemService.decrementProductQuantity(buyerId, productId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/clear/{buyerId}")
+    public ResponseEntity<?> clearCart(@PathVariable("buyerId") Long buyerId) {
+        cartItemService.clearCart(buyerId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
