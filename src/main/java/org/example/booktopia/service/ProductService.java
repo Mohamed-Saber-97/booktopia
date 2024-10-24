@@ -3,13 +3,13 @@ package org.example.booktopia.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.booktopia.DTOs.CategoryDTO;
+import org.example.booktopia.DTOs.ProductDTO;
 import org.example.booktopia.DTOs.ProductDTO;
 import org.example.booktopia.error.DuplicateRecordException;
 import org.example.booktopia.error.RecordNotFoundException;
-import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.mapper.ProductMapper;
-import org.example.booktopia.model.Category;
+import org.example.booktopia.mapper.ProductMapper;
+import org.example.booktopia.model.Product;
 import org.example.booktopia.model.Product;
 import org.example.booktopia.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -22,8 +22,8 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public List<Product> findAllProductsByCategoryIds(List<Long> categoryIds) {
-        return productRepository.findAllByCategoryIds(categoryIds);
+    public List<Product> findAllProductsByCategoryIds(List<Long> ProductIds) {
+        return productRepository.findAllByCategoryIds(ProductIds);
     }
 
     public List<Product> findAll() {
@@ -57,6 +57,23 @@ public class ProductService {
         Product product = productRepository.findById(id).orElseThrow(()->new RecordNotFoundException("product","ID",id.toString()));
         product.setIsDeleted(true);
         productRepository.save(product);
+    }
+
+    @Transactional
+    public ProductDTO update(Long id, ProductDTO ProductDTO) {
+        Product currentproduct = productRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Product", "ID",
+                        id.toString()));
+        Boolean nameConflict = productRepository.existsByNameAndIdNotAndIsDeletedIsFalse(ProductDTO.name(), id);
+        if (nameConflict) {
+            throw new DuplicateRecordException("Product", ProductDTO.name());
+        }
+
+        Product ProductToUpdate = ProductMapper.INSTANCE.toEntity(ProductDTO);
+        ProductToUpdate.setId(id);
+
+        Product updatedProduct = productRepository.save(ProductToUpdate);
+        return ProductMapper.INSTANCE.toDTO(updatedProduct);
     }
 
 

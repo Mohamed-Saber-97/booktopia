@@ -18,4 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select count(p) > 0 from Product p where p.name = :name")
     Boolean existsByName(String name);
+
+    Boolean existsByNameAndIdNotAndIsDeletedIsFalse(String name, Long id);
+
+
 }
