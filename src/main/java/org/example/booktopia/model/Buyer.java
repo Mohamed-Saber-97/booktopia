@@ -61,4 +61,9 @@ public class Buyer extends BaseEntity {
     @EqualsAndHashCode.Exclude
     private Set<Order> orders = new LinkedHashSet<>();
 
+    public Buyer(Account account, BigDecimal creditLimit, Set<Category> interests) {
+        this.account = account;
+        this.creditLimit = creditLimit;
+        this.interests = interests;
+    }
 }
