@@ -51,4 +51,13 @@ public class ProductService {
         return ProductMapper.INSTANCE.toDTO(savedProduct);
     }
 
+    @Transactional
+    public void deleteById(Long id)
+    {
+        Product product = productRepository.findById(id).orElseThrow(()->new RecordNotFoundException("product","ID",id.toString()));
+        product.setIsDeleted(true);
+        productRepository.save(product);
+    }
+
+
 }

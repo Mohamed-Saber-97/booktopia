@@ -46,4 +46,13 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedproductDto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long id) {
+        productService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+
 }
