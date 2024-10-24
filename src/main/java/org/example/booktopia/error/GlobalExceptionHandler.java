@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RecordNotFoundException.class)
     public ResponseEntity<?> handleRecordNotFound(RecordNotFoundException ex) {
@@ -45,21 +45,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                              .body(error);
     }
 
+    @ExceptionHandler(InvalidLoginCredentialsException.class)
+    public ResponseEntity<?> handleInvalidLogin(InvalidLoginCredentialsException ex) {
+        ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), Collections.singletonList(ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(error);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatusCode status,
                                                                   WebRequest request) {
         List<String> errors = new ArrayList<String>();
         ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(FieldError::getDefaultMessage)
-                .forEach(errors::add);
+          .getFieldErrors()
+          .stream()
+          .map(FieldError::getDefaultMessage)
+          .forEach(errors::add);
         ex.getBindingResult()
-                .getGlobalErrors()
-                .stream()
-                .map(ObjectError::getDefaultMessage)
-                .forEach(errors::add);
+          .getGlobalErrors()
+          .stream()
+          .map(ObjectError::getDefaultMessage)
+          .forEach(errors::add);
         ErrorResponse error = new ErrorResponse(ex.toString(), errors);
 
         return ResponseEntity
