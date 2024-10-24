@@ -3,8 +3,10 @@ package org.example.booktopia.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.booktopia.dtos.ProductDto;
 import org.example.booktopia.error.IllegalValueException;
 import org.example.booktopia.error.RecordNotFoundException;
+import org.example.booktopia.mapper.ProductMapper;
 import org.example.booktopia.model.Buyer;
 import org.example.booktopia.model.CartItem;
 import org.example.booktopia.model.CartItemId;
@@ -19,15 +21,17 @@ public class CartItemService {
     private final CartItemRepository cartItemRepository;
     private final BuyerService buyerService;
     private final ProductService productService;
+    private final ProductMapper productMapper;
 
     @Transactional
     public void addCartItem(Long buyerId, Long productId, Integer quantity) {
         Buyer buyer = buyerService.findById(buyerId);
-        Product product = productService.findProductById(productId);
+        ProductDto productDto = productService.findProductById(productId);
+        Product product = productMapper.toEntity(productDto);
         CartItemId cartItemId = new CartItemId(buyerId, productId);
 
         CartItem existingCartItem = cartItemRepository.findById(cartItemId)
-                                                      .orElse(null);
+                .orElse(null);
         if (existingCartItem != null) {
             existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
             cartItemRepository.save(existingCartItem);
@@ -50,8 +54,8 @@ public class CartItemService {
     public void incrementProductQuantity(Long buyerId, Long productId) {
         CartItemId cartItemId = new CartItemId(buyerId, productId);
         CartItem cartItem = cartItemRepository.findById(cartItemId)
-                                              .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID",
-                                                                                             cartItemId.toString()));
+                .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID",
+                        cartItemId.toString()));
         cartItem.setQuantity(cartItem.getQuantity() + 1);
         cartItemRepository.save(cartItem);
     }
@@ -61,8 +65,8 @@ public class CartItemService {
     public void decrementProductQuantity(Long buyerId, Long productId) {
         CartItemId cartItemId = new CartItemId(buyerId, productId);
         CartItem cartItem = cartItemRepository.findById(cartItemId)
-                                              .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID",
-                                                                                             cartItemId.toString()));
+                .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID",
+                        cartItemId.toString()));
 
         int newQuantity = cartItem.getQuantity() - 1;
         if (newQuantity < 1) {

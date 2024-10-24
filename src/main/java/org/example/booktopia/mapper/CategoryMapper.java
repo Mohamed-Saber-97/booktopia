@@ -12,9 +12,9 @@ public interface CategoryMapper {
 
     CategoryDto toDto(Category category);
 
-    List<Category> toEntity(List<CategoryDto> adminDto);
+    List<Category> toEntity(List<CategoryDto> categoryDtos);
 
-    List<CategoryDto> toDto(List<Category> admin);
+    List<CategoryDto> toDto(List<Category> categories);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Category partialUpdate(
