@@ -28,6 +28,8 @@ public class BuyerWishlistService {
         Product product = productService.findProductById(productId);
         BuyerWishlist buyerWishlist = new BuyerWishlist();
         buyerWishlist.setId(new BuyerWishlistId(buyerId, productId));
+        buyerWishlist.setBuyer(buyer);
+        buyerWishlist.setProduct(product);
         buyerWishlistRepository.save(buyerWishlist);
         log.info("Product {} added to Buyer {}'s wishlist", productId, buyerId);
     }
