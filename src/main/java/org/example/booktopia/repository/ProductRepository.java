@@ -10,11 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT p FROM Product p where p.category.id IN :categoryIds and p.isDeleted = false ")
-    List<Product> findAllByCategoryIds(@Param("categoryIds") Iterator<Long> categoryIds);
+    @Query("SELECT p FROM Product p where p.category.id IN :categoryIds and p.isDeleted = false and p.category.isDeleted = false")
+    List<Product> findAllByCategoryIds(@Param("categoryIds") Iterable<Long> categoryIds);
 
     @Query("SELECT p FROM Product p WHERE p.isDeleted = false")
     List<Product> findAll();
+
+    @Query(value = "SELECT p.* from product p where p.is_deleted = false LIMIT ?1", nativeQuery = true)
+    List<Product> findFirst(Integer x);
 
     @Query("SELECT p FROM Product p WHERE p.isDeleted = false and p.quantity > 0")
     List<Product> findAllAvailableProducts();

@@ -3,7 +3,6 @@ package org.example.booktopia.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.dtos.ProductDto;
-import org.example.booktopia.model.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +19,6 @@ public class BuyerProductService {
     public List<ProductDto> getBuyerInterestedProducts(Long buyerId) {
         List<Long> categoryIds = buyerInterestService.findCategoryIdsByBuyerId(buyerId);
         List<Long> availableCategoryIds = categoryService.findAllAvailableCategoriesById(categoryIds);
-        return productService.findAllProductsByCategoryIds(availableCategoryIds.iterator());
+        return productService.findAllProductsByCategoryIds(availableCategoryIds);
     }
 }

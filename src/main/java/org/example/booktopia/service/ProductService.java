@@ -24,13 +24,18 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
 
-    public List<ProductDto> findAllProductsByCategoryIds(Iterator<Long> categoryIds) {
+    public List<ProductDto> findAllProductsByCategoryIds(List<Long> categoryIds) {
         List<Product> products = productRepository.findAllByCategoryIds(categoryIds);
         return productMapper.toDto(products);
     }
 
     public List<ProductDto> findAll() {
         List<Product> products = productRepository.findAll();
+        return productMapper.toDto(products);
+    }
+
+    public List<ProductDto> findFirst(Integer x){
+        List<Product> products = productRepository.findFirst(x);
         return productMapper.toDto(products);
     }
 

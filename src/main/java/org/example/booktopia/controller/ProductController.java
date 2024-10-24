@@ -29,6 +29,18 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/first/{x}")
+    public ResponseEntity<List<ProductDto>> getFirstProducts(@PathVariable Integer x) {
+        List<ProductDto> products = productService.findFirst(x);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<ProductDto>> getProductsByCategoryIds(@RequestBody List<Long> categoryIds) {
+        List<ProductDto> products = productService.findAllProductsByCategoryIds(categoryIds);
+        return ResponseEntity.ok(products);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getProductByID(@PathVariable long id) {
         ProductDto productDto = productService.findProductById(id);
@@ -48,7 +60,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> saveCategory(@RequestBody ProductDto productDto) {
+    public ResponseEntity<ProductDto> saveProduct(@RequestBody ProductDto productDto) {
         ProductDto savedProductDto = productService.save(productDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedProductDto);
