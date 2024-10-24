@@ -1,5 +1,5 @@
-<%@include file="header.jsp" %>
-<%@include file="notifications.jsp" %>
+<%@include file="/header.jsp" %>
+<%@include file="/notifications.jsp" %>
 
 <section class="bg0 p-t-104 p-b-116">
     <div class="container">
@@ -20,31 +20,31 @@
             <!-- Form with all inputs -->
             <div class="col-md-12">
                 <div class="p-lr-70 p-t-55 p-b-70 p-lr-15-lg">
-                    <form action="signup" method="post" id="signupForm">
+                    <form action="/buyers/signup" method="post" id="signupForm">
                         <div class="row">
                             <!-- First part of the form (Left side) -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <%@include file="form-components/name.jsp" %>
-                                    <%@include file="form-components/date-of-birth.jsp" %>
-                                    <%@include file="form-components/job.jsp" %>
-                                    <%@include file="form-components/signup-email.jsp" %>
-                                    <%@include file="form-components/password.jsp" %>
-                                    <%@include file="form-components/confirm-password.jsp" %>
-                                    <%@include file="form-components/credit-limit.jsp" %>
-                                    <%@include file="form-components/phone-number.jsp" %>
+                                    <%@include file="/form-components/name.jsp" %>
+                                    <%@include file="/form-components/date-of-birth.jsp" %>
+                                    <%@include file="/form-components/job.jsp" %>
+                                    <%@include file="/form-components/signup-email.jsp" %>
+                                    <%@include file="/form-components/password.jsp" %>
+                                    <%@include file="/form-components/confirm-password.jsp" %>
+                                    <%@include file="/form-components/credit-limit.jsp" %>
+                                    <%@include file="/form-components/phone-number.jsp" %>
                                 </div>
                             </div>
 
                             <!-- Second part of the form (Right side) -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <%@include file="form-components/country.jsp" %>
-                                    <%@include file="form-components/city.jsp" %>
-                                    <%@include file="form-components/street.jsp" %>
-                                    <%@include file="form-components/zipcode.jsp" %>
-                                    <%@include file="form-components/category.jsp" %>
-                                    <%@include file="form-components/submit-button.jsp" %>
+                                    <%@include file="/form-components/country.jsp" %>
+                                    <%@include file="/form-components/city.jsp" %>
+                                    <%@include file="/form-components/street.jsp" %>
+                                    <%@include file="/form-components/zipcode.jsp" %>
+                                    <%@include file="/form-components/category.jsp" %>
+                                    <%@include file="/form-components/submit-button.jsp" %>
                                 </div>
                             </div>
                         </div>
@@ -54,5 +54,5 @@
         </div>
     </div>
 </section>
-<script src="./js/signup-validation.js"></script>
-<%@include file="footer.jsp" %>
+<script src="/js/signup-validation.js"></script>
+<%@include file="/footer.jsp" %>

@@ -5,9 +5,9 @@ import org.example.booktopia.service.BuyerService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController("RestBuyerController")
 @RequiredArgsConstructor
-@RequestMapping("/buyers")
+@RequestMapping("/api/buyers")
 public class BuyerController {
     private final BuyerService buyerService;
 

@@ -1,12 +1,22 @@
 package org.example.booktopia.mapper;
 
-import org.example.booktopia.dtos.CategoryDTO;
+import org.example.booktopia.dtos.CategoryDto;
 import org.example.booktopia.model.Category;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.mapstruct.*;
 
-@Mapper(imports = {LocaleContextHolder.class})
-public interface CategoryMapper extends GenericMapper<Category, CategoryDTO> {
-    CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
+import java.util.List;
+
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+public interface CategoryMapper {
+    Category toEntity(CategoryDto categoryDto);
+
+    CategoryDto toDto(Category category);
+
+    List<Category> toEntity(List<CategoryDto> adminDto);
+
+    List<CategoryDto> toDto(List<Category> admin);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Category partialUpdate(
+            CategoryDto categoryDto, @MappingTarget Category category);
 }

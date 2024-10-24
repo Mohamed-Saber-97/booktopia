@@ -6,8 +6,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        /* height: 100vh; */
-        /* Full viewport height */
     }
 
     /* Hide the default file input */
@@ -149,5 +147,5 @@
     </div> -->
 
 </section>
-<script src="js/product-validation.js"></script>
-<%@include file="footer.jsp" %>
+<script src="/js/product-validation.js"></script>
+<%@include file="/footer.jsp" %>

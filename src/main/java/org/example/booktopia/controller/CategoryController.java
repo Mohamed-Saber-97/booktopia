@@ -1,8 +1,7 @@
 package org.example.booktopia.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.booktopia.dtos.CategoryDTO;
-import org.example.booktopia.mapper.CategoryMapper;
+import org.example.booktopia.dtos.CategoryDto;
 import org.example.booktopia.model.Category;
 import org.example.booktopia.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -18,8 +17,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-        List<CategoryDTO> categories = categoryService.findAllAvailableCategories();
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+        List<CategoryDto> categories = categoryService.findAllAvailableCategories();
         return ResponseEntity.ok(categories);
     }
 
@@ -30,33 +29,32 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
-        CategoryDTO category = categoryService.findById(id);
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable Long id) {
+        CategoryDto category = categoryService.findById(id);
         return ResponseEntity.ok(category);
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> saveCategory(@RequestBody CategoryDTO categoryDto) {
-        Category category = CategoryMapper.INSTANCE.toEntity(categoryDto);
-        CategoryDTO savedCategoryDto = categoryService.save(category);
+    public ResponseEntity<CategoryDto> saveCategory(@RequestBody CategoryDto categoryDto) {
+        CategoryDto savedCategoryDto = categoryService.save(categoryDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedCategoryDto);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable String name) {
-        CategoryDTO categoryDto = categoryService.findByName(name);
+    public ResponseEntity<CategoryDto> getCategoryByName(@PathVariable String name) {
+        CategoryDto categoryDto = categoryService.findByName(name);
         return ResponseEntity.ok(categoryDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDto) {
-        CategoryDTO updatedCategoryDto = categoryService.update(id, categoryDto);
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
+        CategoryDto updatedCategoryDto = categoryService.update(id, categoryDto);
         return ResponseEntity.ok(updatedCategoryDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<CategoryDto> deleteCategory(@PathVariable Long id) {
         categoryService.deleteById(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

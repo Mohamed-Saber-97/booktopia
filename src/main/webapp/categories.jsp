@@ -20,13 +20,13 @@
                                 <c:forEach items="${categories}" var="item">
                                     <tr class="table_row">
                                         <td class="column-1">${i}</td>
-                                        <td class="column-2">${item.getName()}</td>
+                                        <td class="column-2">${item.name()}</td>
                                         <td class="column-3">
-                                            <a href="edit-category?p=${item.getId()}">View</a>
+                                            <a href="edit-category?p=${item.id()}">View</a>
                                         </td>
                                         <td class="column-3">
                                             <form action="delete-category" method="POST" style="display:inline;">
-                                                <input type="hidden" name="id" value="${item.getId()}">
+                                                <input type="hidden" name="id" value="${item.id()}">
                                                 <button type="submit" class="btn btn-link">Delete</button>
                                             </form>
                                         </td>
