@@ -1,5 +1,6 @@
 package org.example.booktopia.error;
 
+import org.example.booktopia.utils.Result;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,37 +20,27 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RecordNotFoundException.class)
-    public ResponseEntity<?> handleRecordNotFound(RecordNotFoundException ex) {
+    public Result<?> handleRecordNotFound(RecordNotFoundException ex) {
 
-        ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), Collections.singletonList(ex.getMessage()));
-
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(error);
+        return Result.error(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(DuplicateRecordException.class)
-    public ResponseEntity<?> handleDuplicateRecordFound(DuplicateRecordException ex) {
+    public Result<?> handleDuplicateRecordFound(DuplicateRecordException ex) {
 
-        ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), Collections.singletonList(ex.getMessage()));
-
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(error);
+        return Result.error(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(IllegalValueException.class)
-    public ResponseEntity<?> handleIllegalValue(IllegalValueException ex) {
-        ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), Collections.singletonList(ex.getMessage()));
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(error);
+    public Result<?> handleIllegalValue(IllegalValueException ex) {
+
+        return Result.error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(InvalidLoginCredentialsException.class)
-    public ResponseEntity<?> handleInvalidLogin(InvalidLoginCredentialsException ex) {
-        ErrorResponse error = new ErrorResponse(ex.getLocalizedMessage(), Collections.singletonList(ex.getMessage()));
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                             .body(error);
+    public Result<?> handleInvalidLogin(InvalidLoginCredentialsException ex) {
+
+        return Result.error(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
     @Override
@@ -58,21 +49,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   WebRequest request) {
         List<String> errors = new ArrayList<String>();
         ex.getBindingResult()
-          .getFieldErrors()
-          .stream()
-          .map(FieldError::getDefaultMessage)
-          .forEach(errors::add);
+                .getFieldErrors()
+                .stream()
+                .map(FieldError::getDefaultMessage)
+                .forEach(errors::add);
         ex.getBindingResult()
-          .getGlobalErrors()
-          .stream()
-          .map(ObjectError::getDefaultMessage)
-          .forEach(errors::add);
+                .getGlobalErrors()
+                .stream()
+                .map(ObjectError::getDefaultMessage)
+                .forEach(errors::add);
         ErrorResponse error = new ErrorResponse(ex.toString(), errors);
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(error);
     }
-
-
 }
