@@ -1,8 +1,15 @@
 package org.example.booktopia.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.booktopia.DTOs.CategoryDTO;
+import org.example.booktopia.DTOs.ProductDTO;
+import org.example.booktopia.error.DuplicateRecordException;
 import org.example.booktopia.error.RecordNotFoundException;
+import org.example.booktopia.mapper.CategoryMapper;
+import org.example.booktopia.mapper.ProductMapper;
+import org.example.booktopia.model.Category;
 import org.example.booktopia.model.Product;
 import org.example.booktopia.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -27,4 +34,21 @@ public class ProductService {
         return productRepository.findById(id)
                                 .orElseThrow(() -> new RecordNotFoundException("Product", "ID", id.toString()));
     }
+
+    public ProductDTO findByName(String name) {
+        Product product = productRepository.findByName(name).orElseThrow (()-> new RecordNotFoundException("Product", "ID",
+                name.toString()));
+        return ProductMapper.INSTANCE.toDTO(product);
+    }
+
+    @Transactional
+    public ProductDTO save(Product product) {
+        Boolean exists = productRepository.existsByName(product.getName());
+        if (exists) {
+            throw new DuplicateRecordException("Product", product.getName());
+        }
+        Product savedProduct = productRepository.save(product);
+        return ProductMapper.INSTANCE.toDTO(savedProduct);
+    }
+
 }
