@@ -3,7 +3,7 @@ package org.example.booktopia.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.booktopia.dtos.CategoryDTO;
+import org.example.booktopia.DTOs.CategoryDTO;
 import org.example.booktopia.error.DuplicateRecordException;
 import org.example.booktopia.error.RecordNotFoundException;
 import org.example.booktopia.mapper.CategoryMapper;

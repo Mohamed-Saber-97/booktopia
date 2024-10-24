@@ -1,7 +1,7 @@
 package org.example.booktopia.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.booktopia.dtos.CategoryDTO;
+import org.example.booktopia.DTOs.CategoryDTO;
 import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.model.Category;
 import org.example.booktopia.service.CategoryService;
