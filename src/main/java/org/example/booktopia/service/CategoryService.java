@@ -45,8 +45,7 @@ public class CategoryService {
 
     public CategoryDto findById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException("Category", "ID",
-                        id.toString()));
+                .orElseThrow(() -> new RecordNotFoundException("Category", "ID", id.toString()));
         return categoryMapper.toDto(category);
     }
 

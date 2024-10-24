@@ -3,15 +3,15 @@ package org.example.booktopia.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.booktopia.dtos.CategoryDto;
 import org.example.booktopia.dtos.ProductDto;
 import org.example.booktopia.error.IllegalValueException;
 import org.example.booktopia.error.RecordNotFoundException;
+import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.mapper.ProductMapper;
-import org.example.booktopia.model.Buyer;
-import org.example.booktopia.model.CartItem;
-import org.example.booktopia.model.CartItemId;
-import org.example.booktopia.model.Product;
+import org.example.booktopia.model.*;
 import org.example.booktopia.repository.CartItemRepository;
+import org.example.booktopia.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,10 +22,13 @@ public class CartItemService {
     private final BuyerService buyerService;
     private final ProductService productService;
     private final ProductMapper productMapper;
+    private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
     @Transactional
     public void addCartItem(Long buyerId, Long productId, Integer quantity) {
         Buyer buyer = buyerService.findById(buyerId);
+        System.out.println(buyer.getId());
         ProductDto productDto = productService.findProductById(productId);
         Product product = productMapper.toEntity(productDto);
         CartItemId cartItemId = new CartItemId(buyerId, productId);
@@ -36,6 +39,9 @@ public class CartItemService {
             existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
             cartItemRepository.save(existingCartItem);
         } else {
+            CategoryDto categoryDto = categoryService.findById(productDto.categoryId());
+            Category category = categoryMapper.toEntity(categoryDto);
+            product.setCategory(category);
             CartItem cartItem = new CartItem(buyer, product, quantity);
             cartItemRepository.save(cartItem);
         }

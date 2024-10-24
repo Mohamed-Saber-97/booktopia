@@ -28,6 +28,8 @@ public class CartItem {
 
     public CartItem(Buyer buyer, Product product, Integer quantity) {
         this(new CartItemId(buyer.getId(), product.getId()), quantity);
+        this.buyer = buyer;
+        this.product = product;
     }
 
     public CartItem(Long buyerId, Long productId, Integer quantity) {
@@ -42,5 +44,6 @@ public class CartItem {
     public void setQuantity(Integer quantity) {
         if (quantity < 0)
             throw new IllegalValueException("Quantity", quantity.toString());
+        this.quantity = quantity;
     }
 }
