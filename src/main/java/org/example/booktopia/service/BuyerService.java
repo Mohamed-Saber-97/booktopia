@@ -23,29 +23,28 @@ public class BuyerService {
 
     public Buyer findById(Long id) {
         return buyerRepository.findById(id)
-                              .orElseThrow(() -> new RecordNotFoundException("Buyer", "ID", id.toString()));
+                .orElseThrow(() -> new RecordNotFoundException("Buyer", "ID", id.toString()));
     }
 
     @Transactional
     public void save(SignupDto signupDto) {
         Address address = Address.builder()
-                                 .street(signupDto.street())
-                                 .city(signupDto.city())
-                                 .zipcode(signupDto.zipCode())
-                                 .country(signupDto.country())
-                                 .build();
+                .street(signupDto.street())
+                .city(signupDto.city())
+                .zipcode(signupDto.zipCode())
+                .country(signupDto.country())
+                .build();
         Account account = Account.builder()
-                                 .name(signupDto.name())
-                                 .birthday(signupDto.dob())
-                                 .password(signupDto.password())
-                                 .job(signupDto.job())
-                                 .email(signupDto.email())
-                                 .phoneNumber(signupDto.phoneNumber())
-                                 .address(address)
-                                 .build();
+                .name(signupDto.name())
+                .birthday(signupDto.dob())
+                .password(signupDto.password())
+                .job(signupDto.job())
+                .email(signupDto.email())
+                .phoneNumber(signupDto.phoneNumber())
+                .address(address)
+                .build();
         Buyer buyer = new Buyer(account, signupDto.creditLimit(), signupDto.categories());
         buyerRepository.save(buyer);
-        return;
     }
 
     public Page<Buyer> findAllByPage(int pageNumber, int pageSize) {
@@ -54,9 +53,8 @@ public class BuyerService {
     }
 
     public boolean login(LoginDto loginDto) {
-        Buyer buyer = buyerRepository.findByAccount_EmailAndAccount_PasswordAndIsDeletedFalse(loginDto.email(),
-                                                                                              loginDto.password())
-                                     .orElseThrow(InvalidLoginCredentialsException::new);
+        Buyer buyer = buyerRepository.findByAccount_EmailAndAccount_PasswordAndIsDeletedFalse(loginDto.email(), loginDto.password())
+                .orElseThrow(InvalidLoginCredentialsException::new);
 
 //        if (!passwordEncoder.matches(password, admin.getAccount().getPassword())) {
 //            throw new InvalidLoginCredentialsException();
