@@ -1,10 +1,13 @@
 package org.example.booktopia.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.booktopia.dtos.CartItemDto;
 import org.example.booktopia.service.CartItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/cart-items")
@@ -16,6 +19,11 @@ public class CartItemController {
     public ResponseEntity<?> addCartItem(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId, @PathVariable("quantity") Integer quantity) {
         cartItemService.addCartItem(buyerId, productId, quantity);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/buyer/{buyerId}")
+    public ResponseEntity<List<CartItemDto>> getCartItemsByBuyerId(@PathVariable("buyerId") Long buyerId) {
+        return ResponseEntity.ok(cartItemService.getCartItems(buyerId));
     }
 
     @DeleteMapping("/remove/{buyerId}/{productId}")

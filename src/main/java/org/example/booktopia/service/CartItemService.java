@@ -3,15 +3,19 @@ package org.example.booktopia.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.booktopia.dtos.CartItemDto;
 import org.example.booktopia.dtos.CategoryDto;
 import org.example.booktopia.dtos.ProductDto;
 import org.example.booktopia.error.IllegalValueException;
 import org.example.booktopia.error.RecordNotFoundException;
+import org.example.booktopia.mapper.CartItemMapper;
 import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.mapper.ProductMapper;
 import org.example.booktopia.model.*;
 import org.example.booktopia.repository.CartItemRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ public class CartItemService {
     private final ProductMapper productMapper;
     private final CategoryService categoryService;
     private final CategoryMapper categoryMapper;
+    private final CartItemMapper cartItemMapper;
 
     @Transactional
     public void addCartItem(Long buyerId, Long productId, Integer quantity) {
@@ -44,6 +49,13 @@ public class CartItemService {
             CartItem cartItem = new CartItem(buyer, product, quantity);
             cartItemRepository.save(cartItem);
         }
+    }
+
+    public List<CartItemDto> getCartItems(Long buyerId) {
+        buyerService.findById(buyerId);
+        return cartItemRepository.findAllByBuyerId(buyerId).stream()
+                .map(cartItemMapper::toDto)
+                .toList();
     }
 
     @Transactional
