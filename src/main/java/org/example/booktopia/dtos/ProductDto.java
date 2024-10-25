@@ -13,6 +13,7 @@ public record ProductDto(
         String isbn,
         LocalDate releaseDate,
         Long categoryId,
+        String categoryName,
         BigDecimal price,
         Integer quantity,
         String imagePath
