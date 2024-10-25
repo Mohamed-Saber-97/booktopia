@@ -19,6 +19,7 @@ public class BuyerController {
     private final BuyerService buyerService;
     private final BuyerMapper buyerMapper;
 
+
     @GetMapping("/{id}")
     public ResponseEntity<BuyerDto> getBuyerById(@PathVariable Long id) {
         Buyer buyer = buyerService.findById(id);
@@ -32,4 +33,6 @@ public class BuyerController {
         Iterable<BuyerDto> buyerDtos = buyerMapper.toDto(buyers.getContent());
         return ResponseEntity.ok(buyerDtos);
     }
+
+
 }
