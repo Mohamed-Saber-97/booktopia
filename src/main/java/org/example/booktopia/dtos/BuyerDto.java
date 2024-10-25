@@ -12,6 +12,8 @@ public record BuyerDto(
         String country,
         String city,
         String street,
-        String zipcode
+        String zipcode,
+        Integer cartSize,
+        Integer wishlistSize
 ) {
 }

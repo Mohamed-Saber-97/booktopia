@@ -19,6 +19,8 @@ public interface BuyerMapper {
     @Mapping(target = "city", source = "account.address.city")
     @Mapping(target = "street", source = "account.address.street")
     @Mapping(target = "zipcode", source = "account.address.zipcode")
+    @Mapping(target = "cartSize", expression = "java(buyer.getCartItems().size())")
+    @Mapping(target = "wishlistSize", expression = "java(buyer.getProducts().size())")
     BuyerDto toDto(Buyer buyer);
 
     List<Buyer> toEntity(List<BuyerDto> buyerDtos);

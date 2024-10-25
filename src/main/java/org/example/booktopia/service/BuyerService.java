@@ -3,10 +3,12 @@ package org.example.booktopia.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.LoginDto;
 import org.example.booktopia.dtos.SignupDto;
 import org.example.booktopia.error.InvalidLoginCredentialsException;
 import org.example.booktopia.error.RecordNotFoundException;
+import org.example.booktopia.mapper.BuyerMapper;
 import org.example.booktopia.model.Account;
 import org.example.booktopia.model.Address;
 import org.example.booktopia.model.Buyer;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BuyerService {
     private final BuyerRepository buyerRepository;
+    private final BuyerMapper buyerMapper;
 
     public Buyer findById(Long id) {
         return buyerRepository.findById(id)
@@ -68,5 +71,11 @@ public class BuyerService {
 
     public boolean existsByAccountPhone(String accountPhone) {
         return buyerRepository.existsByAccountPhoneNumber(accountPhone);
+    }
+
+    public BuyerDto findByEmail(String email) {
+        Buyer buyer = buyerRepository.findByAccountEmail(email)
+                .orElseThrow(() -> new RecordNotFoundException("Buyer", "Email", email));
+        return buyerMapper.toDto(buyer);
     }
 }

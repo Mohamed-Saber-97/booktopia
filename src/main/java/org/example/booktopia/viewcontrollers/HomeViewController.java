@@ -19,15 +19,19 @@ import static org.example.booktopia.utils.RequestAttributeUtil.*;
 public class HomeViewController {
     private final ProductService productService;
     private final BuyerProductService buyerProductService;
-    
+
     @GetMapping("/")
     public String home(Model model, HttpSession session) {
         model.addAttribute(PAGE_TITLE, "Home");
+        System.out.println(session.getAttribute(BUYER));
         List<ProductDto> interests;
         if (session.getAttribute(BUYER) != null) {
-            interests = buyerProductService.getBuyerInterestedProducts(((BuyerDto) session.getAttribute(BUYER)).id());
+            interests = buyerProductService.getBuyerInterestedProducts(((BuyerDto) session.getAttribute(USER)).id());
         } else {
             interests = productService.findFirst(16);
+        }
+        if (interests.size() < 16) {
+            interests.addAll(productService.findFirst(16 - interests.size()));
         }
         model.addAttribute(INTERESTS, interests);
         return "index";

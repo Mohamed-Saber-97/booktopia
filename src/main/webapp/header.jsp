@@ -15,28 +15,28 @@
                 </div>
 
                 <div class="right-top-bar flex-w h-full">
-                    <c:if test="${sessionScope.user != null}">
-                        <a href="profile" class="flex-c-m trans-04 p-lr-25">
+                    <c:if test="${user != null}">
+                        <a href="/profile" class="flex-c-m trans-04 p-lr-25">
                             My Account
                         </a>
                     </c:if>
-                    <c:if test="${sessionScope.buyer != null}">
-                        <a href="orders" class="flex-c-m trans-04 p-lr-25">
+                    <c:if test="${buyer != null}">
+                        <a href="/orders" class="flex-c-m trans-04 p-lr-25">
                             Orders
                         </a>
                     </c:if>
-                    <c:if test="${sessionScope.admin != null}">
-                        <a href="books" class="flex-c-m trans-04 p-lr-25">
+                    <c:if test="${admin != null}">
+                        <a href="/books" class="flex-c-m trans-04 p-lr-25">
                             Manage books
                         </a>
-                        <a href="categories" class="flex-c-m trans-04 p-lr-25">
+                        <a href="/categories" class="flex-c-m trans-04 p-lr-25">
                             Manage categories
                         </a>
                         <a href="buyers" class="flex-c-m trans-04 p-lr-25">
                             View buyers
                         </a>
                     </c:if>
-                    <c:if test="${sessionScope.user == null}">
+                    <c:if test="${user == null}">
                         <a href="/buyers/signup" class="flex-c-m trans-04 p-lr-25">
                             Sign up
                         </a>
@@ -44,7 +44,7 @@
                             Login
                         </a>
                     </c:if>
-                    <c:if test="${sessionScope.user != null}">
+                    <c:if test="${user != null}">
                         <a href="logout" class="flex-c-m trans-04 p-lr-25">
                             Logout
                         </a>
@@ -72,15 +72,15 @@
 
                 <!-- Icon header -->
                 <div class="wrap-icon-header flex-w flex-r-m">
-                    <c:if test="${sessionScope.buyer != null}">
+                    <c:if test="${buyer != null}">
                         <a href="cart"
                            class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti cart"
-                           data-notify="${sessionScope.user.getCart().size()}">
+                           data-notify="${user.cartSize()}">
                             <i class="zmdi zmdi-shopping-cart"></i>
                         </a>
                         <a href="wishlist"
                            class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti wishlist"
-                           data-notify="${sessionScope.user.getWishlist().size()}">
+                           data-notify="${user.wishlistSize()}">
                             <i class="zmdi zmdi-favorite-outline"></i>
                         </a>
                     </c:if>
@@ -102,16 +102,16 @@
                 <i class="zmdi zmdi-search"></i>
             </div>
 
-            <c:if test="${sessionScope.buyer != null}">
+            <c:if test="${buyer != null}">
                 <a href="cart"
                    class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti cart"
-                   data-notify="${sessionScope.user.getCart().size()}">
+                   data-notify="${user.cartSize()}">
                     <i class="zmdi zmdi-shopping-cart"></i>
                 </a>
 
                 <a href="wishlist"
                    class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti wishlist"
-                   data-notify="${sessionScope.user.getWishlist().size()}">
+                   data-notify="${user.wishlistSize()}">
                     <i class="zmdi zmdi-favorite-outline"></i>
                 </a>
             </c:if>
@@ -137,17 +137,17 @@
 
             <li>
                 <div class="right-top-bar flex-w h-full">
-                    <c:if test="${sessionScope.user != null}">
+                    <c:if test="${user != null}">
                         <a href="profile" class="flex-c-m p-lr-10 trans-04">
                             My Account
                         </a>
                     </c:if>
-                    <c:if test="${sessionScope.buyer != null}">
+                    <c:if test="${buyer != null}">
                         <a href="orders" class="flex-c-m p-lr-10 trans-04">
                             Orders
                         </a>
                     </c:if>
-                    <c:if test="${sessionScope.admin != null}">
+                    <c:if test="${admin != null}">
                         <a href="books" class="flex-c-m p-lr-10 trans-04">
                             Manage books
                         </a>
@@ -158,7 +158,7 @@
                             View buyers
                         </a>
                     </c:if>
-                    <c:if test="${sessionScope.user == null}">
+                    <c:if test="${user == null}">
                         <a href="/buyers/signup" class="flex-c-m p-lr-10 trans-04">
                             Sign up
                         </a>

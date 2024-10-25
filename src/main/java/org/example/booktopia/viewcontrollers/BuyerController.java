@@ -2,6 +2,7 @@ package org.example.booktopia.viewcontrollers;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.LoginDto;
 import org.example.booktopia.dtos.SignupDto;
 import org.example.booktopia.error.InvalidLoginCredentialsException;
@@ -52,9 +53,11 @@ public class BuyerController {
     }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute SignupDto signupDto, Model model) {
-        model.addAttribute(PAGE_TITLE, "Sign up");
+    public String signup(@ModelAttribute SignupDto signupDto, Model model, HttpSession session) {
         buyerService.save(signupDto);
+        BuyerDto buyerDto = buyerService.findByEmail(signupDto.email());
+        session.setAttribute(USER, buyerDto);
+        session.setAttribute(BUYER, YES);
         return "redirect:/";
     }
 }
