@@ -212,14 +212,13 @@
         document.getElementById('loadMore').addEventListener('click', loadProducts);
 
         function loadProducts() {
-            console.log('Loading page ' + pageNumber);
             $('#loadMore').prop('disabled', true);
 
             let name = $('#name').val().trim();
             let minPrice = $('#minPrice').val().trim();
             let maxPrice = $('#maxPrice').val().trim();
             // let category = $('#categories').val().trim();
-            let category = $('#categories').val() ? $('#categories').val().trim() : null;
+            let category = $('#categories').val() ? $('#categories').val().trim() : '';
 
             console.log('name: ' + name);
             console.log('minPrice: ' + minPrice);
@@ -227,19 +226,15 @@
             console.log('category: ' + category);
 
             $.ajax({
-                url: "/next-products",
+                url: "/api/products/paging?name=" + name + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&category=" + category,
                 type: "GET",
                 data: {
-                    page: pageNumber++,
-                    name: name,
-                    minPrice: minPrice,
-                    maxPrice: maxPrice,
-                    category: category,
+                    pageNumber: pageNumber++,
                 },
                 success: function (response) {
-                    console.log(response.products);
+                    console.log(response);
 
-                    let $newItems = $(response.products.map(function (product) {
+                    let $newItems = $(response.map(function (product) {
                         return `
                     <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
                         <div class="block2">

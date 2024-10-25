@@ -29,14 +29,13 @@ public class ProductsViewController {
             @RequestParam Optional<String> maxPrice,
             Model model
     ) {
-        System.out.println("ProductsViewController.products");
+        System.out.println("here");
         List<Optional<String>> params = List.of(name, category, minPrice, maxPrice);
         List<ProductDto> productDtos = productService.search(params, 0, 16);
         List<CategoryDto> categoryDtos = categoryService.findAllAvailableCategories();
         model.addAttribute(PAGE_TITLE, "Products");
         model.addAttribute(PRODUCTS, productDtos);
         model.addAttribute(CATEGORIES, categoryDtos);
-        System.out.println("ProductsViewController.products");
         return "products";
     }
 }

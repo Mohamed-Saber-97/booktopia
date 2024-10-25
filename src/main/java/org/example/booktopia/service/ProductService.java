@@ -39,17 +39,18 @@ public class ProductService {
     }
 
     public List<ProductDto> search(List<Optional<String>> params, Integer pageNumber, Integer pageSize) {
+        System.out.println("In service search");
         Specification<Product> specification = Specification.where(null);
-        if (params.get(0).isPresent()) {
+        if (params.get(0).isPresent() && !params.get(0).get().isEmpty()) {
             specification = specification.and(hasName(params.get(0).get()));
         }
-        if (params.get(1).isPresent()) {
+        if (params.get(1).isPresent() && !params.get(1).get().isEmpty()) {
             specification = specification.and(hasCategory(Long.parseLong(params.get(1).get())));
         }
-        if (params.get(2).isPresent()) {
+        if (params.get(2).isPresent() && !params.get(2).get().isEmpty()) {
             specification = specification.and(hasMinPrice(Integer.parseInt(params.get(2).get())));
         }
-        if (params.get(3).isPresent()) {
+        if (params.get(3).isPresent() && !params.get(3).get().isEmpty()) {
             specification = specification.and(hasMaxPrice(Integer.parseInt(params.get(3).get())));
         }
         specification = specification.and(isNotDeleted());

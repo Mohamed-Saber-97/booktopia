@@ -1,15 +1,15 @@
 package org.example.booktopia.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.booktopia.dtos.ProductDto;
-import org.example.booktopia.mapper.ProductMapper;
-import org.example.booktopia.model.Product;
 import org.example.booktopia.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
@@ -26,6 +26,19 @@ public class ProductController {
     @GetMapping("/available-products")
     public ResponseEntity<List<ProductDto>> getAllAvailableProducts() {
         List<ProductDto> products = productService.findAllAvailable();
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/paging")
+    public ResponseEntity<List<ProductDto>> searchProducts(
+            @RequestParam Optional<String> name,
+            @RequestParam Optional<String> category,
+            @RequestParam Optional<String> minPrice,
+            @RequestParam Optional<String> maxPrice,
+            @RequestParam(defaultValue = "0") Integer pageNumber
+    ) {
+        List<Optional<String>> params = List.of(name, category, minPrice, maxPrice);
+        List<ProductDto> products = productService.search(params, pageNumber, 16);
         return ResponseEntity.ok(products);
     }
 
