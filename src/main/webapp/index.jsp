@@ -96,7 +96,7 @@
         <div class="row isotope-grid">
             <c:if test="${not empty interests}">
                 <c:forEach items="${interests}" var="interest">
-                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${interest.categoryName()}">
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${interest.category().name()}">
                         <div class="block2">
                             <div class="block2-pic hov-img0">
                                 <img src="${interest.imagePath()}" alt="IMG-PRODUCT">

@@ -43,7 +43,7 @@ public class CartItemService {
             existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
             cartItemRepository.save(existingCartItem);
         } else {
-            CategoryDto categoryDto = categoryService.findById(productDto.categoryId());
+            CategoryDto categoryDto = categoryService.findById(productDto.category().id());
             Category category = categoryMapper.toEntity(categoryDto);
             product.setCategory(category);
             CartItem cartItem = new CartItem(buyer, product, quantity);

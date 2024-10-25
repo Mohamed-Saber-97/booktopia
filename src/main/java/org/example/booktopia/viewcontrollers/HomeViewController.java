@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.ProductDto;
-import org.example.booktopia.model.Product;
 import org.example.booktopia.service.BuyerProductService;
 import org.example.booktopia.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -17,16 +16,10 @@ import static org.example.booktopia.utils.RequestAttributeUtil.*;
 
 @Controller
 @AllArgsConstructor
-public class JspPageProvider {
+public class HomeViewController {
     private final ProductService productService;
     private final BuyerProductService buyerProductService;
-
-    /**
-     * Home page
-     *
-     * @param model
-     * @return
-     */
+    
     @GetMapping("/")
     public String home(Model model, HttpSession session) {
         model.addAttribute(PAGE_TITLE, "Home");
