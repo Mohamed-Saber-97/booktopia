@@ -1,7 +1,11 @@
 package org.example.booktopia.repository;
 
 import org.example.booktopia.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -9,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
     @Query("SELECT p FROM Product p where p.category.id IN :categoryIds and p.isDeleted = false and p.category.isDeleted = false")
     List<Product> findAllByCategoryIds(@Param("categoryIds") Iterable<Long> categoryIds);
 
@@ -33,4 +37,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.name = :name AND p.isDeleted = false")
     Optional<Product> findByName(@Param("name") String name);
+
+    Page<Product> findAll(Specification<Product> spec, Pageable pageable);
 }

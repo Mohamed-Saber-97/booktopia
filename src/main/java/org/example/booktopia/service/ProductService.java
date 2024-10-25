@@ -11,9 +11,14 @@ import org.example.booktopia.model.Category;
 import org.example.booktopia.model.Product;
 import org.example.booktopia.repository.CategoryRepository;
 import org.example.booktopia.repository.ProductRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import static org.example.booktopia.specifications.ProductSpecifications.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +38,26 @@ public class ProductService {
         return productMapper.toDto(products);
     }
 
-    public List<ProductDto> findFirst(Integer x){
+    public List<ProductDto> search(List<Optional<String>> params, Integer pageNumber, Integer pageSize) {
+        Specification<Product> specification = Specification.where(null);
+        if (params.get(0).isPresent()) {
+            specification = specification.and(hasName(params.get(0).get()));
+        }
+        if (params.get(1).isPresent()) {
+            specification = specification.and(hasCategory(Long.parseLong(params.get(1).get())));
+        }
+        if (params.get(2).isPresent()) {
+            specification = specification.and(hasMinPrice(Integer.parseInt(params.get(2).get())));
+        }
+        if (params.get(3).isPresent()) {
+            specification = specification.and(hasMaxPrice(Integer.parseInt(params.get(3).get())));
+        }
+        specification = specification.and(isNotDeleted());
+        List<Product> products = productRepository.findAll(specification, PageRequest.of(pageNumber, pageSize)).getContent();
+        return productMapper.toDto(products);
+    }
+
+    public List<ProductDto> findFirst(Integer x) {
         List<Product> products = productRepository.findFirst(x);
         return productMapper.toDto(products);
     }

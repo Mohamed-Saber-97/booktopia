@@ -41,10 +41,13 @@ public class BuyerController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginDto loginDto, Model model) {
-        model.addAttribute(PAGE_TITLE, "Login");
+    public String login(@ModelAttribute LoginDto loginDto, Model model, HttpSession session) {
+        model.addAttribute(PAGE_TITLE, "Buyer Login");
         try {
             buyerService.login(loginDto);
+            BuyerDto buyerDto = buyerService.findByEmail(loginDto.email());
+            session.setAttribute(USER, buyerDto);
+            session.setAttribute(BUYER, YES);
             return "redirect:/";
         } catch (InvalidLoginCredentialsException e) {
             model.addAttribute(ERROR, "Invalid login credentials. Please try again.");
