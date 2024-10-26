@@ -12,14 +12,14 @@ public interface BuyerMapper {
 
     @Mapping(target = "name", source = "account.name")
     @Mapping(target = "email", source = "account.email")
-    @Mapping(target = "birthday", source = "account.birthday")
+    @Mapping(target = "dob", source = "account.birthday")
     @Mapping(target = "job", source = "account.job")
     @Mapping(target = "phoneNumber", source = "account.phoneNumber")
     @Mapping(target = "country", source = "account.address.country")
     @Mapping(target = "city", source = "account.address.city")
     @Mapping(target = "street", source = "account.address.street")
     @Mapping(target = "zipcode", source = "account.address.zipcode")
-    @Mapping(target = "cartSize", expression = "java(buyer.getCartItems().size())")
+    @Mapping(target = "cartSize", expression = "java(buyer.getProducts().size())")
     @Mapping(target = "wishlistSize", expression = "java(buyer.getProducts().size())")
     BuyerDto toDto(Buyer buyer);
 
