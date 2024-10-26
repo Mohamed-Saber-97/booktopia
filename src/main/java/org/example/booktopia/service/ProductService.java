@@ -81,10 +81,9 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDto save(ProductDto productDto) {
-        Product product = productMapper.toEntity(productDto);
-        Category category = categoryRepository.findById(productDto.category().id())
-                .orElseThrow(() -> new RecordNotFoundException("Category", "ID", productDto.category().id().toString()));
+    public ProductDto save(Product product) {
+        Category category = categoryRepository.findById(product.getCategory().getId())
+                .orElseThrow(() -> new RecordNotFoundException("Category", "ID", product.getCategory().getId().toString()));
         product.setCategory(category);
         Boolean exists = this.existsByIsbn(product.getIsbn());
         if (exists) {

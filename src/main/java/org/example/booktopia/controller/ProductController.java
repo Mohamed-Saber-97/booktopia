@@ -1,8 +1,9 @@
 package org.example.booktopia.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.booktopia.dtos.ProductDto;
+import org.example.booktopia.mapper.ProductMapper;
+import org.example.booktopia.model.Product;
 import org.example.booktopia.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final ProductMapper productMapper;
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProducts() {
@@ -73,9 +75,16 @@ public class ProductController {
         return ResponseEntity.ok(productDto);
     }
 
+    @PostMapping("/isbn/{isbn}")
+    public Boolean existsByIsbn(@PathVariable String isbn) {
+        return productService.existsByIsbn(isbn);
+    }
+
     @PostMapping
     public ResponseEntity<ProductDto> saveProduct(@RequestBody ProductDto productDto) {
-        ProductDto savedProductDto = productService.save(productDto);
+        Product product = productMapper.toEntity(productDto);
+        System.out.println(product.getCategory());
+        ProductDto savedProductDto = productService.save(product);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedProductDto);
     }
