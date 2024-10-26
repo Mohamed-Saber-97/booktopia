@@ -39,17 +39,20 @@ public class ProductService {
     }
 
     public List<ProductDto> search(List<Optional<String>> params, Integer pageNumber, Integer pageSize) {
+        System.out.println("In service search");
+        System.out.println(params);
+        System.out.println(params.size());
         Specification<Product> specification = Specification.where(null);
-        if (params.get(0).isPresent()) {
+        if (params.get(0).isPresent() && !params.get(0).get().isEmpty()) {
             specification = specification.and(hasName(params.get(0).get()));
         }
-        if (params.get(1).isPresent()) {
+        if (params.get(1).isPresent() && !params.get(1).get().isEmpty()) {
             specification = specification.and(hasCategory(Long.parseLong(params.get(1).get())));
         }
-        if (params.get(2).isPresent()) {
+        if (params.get(2).isPresent() && !params.get(2).get().isEmpty()) {
             specification = specification.and(hasMinPrice(Integer.parseInt(params.get(2).get())));
         }
-        if (params.get(3).isPresent()) {
+        if (params.get(3).isPresent() && !params.get(3).get().isEmpty()) {
             specification = specification.and(hasMaxPrice(Integer.parseInt(params.get(3).get())));
         }
         specification = specification.and(isNotDeleted());
@@ -78,10 +81,9 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDto save(ProductDto productDto) {
-        Product product = productMapper.toEntity(productDto);
-        Category category = categoryRepository.findById(productDto.category().id())
-                .orElseThrow(() -> new RecordNotFoundException("Category", "ID", productDto.category().id().toString()));
+    public ProductDto save(Product product) {
+        Category category = categoryRepository.findById(product.getCategory().getId())
+                .orElseThrow(() -> new RecordNotFoundException("Category", "ID", product.getCategory().getId().toString()));
         product.setCategory(category);
         Boolean exists = this.existsByIsbn(product.getIsbn());
         if (exists) {

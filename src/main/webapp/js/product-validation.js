@@ -61,6 +61,7 @@ $(document).ready(function () {
 
         // Check ISBN length and format
         if (!isbn10Regex.test(isbn) && !isbn13Regex.test(isbn)) {
+            console.log("ISBN is invalid");
             $("#isbnInput").addClass("is-invalid");
             $("#isbnHelp").text("Invalid ISBN format. Must be 10 or 13 digits long.").css({ "visibility": "visible", "color": "red" });
             isValid = false;
@@ -72,12 +73,13 @@ $(document).ready(function () {
         const deferred = $.Deferred();
 
         if (validateISBN()) {
-
+            console.log("ISBN is valid, checking uniqueness...");
             $.ajax({
                 url: "/unique-isbn",
                 method: "POST",
                 data: { isbn: $("#isbnInput").val() },
                 success: function (response) {
+                    console.log(response);
                     if (response === "true") {
                         $("#isbnInput").removeClass("is-invalid").addClass("is-valid");
                         $("#isbnHelp").text("ISBN available").css({

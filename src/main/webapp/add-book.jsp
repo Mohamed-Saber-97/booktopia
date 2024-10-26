@@ -82,7 +82,7 @@
                                 name="categoryId" id="categoryId" aria-describedby="categoryHelp">
                             <option value="" disabled selected>Category</option>
                             <c:forEach items="${categories}" var="category">
-                                <option value="${category.getId()}">${category.name}</option>
+                                <option value="${category.id()}">${category.name()}</option>
                             </c:forEach>
                         </select>
                         <small id="categoryHelp" class="form-text text-muted" style="visibility: hidden;">

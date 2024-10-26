@@ -10,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final ProductMapper productMapper;
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProducts() {
@@ -26,6 +28,20 @@ public class ProductController {
     @GetMapping("/available-products")
     public ResponseEntity<List<ProductDto>> getAllAvailableProducts() {
         List<ProductDto> products = productService.findAllAvailable();
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/paging")
+    public ResponseEntity<List<ProductDto>> searchProducts(
+            @RequestParam Optional<String> name,
+            @RequestParam Optional<String> category,
+            @RequestParam Optional<String> minPrice,
+            @RequestParam Optional<String> maxPrice,
+            @RequestParam(defaultValue = "0") Integer pageNumber
+    ) {
+        List<Optional<String>> params = List.of(name, category, minPrice, maxPrice);
+        System.out.println(params.size());
+        List<ProductDto> products = productService.search(params, pageNumber, 16);
         return ResponseEntity.ok(products);
     }
 
@@ -59,9 +75,16 @@ public class ProductController {
         return ResponseEntity.ok(productDto);
     }
 
+    @PostMapping("/isbn/{isbn}")
+    public Boolean existsByIsbn(@PathVariable String isbn) {
+        return productService.existsByIsbn(isbn);
+    }
+
     @PostMapping
     public ResponseEntity<ProductDto> saveProduct(@RequestBody ProductDto productDto) {
-        ProductDto savedProductDto = productService.save(productDto);
+        Product product = productMapper.toEntity(productDto);
+        System.out.println(product.getCategory());
+        ProductDto savedProductDto = productService.save(product);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedProductDto);
     }
