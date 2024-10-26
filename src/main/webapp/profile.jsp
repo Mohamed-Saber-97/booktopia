@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
-<%@include file="header.jsp" %>
-<%@include file="notifications.jsp" %>
+<%@include file="/header.jsp" %>
+<%@include file="/notifications.jsp" %>
 <section class="bg0 p-t-104 p-b-116">
     <div class="container">
         <div class="row align-items-center mb-4">
@@ -58,10 +58,10 @@
 <script type="text/javascript">
     var emailUrl = `<c:choose>
     <c:when test="${sessionScope.buyer != null}">
-        /buyer-update-email
+        /validator/buyer-update-email
     </c:when>
     <c:when test="${sessionScope.admin != null}">
-        /admin-update-email
+        /validator/admin-update-email
     </c:when>
 </c:choose>`.trim();
     var phoneUrl = `<c:choose>
@@ -69,11 +69,11 @@
         /buyer-update-phone-number
     </c:when>
     <c:when test="${sessionScope.admin != null}">
-        /admin-update-phone-number
+        /validator/admin-update-phone-number
     </c:when>
 </c:choose>`.trim();
 </script>
 
 <!-- Include your external JavaScript file -->
 <script src="./js/update-profile-validation.js"></script>
-<%@include file="footer.jsp" %>
+<%@include file="/footer.jsp" %>

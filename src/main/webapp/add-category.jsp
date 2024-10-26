@@ -1,5 +1,5 @@
-<%@include file="header.jsp" %>
-<%@include file="notifications.jsp" %>
+<%@include file="/header.jsp" %>
+<%@include file="/notifications.jsp" %>
 <style>
     /* Make the container a flexbox to center the content */
     .file-upload-container {
@@ -60,7 +60,7 @@
                         <small id="nameHelp" class="form-text text-muted" style="visibility: hidden;">Name should not
                             exceed 100 characters.</small>
                     </div>
-                    <%@include file="form-components/submit-button.jsp" %>
+                    <%@include file="/form-components/submit-button.jsp" %>
                 </form>
             </div>
         </div>
@@ -115,4 +115,4 @@
         });
     });
 </script>
-<%@include file="footer.jsp" %>
+<%@include file="/footer.jsp" %>
