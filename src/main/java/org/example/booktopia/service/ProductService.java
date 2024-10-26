@@ -40,6 +40,8 @@ public class ProductService {
 
     public List<ProductDto> search(List<Optional<String>> params, Integer pageNumber, Integer pageSize) {
         System.out.println("In service search");
+        System.out.println(params);
+        System.out.println(params.size());
         Specification<Product> specification = Specification.where(null);
         if (params.get(0).isPresent() && !params.get(0).get().isEmpty()) {
             specification = specification.and(hasName(params.get(0).get()));

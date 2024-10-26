@@ -38,6 +38,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0") Integer pageNumber
     ) {
         List<Optional<String>> params = List.of(name, category, minPrice, maxPrice);
+        System.out.println(params.size());
         List<ProductDto> products = productService.search(params, pageNumber, 16);
         return ResponseEntity.ok(products);
     }

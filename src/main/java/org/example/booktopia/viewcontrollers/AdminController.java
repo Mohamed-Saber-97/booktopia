@@ -31,6 +31,8 @@ public class AdminController {
         model.addAttribute("PAGE_TITLE", "Admin Dashboard");
         try {
             adminService.login(loginDto);
+            session.setAttribute("user", adminService.findByEmail(loginDto.email()));
+            session.setAttribute("admin", "Y");
             return "redirect:/";
         } catch (InvalidLoginCredentialsException e) {
             model.addAttribute(ERROR, "Invalid login credentials. Please try again.");

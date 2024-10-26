@@ -37,4 +37,16 @@ public class ProductsViewController {
         model.addAttribute(CATEGORIES, categoryDtos);
         return "products";
     }
+
+    @GetMapping("/books")
+    public String books(Model model) {
+        List<ProductDto> productDtos = productService.search(List.of(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()), 0, 16);
+        List<CategoryDto> categoryDtos = categoryService.findAllAvailableCategories();
+        model.addAttribute(PAGE_TITLE, "Books");
+        model.addAttribute(PRODUCTS, productDtos);
+        model.addAttribute(CATEGORIES, categoryDtos);
+        return "books";
+    }
+
+
 }

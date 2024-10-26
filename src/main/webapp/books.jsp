@@ -27,21 +27,21 @@
                                     <tr class="table_row">
                                         <td class="column-1">
                                             <div class="how-itemcart1">
-                                                <img src="${item.getImagePath()}" alt="IMG">
+                                                <img src="${item.imagePath()}" alt="IMG">
                                             </div>
                                         </td>
-                                        <td class="column-2">${item.getName()}</td>
-                                        <td class="column-2">${item.getAuthor()}</td>
+                                        <td class="column-2">${item.name()}</td>
+                                        <td class="column-2">${item.author()}</td>
                                         <td class="column-2"></td>
                                         <td class="column-2 price">
-                                            ${item.getPrice()}</td>
-                                        <td class="column-2">${item.getQuantity()}</td>
+                                            ${item.price()}</td>
+                                        <td class="column-2">${item.quantity()}</td>
                                         <td class="column-3">
-                                            <a href="edit-book?p=${item.getId()}">View</a>
+                                            <a href="edit-book?p=${item.id()}">View</a>
                                         </td>
                                         <td class="column-3">
                                             <form action="delete-book" method="POST" style="display:inline;">
-                                                <input type="hidden" name="id" value="${item.getId()}">
+                                                <input type="hidden" name="id" value="${item.id()}">
                                                 <button type="submit" class="btn btn-link">Delete</button>
                                             </form>
                                         </td>
@@ -88,14 +88,14 @@
             $('#loadMore').prop('disabled', true);
 
             $.ajax({
-                url: "/next-products",
+                url: "/api/products/paging?name=&minPrice=&maxPrice=&category=",
                 type: "GET",
                 data: {
-                    page: pageNumber++,
+                    pageNumber: pageNumber++,
                 },
                 success: function (response) {
 
-                    let newItems = $(response.products.map(function (product) {
+                    let newItems = $(response.map(function (product) {
                         return `
                             <tr class="table_row">
                                 <td class="column-1">
