@@ -29,7 +29,7 @@ public class BuyerController {
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute(PAGE_TITLE, "Buyer Login");
-        return "/buyer-login";
+        return "buyer-login";
     }
 
     @GetMapping("/signup")
@@ -37,7 +37,7 @@ public class BuyerController {
         session.setAttribute(PAGE_TITLE, "Sign up");
         session.setAttribute(COUNTRIES, Country.countrySet);
         session.setAttribute(CATEGORIES, categoryService.findAllAvailableCategories());
-        return "/signup";
+        return "signup";
     }
 
     @PostMapping("/login")

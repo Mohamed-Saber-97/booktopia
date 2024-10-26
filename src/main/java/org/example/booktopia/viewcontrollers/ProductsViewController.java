@@ -39,4 +39,5 @@ public class ProductsViewController {
         System.out.println("ProductsViewController.products");
         return "products";
     }
+
 }
