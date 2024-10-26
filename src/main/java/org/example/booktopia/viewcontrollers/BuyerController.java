@@ -63,4 +63,5 @@ public class BuyerController {
         session.setAttribute(BUYER, YES);
         return "redirect:/";
     }
+
 }

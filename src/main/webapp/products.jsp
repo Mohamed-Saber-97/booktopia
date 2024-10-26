@@ -119,7 +119,7 @@
                                         <option value="" disabled selected>Category</option>
                                     </c:if>
                                     <c:forEach items="${categories}" var="category">
-                                        <option value="${category.id()}">${category.name()}</option>
+                                        <option value="${category.id()}" ${category.id() == param.category ? 'selected' : ''} >${category.name()}</option>
                                     </c:forEach>
                                 </select>
                             </div>

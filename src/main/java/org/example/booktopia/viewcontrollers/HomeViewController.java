@@ -1,5 +1,6 @@
 package org.example.booktopia.viewcontrollers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.example.booktopia.dtos.BuyerDto;
@@ -21,11 +22,13 @@ public class HomeViewController {
     private final BuyerProductService buyerProductService;
 
     @GetMapping("/")
-    public String home(Model model, HttpSession session) {
+    public String home(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
         model.addAttribute(PAGE_TITLE, "Home");
-        System.out.println(session.getAttribute(BUYER));
         List<ProductDto> interests;
-        if (session.getAttribute(BUYER) != null) {
+        if (session != null && session.getAttribute(BUYER) != null) {
+            System.out.println("HomeViewController.home" + session.getAttribute(BUYER));
+            System.out.println("HomeViewController.home" + session.getAttribute(USER));
             interests = buyerProductService.getBuyerInterestedProducts(((BuyerDto) session.getAttribute(USER)).id());
         } else {
             interests = productService.findFirst(16);

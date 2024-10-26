@@ -29,7 +29,6 @@ public class ProductsViewController {
             @RequestParam Optional<String> maxPrice,
             Model model
     ) {
-        System.out.println("here");
         List<Optional<String>> params = List.of(name, category, minPrice, maxPrice);
         List<ProductDto> productDtos = productService.search(params, 0, 16);
         List<CategoryDto> categoryDtos = categoryService.findAllAvailableCategories();

@@ -7,7 +7,7 @@ import static org.example.booktopia.utils.RequestAttributeUtil.*;
 
 public class ProductSpecifications {
     public static Specification<Product> hasName(String name) {
-        return ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(NAME), name));
+        return ((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get(NAME), "%" + name + "%"));
     }
 
     public static Specification<Product> hasMinPrice(Integer minPrice) {
