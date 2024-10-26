@@ -15,3 +15,4 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
     Optional<Admin> findByAccount_EmailAndAccount_PasswordAndIsDeletedFalse(@NonNull String email,
                                                                             @NonNull String password);
 }
+
