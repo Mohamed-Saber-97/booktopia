@@ -1,17 +1,20 @@
 package org.example.booktopia.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.booktopia.controller.PaymobController;
 import org.example.booktopia.dtos.BuyerDto;
-import org.example.booktopia.dtos.LoginDto;
-import org.example.booktopia.dtos.SignupDto;
-import org.example.booktopia.error.InvalidLoginCredentialsException;
+import org.example.booktopia.error.InsufficientFundsException;
+import org.example.booktopia.error.InsufficientStockException;
 import org.example.booktopia.error.RecordNotFoundException;
 import org.example.booktopia.mapper.BuyerMapper;
 import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.model.Buyer;
+import org.example.booktopia.model.OrderProduct;
 import org.example.booktopia.repository.BuyerRepository;
 import org.example.booktopia.utils.RequestBuilderUtil;
 import org.springframework.data.domain.Page;
@@ -22,6 +25,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.Map;
 
 import static org.example.booktopia.utils.RequestAttributeUtil.USER;
 
@@ -34,10 +40,11 @@ public class BuyerService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final CategoryMapper categoryMapper;
     private final RequestBuilderUtil requestBuilderUtil;
+    private final PaymobController paymobController;
 
     public Buyer findById(Long id) {
         return buyerRepository.findById(id)
-                              .orElseThrow(() -> new RecordNotFoundException("Buyer", "ID", id.toString()));
+                .orElseThrow(() -> new RecordNotFoundException("Buyer", "ID", id.toString()));
     }
 
     @Transactional
@@ -62,15 +69,15 @@ public class BuyerService implements UserDetailsService {
 
     public BuyerDto findByEmail(String email) {
         Buyer buyer = buyerRepository.findByAccountEmail(email)
-                                     .orElseThrow(() -> new RecordNotFoundException("Buyer", "Email", email));
+                .orElseThrow(() -> new RecordNotFoundException("Buyer", "Email", email));
         return buyerMapper.toDto(buyer);
     }
 
     public BuyerDto findByPhoneNumber(String phoneNumber) {
         Buyer buyer = buyerRepository.findByAccountPhoneNumber(phoneNumber)
-                                     .orElseThrow(() -> new RecordNotFoundException("Buyer",
-                                                                                    "Phonenumber",
-                                                                                    phoneNumber));
+                .orElseThrow(() -> new RecordNotFoundException("Buyer",
+                        "Phonenumber",
+                        phoneNumber));
         return buyerMapper.toDto(buyer);
     }
 
@@ -78,24 +85,67 @@ public class BuyerService implements UserDetailsService {
 //    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Buyer buyer = buyerRepository.findByAccountEmailAndIsDeletedIsFalse(username)
-                                     .orElseThrow(() -> new UsernameNotFoundException(username));
+                .orElseThrow(() -> new UsernameNotFoundException(username));
 //        buyer.getAccount()
 //             .setPassword(passwordEncoder.encode(username));
         return User.builder()
-                   .username(buyer.getUsername())
-                   .password(buyer.getPassword())
-                   .roles("BUYER")
-                   .build();
+                .username(buyer.getUsername())
+                .password(buyer.getPassword())
+                .roles("BUYER")
+                .build();
     }
 
     @Transactional
     public BuyerDto updateProfile(HttpServletRequest request) {
         Long id = ((BuyerDto) request.getSession()
-                                     .getAttribute(USER)).id();
+                .getAttribute(USER)).id();
         Buyer currentBuyer = findById(id);
         Buyer requestBuyer = requestBuilderUtil.updateBuyerFromRequest(currentBuyer, request);
         buyerRepository.save(requestBuyer);
         return buyerMapper.toDto(requestBuyer);
     }
+
+//    @Transactional
+//    public Buyer checkout(Buyer buyer) throws InsufficientStockException, InsufficientFundsException {
+//
+//        paymobController.checkout(buyer);
+//        if (buyer == null || buyer.getCartItems() == null) return buyer;
+//
+//        try {
+//            Map<Product, Integer> currentCart = buyer.getCart();
+//            Order order = new Order(buyer);
+//            order = entityManager.merge(order);
+//            for (Map.Entry<Product, Integer> entry : currentCart.entrySet()) {
+//                Product product = entry.getKey();
+//                //--- Check if stock sufficient
+//                Integer productStock = product.getQuantity();
+//                Integer productQuantity = entry.getValue();
+//                if (productStock < productQuantity) {
+//                    throw new InsufficientStockException("Transaction declined insufficient stock");
+//                }
+//                product.setQuantity(productStock - productQuantity);
+//                entityManager.merge(product);
+//                //-- Check is funds sufficient
+//                BigDecimal productPrice = product.getPrice();
+//                BigDecimal orderPrice = productPrice.multiply(new BigDecimal(productQuantity));
+//                BigDecimal buyerCreditLimit = buyer.getCreditLimit();
+//                if (orderPrice.compareTo(buyerCreditLimit) > 0) {
+//                    throw new InsufficientFundsException("Transaction declined insufficient funds");
+//                }
+//                buyer.setCreditLimit(buyerCreditLimit.subtract(orderPrice));
+//
+//                //-- Add it to Orders
+//                OrderProduct orderProduct = new OrderProduct(order, entry);
+//                order.addOrderProduct(orderProduct);
+//                entityManager.merge(order);
+//            }
+//            buyer.clearCart();
+//            buyer = entityManager.merge(buyer);
+//            transaction.commit();
+//            return buyer;
+//        } catch (InsufficientStockException | InsufficientFundsException e) {
+//            throw e;
+//    }
+//
 
 }

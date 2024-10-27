@@ -11,7 +11,7 @@
 <!-- Shoping Cart -->
 <c:choose>
     <c:when test="${user.cartSize() > 0}">
-        <form class="bg0 p-t-75 p-b-85" action="update-cart" method="post">
+        <form class="bg0 p-t-75 p-b-85" id="update-cart" action="update-cart" method="post">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
@@ -220,6 +220,19 @@
                 }
             });
         }
+
+        // $("#update-cart").submit(function (event) {
+        //     event.preventDefault();
+        //     $.ajax({
+        //         url: "/buyers/update-cart",
+        //         type: "POST",
+        //         // data: $("#update-cart").serialize(),
+        //         success: function (response) {
+        //             console.log(response);
+        //         }
+        //     });
+        // });
+
     });
 </script>
 
