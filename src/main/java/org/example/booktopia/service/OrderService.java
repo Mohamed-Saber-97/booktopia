@@ -16,14 +16,13 @@ import org.example.booktopia.model.*;
 import org.example.booktopia.repository.OrderProductRepository;
 import org.example.booktopia.repository.OrderRepository;
 import org.example.booktopia.repository.ProductRepository;
+import org.example.booktopia.specifications.OrderSpecifications;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +34,30 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final OrderProductMapper orderProductMapper;
     private final ProductMapper productMapper;
+
+
+    public List<OrderDto> searchOrders(Optional<Long> orderId, Optional<Long> buyerId, Integer pageNumber, Integer pageSize) {
+        Specification<Order> specification = Specification.where(null);
+
+        // Filter by Order ID if provided
+        if (orderId.isPresent()) {
+            specification = specification.and(OrderSpecifications.hasOrderId(orderId.get()));
+        }
+
+        // Filter by Customer ID if provided
+        if (buyerId.isPresent()) {
+            specification = specification.and(OrderSpecifications.hasBuyerId(buyerId.get()));
+        }
+
+        // Fetch paginated list of orders matching the specifications
+        List<Order> orders = orderRepository.findAll(specification, PageRequest.of(pageNumber, pageSize)).getContent();
+
+        // Convert to DTOs if necessary
+        return orderMapper.toDto(orders); // Assuming you have an OrderMapper to map Order to OrderDto
+    }
+
+
+
 
     public Page<Order> findAllByBuyerId(Long buyerId, int pageNumber, int pageSize) {
         buyerService.findById(buyerId);

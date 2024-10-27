@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -20,6 +21,17 @@ import java.util.Map;
 public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
+
+
+    @GetMapping("/search")
+    public List<OrderDto> searchOrders(
+            @RequestParam Optional<Long> orderId,
+            @RequestParam Optional<Long> buyerId,
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "10") Integer pageSize) {
+
+        return orderService.searchOrders(orderId, buyerId, pageNumber, pageSize);
+    }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderDto> getOrderById(@PathVariable Long orderId) {
