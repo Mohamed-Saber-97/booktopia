@@ -14,7 +14,7 @@
         <c:forEach items="${countries}" var="country">
             <option value="${country}"
                     <c:if
-                            test="${country.equals(user.getAccount().getAddress().getCountry())}">
+                            test="${country.equals(user.country())}">
                         selected
                     </c:if>>
                     ${country}

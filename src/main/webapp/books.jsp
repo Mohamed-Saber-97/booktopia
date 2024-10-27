@@ -1,4 +1,4 @@
-<%@include file="header.jsp" %>
+<%@include file="/header.jsp" %>
 
 <c:choose>
     <c:when test="${not empty products}">
@@ -7,8 +7,8 @@
                 <div class="col-lg-10 col-xl-9 m-lr-auto m-b-50">
                     <div class="m-l-25 m-r--38 m-lr-0-xl">
                         <a href="add-book"
-                            class="flex-c-m stext-101 size-121 cl0 bg3 bor1 hov-btn3 p-lr-15 p-tb-5 trans-04 pointer m-b-15 m-t-15"
-                            style="width: 50%">
+                           class="flex-c-m stext-101 size-121 cl0 bg3 bor1 hov-btn3 p-lr-15 p-tb-5 trans-04 pointer m-b-15 m-t-15"
+                           style="width: 50%">
                             Add a new book
                         </a>
                         <div class="wrap-table-shopping-cart">
@@ -136,4 +136,4 @@
     });
 </script>
 
-<%@include file="footer.jsp" %>
+<%@include file="/footer.jsp" %>

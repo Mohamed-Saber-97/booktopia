@@ -16,7 +16,7 @@
 
                 <div class="right-top-bar flex-w h-full">
                     <c:if test="${user != null}">
-                        <a href="profile" class="flex-c-m trans-04 p-lr-25">
+                        <a href="/profile" class="flex-c-m trans-04 p-lr-25">
                             My Account
                         </a>
                     </c:if>
@@ -32,7 +32,7 @@
                         <a href="/categories" class="flex-c-m trans-04 p-lr-25">
                             Manage categories
                         </a>
-                        <a href="buyers" class="flex-c-m trans-04 p-lr-25">
+                        <a href="/buyers" class="flex-c-m trans-04 p-lr-25">
                             View buyers
                         </a>
                     </c:if>
@@ -45,7 +45,7 @@
                         </a>
                     </c:if>
                     <c:if test="${user != null}">
-                        <a href="logout" class="flex-c-m trans-04 p-lr-25">
+                        <a href="/logout" class="flex-c-m trans-04 p-lr-25">
                             Logout
                         </a>
                     </c:if>

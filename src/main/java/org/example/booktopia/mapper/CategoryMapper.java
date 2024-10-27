@@ -5,6 +5,7 @@ import org.example.booktopia.model.Category;
 import org.mapstruct.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoryMapper {
@@ -15,6 +16,10 @@ public interface CategoryMapper {
     List<Category> toEntity(List<CategoryDto> categoryDtos);
 
     List<CategoryDto> toDto(List<Category> categories);
+
+    Set<Category> toEntity(Set<CategoryDto> categoryDtos);
+
+    Set<CategoryDto> toDto(Set<Category> categories);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Category partialUpdate(

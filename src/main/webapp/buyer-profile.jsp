@@ -1,6 +1,6 @@
-<%@include file="header.jsp" %>
+<%@include file="/header.jsp" %>
 
-<%@include file="notifications.jsp" %>
+<%@include file="/notifications.jsp" %>
 <style>
     .interest-bubble {
         display: inline-block;
@@ -40,45 +40,45 @@
                 </h4>
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" readonly
-                           value="${tempBuyer.getAccount().getName()}">
+                           value="${tempBuyer.name()}">
                 </div>
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" readonly
-                           value="${tempBuyer.getAccount().getBirthday()}">
+                           value="${tempBuyer.dob()}">
                 </div>
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" readonly
-                           value="${tempBuyer.getAccount().getJob()}">
+                           value="${tempBuyer.job()}">
                 </div>
                 <div class="bor8 m-b-20 how-pos4-parent">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" readonly
-                           value="${tempBuyer.getAccount().getEmail()}">
+                           value="${tempBuyer.email()}">
                 </div>
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" readonly
-                           value="${tempBuyer.getCreditLimit()}">
+                           value="${tempBuyer.creditLimit()}">
                 </div>
             </div>
             <div class="size-210 bor10 flex-w flex-col-m p-lr-93 p-tb-30 p-lr-15-lg w-full-md">
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" readonly
-                           value="${tempBuyer.getAccount().getPhoneNumber()}">
+                           value="${tempBuyer.phoneNumber()}">
                 </div>
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" readonly
-                           value="${tempBuyer.getAccount().getAddress().getCountry()}">
+                           value="${tempBuyer.country()}">
                 </div>
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" readonly
-                           value="${tempBuyer.getAccount().getAddress().getCity()}">
+                           value="${tempBuyer.city()}">
                 </div>
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" readonly
-                           value="${tempBuyer.getAccount().getAddress().getStreet()}">
+                           value="${tempBuyer.street()}">
                 </div>
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" readonly
-                           value="${tempBuyer.getAccount().getAddress().getZipcode()}">
+                           value="${tempBuyer.zipcode()}">
                 </div>
                 <div class="form-group">
                     <label><b>Interests</b></label>
@@ -109,4 +109,4 @@
     </div>
 </section>
 
-<%@include file="footer.jsp" %>
+<%@include file="/footer.jsp" %>

@@ -1,4 +1,6 @@
 package org.example.booktopia.dtos;
 
-public record CategoryDto(Long id, String name) {
+import java.io.Serializable;
+
+public record CategoryDto(Long id, String name) implements Serializable {
 }

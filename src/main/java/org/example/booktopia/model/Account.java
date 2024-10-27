@@ -50,4 +50,15 @@ public class Account implements Serializable {
     @Embedded
     @Valid
     private Address address;
+
+    public Account(String name, String password, LocalDate birthday, String job, String email, String phoneNumber,
+                   Address address) {
+        this.name = name;
+        this.password = password;
+        this.birthday = birthday;
+        this.job = job;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
 }
