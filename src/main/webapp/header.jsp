@@ -26,13 +26,13 @@
                         </a>
                     </c:if>
                     <c:if test="${admin != null}">
-                        <a href="/books" class="flex-c-m trans-04 p-lr-25">
+                        <a href="/admins/books" class="flex-c-m trans-04 p-lr-25">
                             Manage books
                         </a>
-                        <a href="/categories" class="flex-c-m trans-04 p-lr-25">
+                        <a href="/admins/categories" class="flex-c-m trans-04 p-lr-25">
                             Manage categories
                         </a>
-                        <a href="/buyers" class="flex-c-m trans-04 p-lr-25">
+                        <a href="/admins/buyers" class="flex-c-m trans-04 p-lr-25">
                             View buyers
                         </a>
                     </c:if>
@@ -148,13 +148,13 @@
                         </a>
                     </c:if>
                     <c:if test="${admin != null}">
-                        <a href="books" class="flex-c-m p-lr-10 trans-04">
+                        <a href="/admins/books" class="flex-c-m p-lr-10 trans-04">
                             Manage books
                         </a>
-                        <a href="categories" class="flex-c-m p-lr-10 trans-04">
+                        <a href="/admins/categories" class="flex-c-m p-lr-10 trans-04">
                             Manage categories
                         </a>
-                        <a href="buyers" class="flex-c-m p-lr-10 trans-04">
+                        <a href="/admins/buyers" class="flex-c-m p-lr-10 trans-04">
                             View buyers
                         </a>
                     </c:if>

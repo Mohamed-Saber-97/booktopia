@@ -40,7 +40,7 @@ public class SecurityConfig {
         http.securityMatcher("/admins/**")
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(requests -> requests
-                                           .requestMatchers("/admins/add-category")
+                                           .requestMatchers("/admins/**")
                                            .hasRole("ADMIN")
                                            .anyRequest()
                                            .permitAll()

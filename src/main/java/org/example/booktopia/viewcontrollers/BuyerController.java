@@ -41,8 +41,6 @@ public class BuyerController {
         return "signup";
     }
 
-
-
     @PostMapping("/signup")
     public String signup(HttpServletRequest request, Model model, HttpSession session) {
         BuyerDto buyerDto = buyerService.save(request);

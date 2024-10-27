@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -48,5 +49,14 @@ public class OrderController {
     public ResponseEntity<List<OrderProductDto>> getProductsByOrderId(@PathVariable Long orderId) {
         List<OrderProductDto> orderProductDtos = orderService.findAllProductByOrderId(orderId);
         return ResponseEntity.ok(orderProductDtos);
+    }
+
+    @GetMapping("/search")
+    public List<OrderDto> searchOrders(
+            @RequestParam Optional<Long> orderId,
+            @RequestParam Optional<Long> buyerId,
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "10") Integer pageSize) {
+        return orderService.searchOrders(orderId, buyerId, pageNumber, pageSize);
     }
 }

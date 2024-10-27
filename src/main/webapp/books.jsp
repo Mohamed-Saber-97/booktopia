@@ -27,7 +27,7 @@
                                     <tr class="table_row">
                                         <td class="column-1">
                                             <div class="how-itemcart1">
-                                                <img src="${item.imagePath()}" alt="IMG">
+                                                <img src="/${item.imagePath()}" alt="IMG">
                                             </div>
                                         </td>
                                         <td class="column-2">${item.name()}</td>
@@ -100,7 +100,7 @@
                             <tr class="table_row">
                                 <td class="column-1">
                                     <div class="how-itemcart1">
-                                        <img src="` + product.imagePath + `" alt="IMG">
+                                        <img src="/` + product.imagePath + `" alt="IMG">
                                     </div>
                                 </td>
                                 <td class="column-2">` + product.name + `</td>
