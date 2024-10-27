@@ -15,10 +15,7 @@ import org.example.booktopia.utils.RequestBuilderUtil;
 import org.example.booktopia.utils.ValidatorUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,5 +86,12 @@ public class ProductsViewController {
             model.addAttribute(PAGE_TITLE, "Home");
             return "redirect:/books";
         }
+    }
+
+    @PostMapping("/delete-book")
+    public String deleteBook(Long id, Model model) {
+        productService.deleteById(id);
+        model.addAttribute(PAGE_TITLE, "Books");
+        return "redirect:/books";
     }
 }
