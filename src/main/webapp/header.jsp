@@ -65,7 +65,7 @@
                 <div class="menu-desktop">
                     <ul class="main-menu">
                         <li>
-                            <a href="products">All books</a>
+                            <a href="/products">All books</a>
                         </li>
                     </ul>
                 </div>
@@ -73,12 +73,12 @@
                 <!-- Icon header -->
                 <div class="wrap-icon-header flex-w flex-r-m">
                     <c:if test="${buyer != null}">
-                        <a href="cart"
+                        <a href="/buyers/cart"
                            class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti cart"
                            data-notify="${user.cartSize()}">
                             <i class="zmdi zmdi-shopping-cart"></i>
                         </a>
-                        <a href="wishlist"
+                        <a href="/buyers/wishlist"
                            class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti wishlist"
                            data-notify="${user.wishlistSize()}">
                             <i class="zmdi zmdi-favorite-outline"></i>
@@ -103,13 +103,13 @@
             </div>
 
             <c:if test="${buyer != null}">
-                <a href="cart"
+                <a href="/buyers/cart"
                    class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti cart"
                    data-notify="${user.cartSize()}">
                     <i class="zmdi zmdi-shopping-cart"></i>
                 </a>
 
-                <a href="wishlist"
+                <a href="/buyers/wishlist"
                    class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti wishlist"
                    data-notify="${user.wishlistSize()}">
                     <i class="zmdi zmdi-favorite-outline"></i>

@@ -34,14 +34,14 @@ public class CartItemController {
 
     @PostMapping("/increment/{buyerId}/{productId}")
     public ResponseEntity<?> incrementProductQuantity(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId) {
-        cartItemService.incrementProductQuantity(buyerId, productId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        Integer result = cartItemService.incrementProductQuantity(buyerId, productId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping("/decrement/{buyerId}/{productId}")
     public ResponseEntity<?> decrementProductQuantity(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId) {
-        cartItemService.decrementProductQuantity(buyerId, productId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        Integer result = cartItemService.decrementProductQuantity(buyerId, productId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping("/clear/{buyerId}")

@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%-- Check if the cart is empty --%>
 <c:choose>
-    <c:when test="${sessionScope.user.getCart().size() == 0}">
+    <c:when test="${user.cartSize() == 0}">
         <!-- Element with dimmed style when the cart is empty -->
         <div style="
             opacity: 0.5;

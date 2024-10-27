@@ -35,8 +35,8 @@ public class UpdateUserSession {
             List<BuyerWishlistDto> wishlistDtos = buyerWishlistService.getBuyerWishlist(buyerId);
             List<Long> cart = cartItemDtos.stream().map(CartItemDto::productId).toList();
             List<Long> wishlist = wishlistDtos.stream().map(BuyerWishlistDto::productId).toList();
-            session.setAttribute(CART, cart);
-            session.setAttribute(WISHLIST, wishlist);
+            session.setAttribute(CART, cartItemDtos);
+            session.setAttribute(WISHLIST, wishlistDtos);
             session.setAttribute(USER, buyer);
         }
     }

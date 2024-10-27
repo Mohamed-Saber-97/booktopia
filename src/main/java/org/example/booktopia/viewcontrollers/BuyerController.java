@@ -26,6 +26,7 @@ public class BuyerController {
 
     private final BuyerService buyerService;
     private final CategoryService categoryService;
+    private final UpdateUserSession updateUserSession;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -47,5 +48,12 @@ public class BuyerController {
         session.setAttribute(USER, buyerDto);
         session.setAttribute(BUYER, YES);
         return "redirect:/";
+    }
+
+    @GetMapping("/cart")
+    public String getCart(HttpServletRequest request, Model model) {
+        updateUserSession.updateUserSession(request);
+        model.addAttribute(PAGE_TITLE, "Cart");
+        return "cart";
     }
 }

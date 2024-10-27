@@ -77,27 +77,32 @@ public class CartItemService {
     }
 
     @Transactional
-    public void incrementProductQuantity(Long buyerId, Long productId) {
+    public Integer incrementProductQuantity(Long buyerId, Long productId) {
         CartItemId cartItemId = new CartItemId(buyerId, productId);
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID", cartItemId.toString()));
         cartItem.setQuantity(cartItem.getQuantity() + 1);
+        Integer qty = cartItem.getQuantity();
         cartItemRepository.save(cartItem);
+        return qty;
     }
 
 
     @Transactional
-    public void decrementProductQuantity(Long buyerId, Long productId) {
+    public Integer decrementProductQuantity(Long buyerId, Long productId) {
         CartItemId cartItemId = new CartItemId(buyerId, productId);
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID", cartItemId.toString()));
 
         int newQuantity = cartItem.getQuantity() - 1;
         if (newQuantity < 1) {
-            throw new IllegalValueException("Quantity", String.valueOf(newQuantity));
+            return 1;
+//            throw new IllegalValueException("Quantity", String.valueOf(newQuantity));
         }
         cartItem.setQuantity(newQuantity);
+        Integer qty = cartItem.getQuantity();
         cartItemRepository.save(cartItem);
+        return qty;
     }
 
     @Transactional
