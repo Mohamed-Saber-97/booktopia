@@ -26,8 +26,6 @@ public class HomeViewController {
     @GetMapping("/")
     public String home(Model model, HttpSession session) {
         model.addAttribute(PAGE_TITLE, "Home");
-        session.setAttribute(COUNTRIES, Country.countrySet);
-        session.setAttribute(CATEGORIES, categoryService.findAllAvailableCategories());
         List<ProductDto> interests;
         if (session != null && session.getAttribute(BUYER) != null) {
             interests = buyerProductService.getBuyerInterestedProducts(((BuyerDto) session.getAttribute(USER)).id());

@@ -39,6 +39,7 @@ public class Buyer extends BaseEntity implements UserDetails {
     @Column(name = "credit_limit", nullable = false, precision = 65, scale = 2)
     @NotNull(message = "Credit limit is required")
     @DecimalMin(value = "0.0", inclusive = true, message = "Credit limit must be greater than 0")
+    @Setter
     private BigDecimal creditLimit;
 
     @ManyToMany
@@ -47,6 +48,7 @@ public class Buyer extends BaseEntity implements UserDetails {
                inverseJoinColumns = @JoinColumn(name = "category_id"))
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @Setter
     private Set<Category> interests = new LinkedHashSet<>();
 
     @ManyToMany
@@ -55,16 +57,19 @@ public class Buyer extends BaseEntity implements UserDetails {
                inverseJoinColumns = @JoinColumn(name = "product_id"))
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @Setter
     private Set<Product> products = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "buyer")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @Setter
     private Set<CartItem> cartItems = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "buyer")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @Setter
     private Set<Order> orders = new LinkedHashSet<>();
     private LocalDate credentialsExpiryDate;
     private LocalDate accountExpiryDate;

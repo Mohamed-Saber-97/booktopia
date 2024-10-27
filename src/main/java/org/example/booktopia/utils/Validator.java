@@ -3,8 +3,8 @@ package org.example.booktopia.utils;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.booktopia.dtos.AdminDto;
+import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.model.Admin;
-import org.example.booktopia.model.Buyer;
 import org.example.booktopia.service.AdminService;
 import org.example.booktopia.service.BuyerService;
 import org.springframework.http.ResponseEntity;
@@ -51,19 +51,19 @@ public class Validator {
 
     @PostMapping("/buyer-update-email")
     public ResponseEntity<String> validateBuyerEmail(@RequestParam("email") String email, HttpSession session) {
-        Buyer currentBuyer = (Buyer) session.getAttribute(USER);
+        BuyerDto currentBuyer = (BuyerDto) session.getAttribute(USER);
         if (currentBuyer == null) {
             return ResponseEntity.badRequest()
                                  .body("User not found.");
         }
-        Buyer existingBuyer = null;
+        BuyerDto existingBuyer = null;
         try {
-            existingBuyer = buyerService.findBuyerByEmail(email);
+            existingBuyer = buyerService.findByEmail(email);
         } catch (Exception e) {
             return ResponseEntity.ok("true"); // Email is available
         }
-        if (existingBuyer != null && !existingBuyer.getId()
-                                                   .equals(currentBuyer.getId())) {
+        if (existingBuyer != null && !existingBuyer.id()
+                                                   .equals(currentBuyer.id())) {
             return ResponseEntity.ok("Email is already taken by someone else.");
         }
         return ResponseEntity.ok("true"); // Email is available
@@ -94,19 +94,19 @@ public class Validator {
     @PostMapping("/buyer-update-phone-number")
     public ResponseEntity<String> validateBuyerPhonenumber(@RequestParam("phoneNumber") String phoneNumber,
                                                            HttpSession session) {
-        Buyer currentBuyer = (Buyer) session.getAttribute(USER);
+        BuyerDto currentBuyer = (BuyerDto) session.getAttribute(USER);
         if (currentBuyer == null) {
             return ResponseEntity.badRequest()
                                  .body("User not found.");
         }
-        Buyer existingBuyer = null;
+        BuyerDto existingBuyer = null;
         try {
-            existingBuyer = buyerService.findBuyerByPhonenumber(phoneNumber);
+            existingBuyer = buyerService.findByPhoneNumber(phoneNumber);
         } catch (Exception e) {
             return ResponseEntity.ok("true"); // Phonenumber is available
         }
-        if (existingBuyer != null && !existingBuyer.getId()
-                                                   .equals(currentBuyer.getId())) {
+        if (existingBuyer != null && !existingBuyer.id()
+                                                   .equals(currentBuyer.id())) {
             return ResponseEntity.ok("Phone number is already taken by someone else.");
         }
         return ResponseEntity.ok("true"); // Email is available

@@ -1,10 +1,10 @@
 package org.example.booktopia.viewcontrollers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.LoginDto;
-import org.example.booktopia.dtos.SignupDto;
 import org.example.booktopia.error.InvalidLoginCredentialsException;
 import org.example.booktopia.model.Country;
 import org.example.booktopia.service.BuyerService;
@@ -40,25 +40,24 @@ public class BuyerController {
         return "signup";
     }
 
-    @PostMapping("/login")
-    public String login(@ModelAttribute LoginDto loginDto, Model model, HttpSession session) {
-        model.addAttribute(PAGE_TITLE, "Buyer Login");
-        try {
-            buyerService.login(loginDto);
-            BuyerDto buyerDto = buyerService.findByEmail(loginDto.email());
-            session.setAttribute(USER, buyerDto);
-            session.setAttribute(BUYER, YES);
-            return "redirect:/";
-        } catch (InvalidLoginCredentialsException e) {
-            model.addAttribute(ERROR, "Invalid login credentials. Please try again.");
-            return "buyer-login";
-        }
-    }
+//    @PostMapping("/login")
+//    public String login(@ModelAttribute LoginDto loginDto, Model model, HttpSession session) {
+//        model.addAttribute(PAGE_TITLE, "Buyer Login");
+//        try {
+//            buyerService.login(loginDto);
+//            BuyerDto buyerDto = buyerService.findByEmail(loginDto.email());
+//            session.setAttribute(USER, buyerDto);
+//            session.setAttribute(BUYER, YES);
+//            return "redirect:/";
+//        } catch (InvalidLoginCredentialsException e) {
+//            model.addAttribute(ERROR, "Invalid login credentials. Please try again.");
+//            return "buyer-login";
+//        }
+//    }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute SignupDto signupDto, Model model, HttpSession session) {
-        buyerService.save(signupDto);
-        BuyerDto buyerDto = buyerService.findByEmail(signupDto.email());
+    public String signup(HttpServletRequest request, Model model, HttpSession session) {
+        BuyerDto buyerDto = buyerService.save(request);
         session.setAttribute(USER, buyerDto);
         session.setAttribute(BUYER, YES);
         return "redirect:/";

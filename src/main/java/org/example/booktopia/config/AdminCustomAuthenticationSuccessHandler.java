@@ -1,5 +1,6 @@
 package org.example.booktopia.config;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,13 +32,16 @@ public class AdminCustomAuthenticationSuccessHandler implements AuthenticationSu
             var admin = adminService.findByEmail(username);
             session.setAttribute(USER, admin);
             session.setAttribute(ADMIN, YES);
+            session.setAttribute(PAGE_TITLE, "Home");
+            session.setAttribute(SUCCESS, "Welcome back, %s".formatted(admin.name()));
+            response.sendRedirect(request.getContextPath() + "/");
+        } else {
+            request.setAttribute(ERROR, "Invalid email or password");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/admin-login.jsp");
+            request.getSession()
+                   .setAttribute(PAGE_TITLE, "Admin login");
+            dispatcher.forward(request, response);
         }
-//        else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_BUYER"))) {
-//            var user = buyerService.loadUserByUsername(username); // This returns Buyer entity
-//            session.setAttribute(USER, user);
-//            session.setAttribute(BUYER, YES);
-//        }
-        response.sendRedirect(request.getContextPath() + "/");
     }
 
 }

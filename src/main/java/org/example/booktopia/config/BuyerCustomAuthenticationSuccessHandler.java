@@ -1,12 +1,12 @@
 package org.example.booktopia.config;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.booktopia.dtos.BuyerDto;
-import org.example.booktopia.model.Buyer;
 import org.example.booktopia.service.BuyerService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -31,11 +31,18 @@ public class BuyerCustomAuthenticationSuccessHandler implements AuthenticationSu
                           .anyMatch(a -> a.getAuthority()
                                           .equals("ROLE_BUYER"))) {
             BuyerDto buyer = buyerService.findByEmail(username);
-            session.removeAttribute(USER);
             session.setAttribute(USER, buyer);
             session.setAttribute(BUYER, YES);
+            session.setAttribute(PAGE_TITLE, "Home");
+            session.setAttribute(SUCCESS, "Welcome back, %s".formatted(buyer.name()));
+            response.sendRedirect(request.getContextPath() + "/");
+        } else {
+            request.setAttribute(ERROR, "Invalid email or password");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/buyer-login.jsp");
+            request.getSession()
+                   .setAttribute(PAGE_TITLE, "Buyer login");
+            dispatcher.forward(request, response);
         }
-        response.sendRedirect(request.getContextPath() + "/");
     }
 
 }

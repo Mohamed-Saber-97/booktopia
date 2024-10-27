@@ -3,27 +3,21 @@ package org.example.booktopia.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.OrderDto;
 import org.example.booktopia.dtos.OrderProductDto;
-import org.example.booktopia.dtos.ProductDto;
 import org.example.booktopia.error.RecordNotFoundException;
-import org.example.booktopia.mapper.BuyerMapper;
 import org.example.booktopia.mapper.OrderMapper;
 import org.example.booktopia.mapper.OrderProductMapper;
 import org.example.booktopia.mapper.ProductMapper;
 import org.example.booktopia.model.*;
-import org.example.booktopia.repository.OrderProductRepository;
 import org.example.booktopia.repository.OrderRepository;
 import org.example.booktopia.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
