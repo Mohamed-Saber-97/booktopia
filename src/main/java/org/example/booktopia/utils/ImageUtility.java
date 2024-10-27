@@ -14,7 +14,7 @@ public class ImageUtility {
     public String saveImage(HttpServletRequest request, String uploadPath) throws ServletException, IOException {
         File uploadDir = new File(uploadPath);
 
-        Part filePart = request.getPart("imagePath");
+        Part filePart = request.getPart("image");
 
         String fileName = filePart.hashCode() + "-" + System.currentTimeMillis() + filePart.getSubmittedFileName().substring(filePart.getSubmittedFileName().lastIndexOf("."));
 //        String imagePath = fileName.substring(fileName.lastIndexOf(File.separator) + 1);
