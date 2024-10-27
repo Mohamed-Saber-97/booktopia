@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.booktopia.service.BuyerWishlistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/buyer-wishlist")
@@ -17,13 +14,18 @@ public class BuyerWishlistController {
 
     @PostMapping("/add/{buyerId}/{productId}")
     public ResponseEntity<?> addProductToWishlist(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId) {
-        buyerWishlistService.addProductToWishlist(buyerId, productId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        String result = buyerWishlistService.addProductToWishlist(buyerId, productId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @PostMapping("/remove/{buyerId}/{productId}")
     public ResponseEntity<?> removeProductFromWishlist(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId) {
-        buyerWishlistService.removeProductFromWishlist(buyerId, productId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        String result = buyerWishlistService.removeProductFromWishlist(buyerId, productId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(result);
+    }
+
+    @GetMapping("/{buyerId}")
+    public ResponseEntity<?> getBuyerWishlist(@PathVariable("buyerId") Long buyerId) {
+        return ResponseEntity.ok(buyerWishlistService.getBuyerWishlist(buyerId));
     }
 }

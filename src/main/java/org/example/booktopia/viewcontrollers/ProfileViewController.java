@@ -3,11 +3,9 @@ package org.example.booktopia.viewcontrollers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.example.booktopia.controller.CategoryController;
 import org.example.booktopia.dtos.AdminDto;
 import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.model.Country;
-import org.example.booktopia.repository.CategoryRepository;
 import org.example.booktopia.service.AdminService;
 import org.example.booktopia.service.BuyerInterestService;
 import org.example.booktopia.service.BuyerService;
@@ -25,15 +23,16 @@ import static org.example.booktopia.utils.RequestAttributeUtil.*;
 @AllArgsConstructor
 public class ProfileViewController {
 
-    private final CategoryController categoryController;
     private final AdminService adminService;
     private final BuyerService buyerService;
     private final CategoryService categoryService;
-    private final CategoryRepository categoryRepository;
     private final BuyerInterestService buyerInterestService;
+    private final UpdateUserSession updateUserSession;
 
     @GetMapping("/profile")
-    public String profile(Model model, HttpSession session) {
+    public String profile(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        updateUserSession.updateUserSession(request);
         model.addAttribute("pageTitle", "My Profile");
         model.addAttribute(CATEGORIES, categoryService.findAllAvailableCategories());
         model.addAttribute(COUNTRIES, Country.countrySet);
