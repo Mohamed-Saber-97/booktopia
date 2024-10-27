@@ -21,7 +21,7 @@ public class BuyerWishlistController {
     @PostMapping("/remove/{buyerId}/{productId}")
     public ResponseEntity<?> removeProductFromWishlist(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId) {
         String result = buyerWishlistService.removeProductFromWishlist(buyerId, productId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/{buyerId}")

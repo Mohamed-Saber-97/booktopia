@@ -10,7 +10,7 @@
 <%@include file="notifications.jsp" %>
 <!-- Shoping Wishlist -->
 <c:choose>
-    <c:when test="${sessionScope.user.getWishlist().size() > 0}">
+    <c:when test="${user.wishlistSize()> 0}">
         <form class="bg0 p-t-75 p-b-85" action="update-wishlist" method="post">
             <div class="container">
                 <div class="row">
@@ -24,18 +24,18 @@
                                         <th class="column-3">Author</th>
                                         <th class="column-5">Price</th>
                                     </tr>
-                                    <c:forEach items="${sessionScope.user.getWishlist()}" var="item">
+                                    <c:forEach items="${wishlist}" var="item">
                                         <tr class="table_row">
                                             <td class="column-1">
                                                 <div class="how-itemcart1">
-                                                    <img src="${item.getImagePath()}" alt="IMG"
-                                                         class="remove-wishlist-item" data-product-id="${item.getId()}">
+                                                    <img src="/${item.productImagePath()}" alt="IMG"
+                                                         class="remove-wishlist-item" data-product-id="${item.productId()}">
                                                 </div>
                                             </td>
-                                            <td class="column-2">${item.getName()}</td>
-                                            <td class="column-3">${item.getAuthor()}</td>
-                                            <td class="column-5">$ ${item.getPrice()}</td>
-                                            <input type="hidden" name="id[]" value="${item.getId()}">
+                                            <td class="column-2">${item.productName()}</td>
+                                            <td class="column-3">${item.productAuthor()}</td>
+                                            <td class="column-5">$ ${item.productPrice()}</td>
+                                            <input type="hidden" name="id[]" value="${item.productId()}">
                                         </tr>
                                     </c:forEach>
                                 </table>
@@ -49,7 +49,7 @@
             </div>
         </form>
     </c:when>
-    <c:when test="${sessionScope.user.getWishlist().size() == 0}">
+    <c:when test="${user.wishlistSize() == 0}">
         <div class="container bg0 p-t-100 p-b-85">
             <div class="row">
                 <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
@@ -76,15 +76,16 @@
 
         function removeWishlistItem(productId) {
             $.ajax({
-                url: 'remove-bucket-item',
+                url: "/api/buyer-wishlist/remove/" + ${user.id()}+ "/" + productId,
                 type: 'POST',
-                data: {
-                    productId: productId,
-                    bucket: 'wishlist'
-                },
+                // data: {
+                //     productId: productId,
+                //     bucket: 'wishlist'
+                // },
                 success: function (response) {
-                    response = response.trim();
-                    if (response === 'success') {
+                    console.log(response);
+                    // response = response.trim();
+                    if (response === 'Product removed from wishlist') {
                         $('.remove-wishlist-item[data-product-id=' + productId + ']').closest(
                             '.table_row')
                             .remove();
@@ -98,4 +99,4 @@
     });
 </script>
 
-<%@include file="footer.jsp" %>
+<%@include file="/footer.jsp" %>

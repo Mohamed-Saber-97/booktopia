@@ -60,6 +60,13 @@ public class BuyerController {
         return "cart";
     }
 
+    @GetMapping("/wishlist")
+    public String getWishlist(HttpServletRequest request, Model model) {
+        updateUserSession.updateUserSession(request);
+        model.addAttribute(PAGE_TITLE, "Wishlist");
+        return "wishlist";
+    }
+
     @PostMapping("/update-cart")
     public String updateCart(HttpServletRequest request) {
         ResponseEntity<String> paymentKey = paymobController.checkout(145 * 100);

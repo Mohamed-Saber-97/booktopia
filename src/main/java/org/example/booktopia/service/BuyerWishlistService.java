@@ -47,9 +47,11 @@ public class BuyerWishlistService {
     @Transactional
     public String removeProductFromWishlist(Long buyerId, Long productId) {
         if (!buyerWishlistRepository.existsByBuyerIdAndProductId(buyerId, productId)) {
+            System.out.println("Not found");
             throw new RecordNotFoundException("Product", "ID", productId.toString());
 //            return this.addProductToWishlist(buyerId, productId);
         }
+        System.out.println("Found in wishlist");
         buyerWishlistRepository.removeProductFromWishlist(buyerId, productId);
         log.info("Product {} removed from Buyer {}'s wishlist", productId, buyerId);
         return "Product removed from wishlist";

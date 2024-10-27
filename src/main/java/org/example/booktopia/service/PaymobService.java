@@ -30,7 +30,7 @@ public class PaymobService {
     public String registerOrder(String token, int amountCents) {
         String url = apiUrl + "/ecommerce/orders";
         Map<String, Object> request = new HashMap<>();
-        request.put("merchant_id", 1002783); // Add your merchant ID here
+        request.put("merchant_id", 1002783);
         request.put("amount_cents", amountCents);
         request.put("currency", "EGP");
         HttpHeaders headers = new HttpHeaders();

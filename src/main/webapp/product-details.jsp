@@ -89,10 +89,10 @@
                                     <%--								<c:if test="${sessionScope.buyer != null}">--%>
                                     <button id="addToCart" data-product-id="${product.id()}"
                                         class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                        <c:if test="${!cart.contains(product.id())}">
+                                        <c:if test="${!cartIds.contains(product.id())}">
                                             Add to cart
                                         </c:if>
-                                        <c:if test="${cart.contains(product.id())}">
+                                        <c:if test="${cartIds.contains(product.id())}">
                                             Remove from cart
                                         </c:if>
                                     </button>
@@ -104,10 +104,10 @@
     <c:if test="${buyer != null}">
                                 <button id="addToWishlist" data-product-id="${product.id()}"
                                     class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 m-t-10">
-                                    <c:if test="${!wishlist.contains(product.id())}">
+                                    <c:if test="${!wishlistIds.contains(product.id())}">
                                         Add to wishlist
                                     </c:if>
-                                    <c:if test="${wishlist.contains(product.id())}">
+                                    <c:if test="${wishlistIds.contains(product.id())}">
                                         Remove from wishlist
                                     </c:if>
                                 </button>
@@ -221,6 +221,7 @@
                 //     productId: productId
                 // },
                 success: function (response) {
+                    console.log(response);
                     if (response.trim() == "Product added to wishlist") {
                         $('.wishlist').attr('data-notify', parseInt($('.wishlist').attr(
                                 'data-notify')) +
