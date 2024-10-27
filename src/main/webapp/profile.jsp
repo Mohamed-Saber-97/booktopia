@@ -1,5 +1,5 @@
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@include file="/header.jsp" %>
 <%@include file="/notifications.jsp" %>
 <section class="bg0 p-t-104 p-b-116">
@@ -66,7 +66,7 @@
 </c:choose>`.trim();
     var phoneUrl = `<c:choose>
     <c:when test="${sessionScope.buyer != null}">
-        /buyer-update-phone-number
+        /validator/buyer-update-phone-number
     </c:when>
     <c:when test="${sessionScope.admin != null}">
         /validator/admin-update-phone-number
