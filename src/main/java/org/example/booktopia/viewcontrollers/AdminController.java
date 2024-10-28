@@ -148,6 +148,13 @@ public class AdminController {
         return "categories";
     }
 
+    @PostMapping("/delete-category")
+    public String deleteCategory(Long id, Model model) {
+        categoryService.deleteById(id);
+        model.addAttribute(PAGE_TITLE, "Categories");
+        return "redirect:/admins/categories"; 
+    }
+
     @GetMapping("/buyers")
     public String buyers(Model model) {
         List<BuyerDto> buyerDtos = buyerService.getAllBuyers(0, 16);
