@@ -36,6 +36,30 @@ public class SecurityConfig {
     }
 
     @Bean
+    public SecurityFilterChain profileSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.securityMatcher("/profile")
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(requests -> requests.requestMatchers("/profile")
+                                                       .hasAnyRole("BUYER", "ADMIN")
+                                                       .anyRequest()
+                                                       .permitAll())
+            .formLogin(form -> form
+                    .loginPage("/buyers/login")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .loginProcessingUrl("/buyers/login")
+                    .failureHandler(buyerCustomAuthenticationFailureHandler)
+                    .successHandler(buyerCustomAuthenticationSuccessHandler)
+                    .permitAll())
+            .logout(logout -> logout.logoutUrl("/logout")
+                                    .logoutSuccessUrl("/")
+                                    .invalidateHttpSession(true)
+                                    .deleteCookies("JSESSIONID"))
+            .authenticationProvider(buyerAuthenticationProvider());
+        return http.build();
+    }
+
+    @Bean
     public SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/admins/**")
             .csrf(AbstractHttpConfigurer::disable)
@@ -66,7 +90,9 @@ public class SecurityConfig {
     public SecurityFilterChain buyerSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/buyers/**")
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(requests -> requests.requestMatchers("/buyers/signup").permitAll().requestMatchers("/buyers/**")
+            .authorizeHttpRequests(requests -> requests.requestMatchers("/buyers/signup")
+                                                       .permitAll()
+                                                       .requestMatchers("/buyers/**")
                                                        .hasRole("BUYER")
                                                        .anyRequest()
                                                        .permitAll())
@@ -77,7 +103,6 @@ public class SecurityConfig {
                     .loginProcessingUrl("/buyers/login")
                     .failureHandler(buyerCustomAuthenticationFailureHandler)
                     .successHandler(buyerCustomAuthenticationSuccessHandler)
-//                    .failureUrl("/buyers/login?error=true") // Include failure URL
                     .permitAll())
             .logout(logout -> logout.logoutUrl("/logout")
                                     .logoutSuccessUrl("/")
