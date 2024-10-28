@@ -51,6 +51,19 @@ public class AdminController {
         return "add-category";
     }
 
+    @PostMapping("/add-category")
+    public String addCategory(@ModelAttribute CategoryDto categoryDto, Model model) {
+        try {
+            categoryService.save(categoryDto);
+            model.addAttribute(PAGE_TITLE, "Categories");
+            return "redirect:/admins/categories";
+        } catch (Exception e) {
+            model.addAttribute(ERROR, "Error while adding category");
+            model.addAttribute(PAGE_TITLE, "Add Category");
+            return "add-category";
+        }
+    }
+
     @GetMapping("/books")
     public String books(Model model) {
         List<ProductDto> productDtos = productService.search(List.of(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()), 0, 16);
@@ -152,7 +165,7 @@ public class AdminController {
     public String deleteCategory(Long id, Model model) {
         categoryService.deleteById(id);
         model.addAttribute(PAGE_TITLE, "Categories");
-        return "redirect:/admins/categories"; 
+        return "redirect:/admins/categories";
     }
 
     @GetMapping("/buyers")

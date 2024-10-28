@@ -71,14 +71,14 @@
         $('#nameInput').on('blur', function () {
             let categoryName = $('#nameInput').val();
 
-            // Proceed with AJAX if category name is not empty
             if (categoryName.trim() !== "") {
                 $.ajax({
-                    url: '/unique-category-name', // URL of your servlet
+                    url: '/api/categories/exists/'+categoryName,
                     method: 'POST',
-                    data: {name: categoryName},
+                    // data: {name: categoryName},
                     success: function (response) {
-                        if (response === "true") {
+                        console.log("Category name check response:", response);
+                        if (!response) {
                             // Category name is unique (valid)
                             $('#nameInput').removeClass('is-invalid').addClass('is-valid');
                             $('#nameHelp').text("Category name is available").css({
@@ -88,7 +88,7 @@
                         } else {
                             // Category name already exists (invalid)
                             $('#nameInput').addClass('is-invalid').removeClass('is-valid');
-                            $('#nameHelp').text(response).css({
+                            $('#nameHelp').text("Name already exists").css({
                                 "color": "red",
                                 "visibility": "visible"
                             });

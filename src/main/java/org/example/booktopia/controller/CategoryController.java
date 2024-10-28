@@ -2,7 +2,6 @@ package org.example.booktopia.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.booktopia.dtos.CategoryDto;
-import org.example.booktopia.model.Category;
 import org.example.booktopia.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,4 +57,10 @@ public class CategoryController {
         categoryService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @PostMapping("/exists/{name}")
+    public ResponseEntity<Boolean> existsByName(@PathVariable String name) {
+        return ResponseEntity.ok(categoryService.existsByName(name));
+    }
+
 }
