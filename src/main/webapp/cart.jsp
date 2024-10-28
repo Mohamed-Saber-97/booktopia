@@ -86,6 +86,7 @@
 
                                 <div class="size-209 p-t-1">
                                     <span class="mtext-110 cl2 grand-total"></span>
+                                    <input type = 'hidden' name = 'grandTotal' id = 'totalBill'>
                                 </div>
                             </div>
                             <%@include file="/checkout.jsp" %>
@@ -117,6 +118,7 @@
             grandTotal += parseFloat($(this).text().replace('$', ''));
         });
         $('.grand-total').text('$' + grandTotal.toFixed(2));
+        $('#totalBill').val(grandTotal);
 
         $('.cart-increment-operation').click(function (event) {
             event.preventDefault();
@@ -147,6 +149,8 @@
                         grandTotal += parseFloat($(this).text().replace('$', ''));
                     });
                     $('.grand-total').text('$' + grandTotal.toFixed(2));
+                    $('#totalBill').val(grandTotal);
+
                 }
             });
         });
@@ -179,6 +183,8 @@
                         grandTotal += parseFloat($(this).text().replace('$', ''));
                     });
                     $('.grand-total').text('$' + grandTotal.toFixed(2));
+                    $('#totalBill').val(grandTotal);
+
                 }
             });
         });
@@ -216,6 +222,8 @@
                             grandTotal += parseFloat($(this).text().replace('$', ''));
                         });
                         $('.grand-total').text('$' + grandTotal.toFixed(2));
+                        $('#totalBill').val(grandTotal);
+
                     // }
                 }
             });

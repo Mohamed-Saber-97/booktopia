@@ -1,5 +1,6 @@
 package org.example.booktopia.viewcontrollers;
 
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.OrderDto;
 import org.example.booktopia.dtos.OrderProductDto;
 import org.example.booktopia.model.Country;
+import org.example.booktopia.payment.Request;
 import org.example.booktopia.service.BuyerService;
 import org.example.booktopia.service.CategoryService;
 import org.example.booktopia.service.OrderProductService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.example.booktopia.utils.RequestAttributeUtil.*;
@@ -93,7 +96,24 @@ public class BuyerController {
     }
 
     @PostMapping("/update-cart")
-    public String updateCart(HttpServletRequest request) {
+    public String updateCart(HttpServletRequest request, @RequestParam("action") String action) {
+
+        if ("credit".equals(action)) {
+        }
+        else if ("stripe".equals(action)) {
+            String email = ((BuyerDto) request.getSession().getAttribute("user")).email();
+            String totalBill = request.getParameter("grandTotal");
+            BigDecimal totalBillInteger = new BigDecimal(Double.parseDouble(totalBill));
+
+            Request stripeRequest = new Request();
+            stripeRequest.setProductName("");
+            stripeRequest.setEmail(email);
+            stripeRequest.setAmount(totalBillInteger);
+
+            request.setAttribute("stripeRequest" , stripeRequest);
+
+            return "forward:/buyers/payment";
+        }
         ResponseEntity<String> paymentKey = paymobController.checkout(145 * 100);
         if (paymentKey.hasBody()) {
             System.out.println("My keyeeee");
