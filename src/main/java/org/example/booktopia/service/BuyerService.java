@@ -117,6 +117,13 @@ public class BuyerService implements UserDetailsService {
                 .map(orderMapper::toDto).toList();
     }
 
+    public List<BuyerDto> getAllBuyers(Integer pageNumber, Integer pageSize) {
+        return buyerRepository.findAll(PageRequest.of(pageNumber, pageSize))
+                .stream()
+                .map(buyerMapper::toDto)
+                .toList();
+    }
+
 //    @Transactional
 //    public Buyer checkout(Buyer buyer) throws InsufficientStockException, InsufficientFundsException {
 //

@@ -5,13 +5,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.booktopia.dtos.CategoryDto;
-import org.example.booktopia.dtos.NewProductDto;
-import org.example.booktopia.dtos.ProductDto;
+import org.example.booktopia.dtos.*;
 import org.example.booktopia.error.RecordNotFoundException;
-import org.example.booktopia.service.AdminService;
-import org.example.booktopia.service.CategoryService;
-import org.example.booktopia.service.ProductService;
+import org.example.booktopia.mapper.BuyerMapper;
+import org.example.booktopia.model.Buyer;
+import org.example.booktopia.model.Order;
+import org.example.booktopia.service.*;
 import org.example.booktopia.utils.RequestBuilderUtil;
 import org.example.booktopia.utils.ValidatorUtil;
 import org.springframework.stereotype.Controller;
@@ -34,6 +33,11 @@ public class AdminController {
     private final CategoryService categoryService;
     private final RequestBuilderUtil requestBuilderUtil;
     private final ValidatorUtil validatorUtil;
+    private final BuyerService buyerService;
+    private final BuyerMapper buyerMapper;
+    private final BuyerInterestService buyerInterestService;
+    private final BuyerProductService buyerProductService;
+    private final OrderService orderService;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -133,6 +137,69 @@ public class AdminController {
             }
             model.addAttribute(PAGE_TITLE, "Books");
             return "redirect:/admins/books";
+        }
+    }
+
+    @GetMapping("/categories")
+    public String categories(Model model) {
+        List<CategoryDto> categoryDtos = categoryService.findAllAvailableCategories();
+        model.addAttribute(PAGE_TITLE, "Categories");
+        model.addAttribute(CATEGORIES, categoryDtos);
+        return "categories";
+    }
+
+    @GetMapping("/buyers")
+    public String buyers(Model model) {
+        List<BuyerDto> buyerDtos = buyerService.getAllBuyers(0, 16);
+        model.addAttribute(PAGE_TITLE, "Buyers");
+        model.addAttribute(BUYERS, buyerDtos);
+        return "buyers";
+    }
+
+    @GetMapping("/buyer-profile")
+    public String buyerProfile(@RequestParam Long p, Model model, HttpSession session) {
+        Buyer buyer = buyerService.findById(p);
+        List<CategoryDto> categoryDtos = categoryService.findAllAvailableCategories();
+        BuyerDto buyerDto = buyerMapper.toDto(buyer);
+        List<Long> categoryIds = buyerInterestService.findCategoryIdsByBuyerId(buyer.getId());
+        model.addAttribute(PAGE_TITLE, "Buyer Profile");
+        model.addAttribute(TEMP_BUYER, buyerDto);
+        model.addAttribute(CATEGORIES, categoryDtos);
+        model.addAttribute(CATEGORY_IDS, categoryIds);
+        return "buyer-profile";
+    }
+
+    @GetMapping("/buyer-orders")
+    public String buyerOrders(@RequestParam Long p, Model model) {
+        Buyer buyer = buyerService.findById(p);
+        BuyerDto buyerDto = buyerMapper.toDto(buyer);
+        List<OrderDto> orderDtos = buyerService.getOrdersByBuyerId(p);
+        model.addAttribute(PAGE_TITLE, "Buyer Orders");
+        model.addAttribute(TEMP_BUYER, buyerDto);
+        model.addAttribute(ORDERS, orderDtos);
+        return "buyer-orders";
+    }
+
+    @GetMapping("/buyer-order-products")
+    public String buyerOrders(@RequestParam Long p, @RequestParam Long order, Model model) {
+        try {
+            Buyer buyer = buyerService.findById(p);
+            if (buyer.getOrders().stream().map(Order::getId).noneMatch(id -> id.equals(order))) {
+                model.addAttribute(ERROR, "Order not found");
+                model.addAttribute(PAGE_TITLE, "Buyer Orders");
+                return "buyer-orders";
+            }
+            BuyerDto buyerDto = buyerMapper.toDto(buyer);
+            List<OrderProductDto> orderProductDtos = orderService.findAllProductByOrderId(order);
+            model.addAttribute(PAGE_TITLE, "Buyer Orders");
+            model.addAttribute(TEMP_BUYER, buyerDto);
+            model.addAttribute(PRODUCTS, orderProductDtos);
+            return "buyer-order-products";
+
+        } catch (Exception e) {
+            model.addAttribute(ERROR, "Error while fetching order products");
+            model.addAttribute(PAGE_TITLE, "Buyer Orders");
+            return "buyer-orders";
         }
     }
 }

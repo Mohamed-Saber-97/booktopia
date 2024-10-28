@@ -21,6 +21,8 @@ public class RequestAttributeUtil {
     public static final String ID = "id";
     public static final String CART = "cart";
     public static final String WISHLIST = "wishlist";
+    public static final String TEMP_BUYER = "tempBuyer";
+    public static final String CATEGORY_IDS = "categoryIds";
 
     private RequestAttributeUtil() {
     }

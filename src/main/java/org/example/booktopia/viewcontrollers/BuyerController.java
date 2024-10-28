@@ -7,9 +7,7 @@ import org.example.booktopia.controller.PaymobController;
 import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.OrderDto;
 import org.example.booktopia.dtos.OrderProductDto;
-import org.example.booktopia.dtos.ProductDto;
 import org.example.booktopia.model.Country;
-import org.example.booktopia.model.OrderProduct;
 import org.example.booktopia.service.BuyerService;
 import org.example.booktopia.service.CategoryService;
 import org.example.booktopia.service.OrderProductService;
@@ -91,6 +89,7 @@ public class BuyerController {
         List<OrderProductDto> orderProducts = orderProductService.findAllProductsByBuyerIdAndOrderId(buyerId, order);
         model.addAttribute(PRODUCTS, orderProducts);
         return "order-products";
+
     }
 
     @PostMapping("/update-cart")

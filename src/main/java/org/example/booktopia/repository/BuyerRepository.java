@@ -1,6 +1,5 @@
 package org.example.booktopia.repository;
 
-import org.example.booktopia.model.Admin;
 import org.example.booktopia.model.Buyer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +14,7 @@ public interface BuyerRepository extends JpaRepository<Buyer, Long> {
 
     @Query("SELECT b FROM Buyer b WHERE b.id = :id AND b.isDeleted = false")
     Optional<Buyer> findById(Long id);
+
     Optional<Buyer> findByAccountEmailAndIsDeletedIsFalse(String email);
 
     boolean existsByAccountPhoneNumber(String phoneNumber);
@@ -27,4 +27,8 @@ public interface BuyerRepository extends JpaRepository<Buyer, Long> {
 
     Optional<Buyer> findByAccount_EmailAndAccount_PasswordAndIsDeletedFalse(@NonNull String email,
                                                                             @NonNull String password);
+
+    @Query("select b from Buyer b where b.isDeleted = false")
+    Page<Buyer> findAll(Pageable pageable);
+
 }

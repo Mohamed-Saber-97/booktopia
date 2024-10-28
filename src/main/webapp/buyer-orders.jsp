@@ -19,14 +19,14 @@
                                 <c:forEach items="${orders}" var="item">
                                     <tr class="table_row">
                                         <td class="column-1">${i}</td>
-                                        <td class="column-3">${item.getStatus()}</td>
+                                        <td class="column-3">${item.status()}</td>
                                         <td class="column-3"></td>
-                                        <td class="column-3">${item.getCreatedDate()}</td>
-                                        <td class="column-2">${item.getOrderProducts().size()}</td>
+                                        <td class="column-3">${item.createdDate()}</td>
+                                        <td class="column-2">${item.numberOfProducts()}</td>
                                         <td class="column-3">
                                             <form action="buyer-order-products" method="get" style="display:inline;">
-                                                <input type="hidden" name="p" value="${tempBuyer.getId()}">
-                                                <input type="hidden" name="order" value="${item.getId()}">
+                                                <input type="hidden" name="p" value="${tempBuyer.id()}">
+                                                <input type="hidden" name="order" value="${item.id()}">
                                                 <button type="submit" class="btn btn-link">View</button>
                                             </form>
                                         </td>
@@ -46,7 +46,7 @@
                 <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
                     <div class="m-l-25 m-r--38 m-lr-0-xl">
                         <div class="">
-                            <h1>This user hasn't orderd yet</h1>
+                            <h1>This user hasn't ordered yet</h1>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
     window.addEventListener('load', function () {
         let pageNumber = 1;
         let counter = ${i};
-        let buyerId = ${tempBuyer.getId()};
+        let buyerId = ${tempBuyer.id()};
         let table = $('.table-shopping-cart');
         document.getElementById('loadMore').addEventListener('click', loadOrders);
 
@@ -76,15 +76,16 @@
             $('#loadMore').prop('disabled', true);
 
             $.ajax({
-                url: "/next-buyer-orders",
+                url: "/api/orders/buyer/"+buyerId+"?pageNumber="+pageNumber,
                 type: "GET",
-                data: {
-                    page: pageNumber++,
-                },
+                // data: {
+                //     page: pageNumber++,
+                // },
                 success: function (response) {
+                    pageNumber++;
                     console.log(response);
 
-                    let newItems = $(response.orders.map(function (order) {
+                    let newItems = $(response.map(function (order) {
                         return `
                             <tr class="table_row">
                                 <td class="column-1">`+counter++ +`</td>
@@ -117,4 +118,4 @@
     });
 </script>
 
-<%@include file="footer.jsp" %>
+<%@include file="/footer.jsp" %>
