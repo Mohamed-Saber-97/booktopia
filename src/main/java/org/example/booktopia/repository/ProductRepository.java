@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 

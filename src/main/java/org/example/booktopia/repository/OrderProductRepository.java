@@ -11,5 +11,5 @@ import java.util.List;
 public interface OrderProductRepository extends JpaRepository<OrderProduct, OrderProductId> {
     @Query("SELECT op from OrderProduct op where op.order.buyer.id = :buyerId and op.order.id = :orderId and op.isDeleted = false")
     List<OrderProduct> findAllProductsByBuyerIdAndOrderId(@Param("buyerId") Long buyerId,
-                                                          @Param("buyerId") Long orderId);
+                                                          @Param("orderId") Long orderId);
 }

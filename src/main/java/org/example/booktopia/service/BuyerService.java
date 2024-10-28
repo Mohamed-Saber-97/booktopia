@@ -8,12 +8,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.controller.PaymobController;
 import org.example.booktopia.dtos.BuyerDto;
+import org.example.booktopia.dtos.OrderDto;
 import org.example.booktopia.error.InsufficientFundsException;
 import org.example.booktopia.error.InsufficientStockException;
 import org.example.booktopia.error.RecordNotFoundException;
 import org.example.booktopia.mapper.BuyerMapper;
 import org.example.booktopia.mapper.CategoryMapper;
+import org.example.booktopia.mapper.OrderMapper;
 import org.example.booktopia.model.Buyer;
+import org.example.booktopia.model.Order;
 import org.example.booktopia.model.OrderProduct;
 import org.example.booktopia.repository.BuyerRepository;
 import org.example.booktopia.utils.RequestBuilderUtil;
@@ -27,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import static org.example.booktopia.utils.RequestAttributeUtil.USER;
@@ -41,6 +45,7 @@ public class BuyerService implements UserDetailsService {
     private final CategoryMapper categoryMapper;
     private final RequestBuilderUtil requestBuilderUtil;
     private final PaymobController paymobController;
+    private final OrderMapper orderMapper;
 
     public Buyer findById(Long id) {
         return buyerRepository.findById(id)
@@ -103,6 +108,13 @@ public class BuyerService implements UserDetailsService {
         Buyer requestBuyer = requestBuilderUtil.updateBuyerFromRequest(currentBuyer, request);
         buyerRepository.save(requestBuyer);
         return buyerMapper.toDto(requestBuyer);
+    }
+
+    public List<OrderDto> getOrdersByBuyerId(Long id) {
+        Buyer buyer = this.findById(id);
+        return buyer.getOrders()
+                .stream()
+                .map(orderMapper::toDto).toList();
     }
 
 //    @Transactional

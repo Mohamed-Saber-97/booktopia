@@ -21,7 +21,7 @@
                         </a>
                     </c:if>
                     <c:if test="${buyer != null}">
-                        <a href="/orders" class="flex-c-m trans-04 p-lr-25">
+                        <a href="/buyers/orders" class="flex-c-m trans-04 p-lr-25">
                             Orders
                         </a>
                     </c:if>
@@ -143,7 +143,7 @@
                         </a>
                     </c:if>
                     <c:if test="${buyer != null}">
-                        <a href="orders" class="flex-c-m p-lr-10 trans-04">
+                        <a href="/buyers/orders" class="flex-c-m p-lr-10 trans-04">
                             Orders
                         </a>
                     </c:if>

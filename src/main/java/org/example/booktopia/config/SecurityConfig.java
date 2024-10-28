@@ -66,7 +66,7 @@ public class SecurityConfig {
     public SecurityFilterChain buyerSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/buyers/**")
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(requests -> requests.requestMatchers("/buyers/checkout")
+            .authorizeHttpRequests(requests -> requests.requestMatchers("/buyers/**")
                                                        .hasRole("BUYER")
                                                        .anyRequest()
                                                        .permitAll())

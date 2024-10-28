@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.dtos.OrderDto;
 import org.example.booktopia.dtos.OrderProductDto;
+import org.example.booktopia.dtos.ProductDto;
 import org.example.booktopia.error.RecordNotFoundException;
 import org.example.booktopia.mapper.OrderMapper;
 import org.example.booktopia.mapper.OrderProductMapper;
@@ -51,6 +52,15 @@ public class OrderService {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Order", "ID", id.toString()));
     }
+
+//    public List<ProductDto> findAllProductsByOrderId(Long id, Long buyerId) {
+//        Buyer buyer = buyerService.findById(buyerId);
+//        Order order = this.findById(id);
+//        return order.getOrderProducts().stream()
+//                .map(OrderProduct::getProduct)
+//                .map(productMapper::toDto)
+//                .toList();
+//    }
 
     @Transactional
     public OrderDto save(Long buyerId, Map<Long, Integer> productQuantities) {

@@ -21,15 +21,15 @@
                                     <tr class="table_row">
                                         <td class="column-1">
                                             <div class="how-itemcart1">
-                                                <img src="${item.getProduct().getImagePath()}" alt="IMG">
+                                                <img src="/${item.productImagePath()}" alt="IMG">
                                             </div>
                                         </td>
-                                        <td class="column-2">${item.getProduct().getName()}</td>
-                                        <td class="column-2">${item.getProduct().getAuthor()}</td>
+                                        <td class="column-2">${item.productName()}</td>
+                                        <td class="column-2">${item.productAuthor()}</td>
                                         <td class="column-2"></td>
-                                        <td class="column-2 price">${item.getPrice()}</td>
-                                        <td class="column-2">${item.getQuantity()}</td>
-                                        <td class="column-2">${item.getTotalPrice()}</td>
+                                        <td class="column-2 price">${item.price()}</td>
+                                        <td class="column-2">${item.quantity()}</td>
+                                        <td class="column-2">${item.price() * item.quantity()}</td>
                                     </tr>
                                 </c:forEach>
                             </table>
