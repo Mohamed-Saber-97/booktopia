@@ -59,7 +59,13 @@ public class CategoryController {
     }
 
     @PostMapping("/exists/{name}")
-    public ResponseEntity<Boolean> existsByName(@PathVariable String name) {
+    public ResponseEntity<Boolean> existsByName(@PathVariable String name, @RequestParam(required = false) Long id) {
+        if(id!=null) {
+            CategoryDto categoryDto = categoryService.findById(id);
+            if(categoryDto.name().equals(name)) {
+                return ResponseEntity.ok(false);
+            }
+        }
         return ResponseEntity.ok(categoryService.existsByName(name));
     }
 

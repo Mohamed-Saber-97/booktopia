@@ -64,6 +64,33 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/edit-category")
+    public String editCategory(@RequestParam Long p, Model model) {
+        try {
+            CategoryDto categoryDto = categoryService.findById(p);
+            model.addAttribute(PAGE_TITLE, "Edit Category");
+            model.addAttribute(CATEGORY, categoryDto);
+            return "edit-category";
+        } catch (RecordNotFoundException e) {
+            model.addAttribute(ERROR, "Category not found");
+            model.addAttribute(PAGE_TITLE, "Categories");
+            return "categories";
+        }
+    }
+
+    @PostMapping("/edit-category")
+    public String editCategory(@ModelAttribute CategoryDto categoryDto, Model model) {
+        try {
+            categoryService.update(categoryDto.id(), categoryDto);
+            model.addAttribute(PAGE_TITLE, "Categories");
+            return "redirect:/admins/categories";
+        } catch (Exception e) {
+            model.addAttribute(ERROR, "Error while updating category");
+            model.addAttribute(PAGE_TITLE, "Edit Category");
+            return "edit-category";
+        }
+    }
+
     @GetMapping("/books")
     public String books(Model model) {
         List<ProductDto> productDtos = productService.search(List.of(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()), 0, 16);
