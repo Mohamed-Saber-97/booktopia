@@ -1,20 +1,20 @@
 package org.example.booktopia.viewcontrollers;
 
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.booktopia.controller.PaymobController;
 import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.OrderDto;
 import org.example.booktopia.dtos.OrderProductDto;
+import org.example.booktopia.error.InsufficientFunds;
+import org.example.booktopia.error.InsufficientStock;
 import org.example.booktopia.model.Country;
 import org.example.booktopia.payment.Request;
-import org.example.booktopia.service.BuyerService;
-import org.example.booktopia.service.CategoryService;
-import org.example.booktopia.service.OrderProductService;
-import org.example.booktopia.service.OrderService;
-import org.springframework.http.ResponseEntity;
+import org.example.booktopia.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class BuyerController {
     private final PaymobController paymobController;
     private final OrderService orderService;
     private final OrderProductService orderProductService;
+    private final BuyerProductService buyerProductService;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -79,7 +81,8 @@ public class BuyerController {
     public String getOrders(HttpServletRequest request, Model model) {
         updateUserSession.updateUserSession(request);
         model.addAttribute(PAGE_TITLE, "Orders");
-        List<OrderDto> orderDtos = buyerService.getOrdersByBuyerId(((BuyerDto) request.getSession().getAttribute(USER)).id());
+        List<OrderDto> orderDtos = buyerService.getOrdersByBuyerId(((BuyerDto) request.getSession()
+                                                                                      .getAttribute(USER)).id());
         model.addAttribute(ORDERS, orderDtos);
         return "orders";
     }
@@ -88,7 +91,8 @@ public class BuyerController {
     public String getOrderProducts(HttpServletRequest request, Model model, @RequestParam Long order) {
         updateUserSession.updateUserSession(request);
         model.addAttribute(PAGE_TITLE, "Order Products");
-        Long buyerId = ((BuyerDto) request.getSession().getAttribute(USER)).id();
+        Long buyerId = ((BuyerDto) request.getSession()
+                                          .getAttribute(USER)).id();
         List<OrderProductDto> orderProducts = orderProductService.findAllProductsByBuyerIdAndOrderId(buyerId, order);
         model.addAttribute(PRODUCTS, orderProducts);
         return "order-products";
@@ -96,48 +100,32 @@ public class BuyerController {
     }
 
     @PostMapping("/update-cart")
-    public String updateCart(HttpServletRequest request, @RequestParam("action") String action) {
+    public String updateCart(HttpServletRequest request,
+                             HttpServletResponse response,
+                             @RequestParam("action") String action,
+                             HttpSession session) throws ServletException, IOException {
+        BuyerDto buyerDto = (BuyerDto) session.getAttribute(USER);
+        try {
+            if ("credit".equals(action)) {
+                buyerDto = buyerProductService.checkout(buyerDto.id(), action);
+                session.setAttribute(USER, buyerDto);
+                session.setAttribute(SUCCESS, "Thank you for your purchase!");
+            } else if ("stripe".equals(action)) {
+                String totalBill = request.getParameter("grandTotal");
+                BigDecimal totalBillInteger = new BigDecimal(Double.parseDouble(totalBill));
+                buyerDto = buyerProductService.checkout(buyerDto.id(), action);
+                Request stripeRequest = new Request(totalBillInteger, buyerDto.email(), "Product");
+                request.setAttribute("stripeRequest", stripeRequest);
+                return "forward:/buyers/payment";
+            }
 
-        if ("credit".equals(action)) {
+        } catch (InsufficientStock | InsufficientFunds e) {
+            request.getSession()
+                   .setAttribute(ERROR, e.getMessage());
+//            response.sendRedirect(request.getContextPath() + "/buyers/cart");
+            return "redirect:/buyers/cart";
         }
-        else if ("stripe".equals(action)) {
-            String email = ((BuyerDto) request.getSession().getAttribute("user")).email();
-            String totalBill = request.getParameter("grandTotal");
-            BigDecimal totalBillInteger = new BigDecimal(Double.parseDouble(totalBill));
-
-            Request stripeRequest = new Request();
-            stripeRequest.setProductName("");
-            stripeRequest.setEmail(email);
-            stripeRequest.setAmount(totalBillInteger);
-
-            request.setAttribute("stripeRequest" , stripeRequest);
-
-            return "forward:/buyers/payment";
-        }
-        ResponseEntity<String> paymentKey = paymobController.checkout(145 * 100);
-        if (paymentKey.hasBody()) {
-            System.out.println("My keyeeee");
-            System.out.println(paymentKey.getBody());
-        }
-//        return paymentKey.getBody();
-        // redirect to iframe with paymentKey
-        return "redirect:https://accept.paymob.com/api/acceptance/iframes/877560?payment_token=" + paymentKey.getBody();
-
-//        Buyer buyer = (Buyer) request.getSession().getAttribute(USER);
-//        if (!CheckoutValidator.isValid(buyer)) {
-//            request.setAttribute(ERROR, CartValidator.ERROR_MESSAGE);
-//        } else {
-//            try {
-//                buyer = new BuyerService().checkout(buyer);
-//                request.getSession().setAttribute(USER, buyer);
-//                request.getSession().setAttribute(SUCCESS, "Thank you for your purchase!");
-//                response.sendRedirect(request.getContextPath() + "/");
-//            } catch (InsufficientStock | InsufficientFunds e) {
-//                request.getSession().setAttribute(ERROR, e.getMessage());
-//                response.sendRedirect(request.getContextPath() + "/cart");
-//            }
-//        }
-//        return "redirect:/";
+        return "redirect:/buyers/orders";
     }
 }
 

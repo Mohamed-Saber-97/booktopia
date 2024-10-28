@@ -8,6 +8,7 @@ import org.example.booktopia.base.BaseEntity;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -37,4 +38,15 @@ public class OrderProduct extends BaseEntity {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    public OrderProduct(Product product, Order order,Integer quantity) {
+        this.id = new OrderProductId(order.getId(), product.getId());
+        this.product = product;
+        this.order = order;
+        this.price = product.getPrice();
+        this.quantity= quantity;
+    }
+
+    public OrderProduct() {
+
+    }
 }

@@ -8,12 +8,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.controller.PaymobController;
 import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.OrderDto;
+import org.example.booktopia.error.InsufficientFunds;
+import org.example.booktopia.error.InsufficientStock;
 import org.example.booktopia.error.RecordNotFoundException;
 import org.example.booktopia.mapper.BuyerMapper;
+import org.example.booktopia.mapper.CartItemMapperImpl;
 import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.mapper.OrderMapper;
 import org.example.booktopia.model.Buyer;
 import org.example.booktopia.repository.BuyerRepository;
+import org.example.booktopia.repository.OrderProductRepository;
+import org.example.booktopia.repository.OrderRepository;
+import org.example.booktopia.repository.ProductRepository;
 import org.example.booktopia.utils.RequestBuilderUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,10 +52,19 @@ public class BuyerService implements UserDetailsService {
     private final RequestBuilderUtil requestBuilderUtil;
     private final PaymobController paymobController;
     private final OrderMapper orderMapper;
+    private final CartItemMapperImpl cartItemMapperImpl;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final OrderProductRepository orderProductRepository;
 
     public Buyer findById(Long id) {
         return buyerRepository.findById(id)
                               .orElseThrow(() -> new RecordNotFoundException("Buyer", "ID", id.toString()));
+    }
+
+    @Transactional
+    public BuyerDto save(Buyer buyer) {
+        return buyerMapper.toDto(buyerRepository.save(buyer));
     }
 
     @Transactional
@@ -133,6 +148,41 @@ public class BuyerService implements UserDetailsService {
                               .stream()
                               .map(buyerMapper::toDto)
                               .toList();
+    }
+
+    @Transactional
+    public BuyerDto checkout(Long id, String action) throws InsufficientStock, InsufficientFunds {
+        Buyer buyer = this.findById(id);
+//        Set<CartItem> cartItems = buyer.getCartItems();
+//        Order order = new Order(buyer);
+//        order = orderRepository.save(order);
+//        for (var cartItem : cartItems) {
+//            Product product = cartItem.getProduct();
+//            Integer productStock = product.getQuantity();
+//            Integer productQuantity = cartItem.getQuantity();
+//            if (productStock < productQuantity) {
+//                throw new InsufficientStock();
+//            }
+//            product.setQuantity(productStock - productQuantity);
+//            product = productRepository.save(product);
+//            BigDecimal productPrice = product.getPrice();
+//            BigDecimal orderPrice = productPrice.multiply(new BigDecimal(productQuantity));
+//            BigDecimal buyerCreditLimit = buyer.getCreditLimit();
+//            if (orderPrice.compareTo(buyerCreditLimit) > 0) {
+//                throw new InsufficientFunds();
+//            }
+//            buyer.setCreditLimit(buyerCreditLimit.subtract(orderPrice));
+//            //-- Add it to Orders
+//            OrderProduct orderProduct = new OrderProduct(product, order);
+//            orderProduct = orderProductRepository.save(orderProduct);
+//            order.addOrderProduct(orderProduct);
+//            order = orderRepository.save(order);
+//        }
+//
+//        buyer.getCartItems()
+//             .clear();
+//        buyer = buyerRepository.save(buyer);
+        return buyerMapper.toDto(buyer);
     }
 
 //    @Transactional
