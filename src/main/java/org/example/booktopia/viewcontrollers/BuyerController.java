@@ -113,9 +113,11 @@ public class BuyerController {
             } else if ("stripe".equals(action)) {
                 String totalBill = request.getParameter("grandTotal");
                 BigDecimal totalBillInteger = new BigDecimal(Double.parseDouble(totalBill));
-                buyerDto = buyerProductService.checkout(buyerDto.id(), action);
                 Request stripeRequest = new Request(totalBillInteger, buyerDto.email(), "Product");
                 request.setAttribute("stripeRequest", stripeRequest);
+                buyerDto = buyerProductService.checkout(buyerDto.id(), action);
+                session.setAttribute(USER, buyerDto);
+                session.setAttribute(SUCCESS, "Thank you for your purchase!");
                 return "forward:/buyers/payment";
             }
 

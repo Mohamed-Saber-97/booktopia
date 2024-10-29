@@ -165,7 +165,6 @@
 <body>
 <!-- Display a payment form -->
 <form id="payment-form">
-    <h2>Like the content: Support JavaWhizz</h2>
     <span>You are about to make a payment of: </span>
     <span>${amount}</span>
     <span>USD</span>

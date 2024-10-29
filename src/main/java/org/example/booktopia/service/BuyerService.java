@@ -16,6 +16,7 @@ import org.example.booktopia.mapper.CartItemMapperImpl;
 import org.example.booktopia.mapper.CategoryMapper;
 import org.example.booktopia.mapper.OrderMapper;
 import org.example.booktopia.model.Buyer;
+import org.example.booktopia.model.Order;
 import org.example.booktopia.repository.BuyerRepository;
 import org.example.booktopia.repository.OrderProductRepository;
 import org.example.booktopia.repository.OrderRepository;
@@ -37,6 +38,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static org.example.booktopia.utils.RequestAttributeUtil.USER;
@@ -139,6 +141,8 @@ public class BuyerService implements UserDetailsService {
         Buyer buyer = this.findById(id);
         return buyer.getOrders()
                     .stream()
+                    .sorted(Comparator.comparing(Order::getId)
+                                      .reversed())
                     .map(orderMapper::toDto)
                     .toList();
     }
