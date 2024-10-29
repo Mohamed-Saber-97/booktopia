@@ -33,7 +33,7 @@ public class AdminCustomAuthenticationSuccessHandler implements AuthenticationSu
             session.setAttribute(USER, admin);
             session.setAttribute(ADMIN, YES);
             session.setAttribute(PAGE_TITLE, "Home");
-            session.setAttribute(SUCCESS, "Welcome back, %s".formatted(admin.name()));
+            request.setAttribute(SUCCESS, "Welcome back, %s".formatted(admin.name()));
             response.sendRedirect(request.getContextPath() + "/");
         } else {
             request.setAttribute(ERROR, "Invalid email or password");

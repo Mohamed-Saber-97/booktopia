@@ -27,7 +27,7 @@
                                     <tr class="table_row">
                                         <td class="column-1">
                                             <div class="how-itemcart1">
-                                                <img src="${item.imagePath()}" alt="IMG">
+                                                <img src="/${item.imagePath()}" alt="IMG">
                                             </div>
                                         </td>
                                         <td class="column-2">${item.name()}</td>
@@ -88,19 +88,19 @@
             $('#loadMore').prop('disabled', true);
 
             $.ajax({
-                url: "/next-products",
+                url: "/api/products/paging?name=&minPrice=&maxPrice=&category=",
                 type: "GET",
                 data: {
-                    page: pageNumber++,
+                    pageNumber: pageNumber++,
                 },
                 success: function (response) {
 
-                    let newItems = $(response.products.map(function (product) {
+                    let newItems = $(response.map(function (product) {
                         return `
                             <tr class="table_row">
                                 <td class="column-1">
                                     <div class="how-itemcart1">
-                                        <img src="` + product.imagePath + `" alt="IMG">
+                                        <img src="/` + product.imagePath + `" alt="IMG">
                                     </div>
                                 </td>
                                 <td class="column-2">` + product.name + `</td>
@@ -136,4 +136,4 @@
     });
 </script>
 
-<%@include file="footer.jsp" %>
+<%@include file="/footer.jsp" %>

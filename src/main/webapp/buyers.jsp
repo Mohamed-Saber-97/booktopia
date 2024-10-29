@@ -22,14 +22,14 @@
                                 <c:forEach items="${buyers}" var="item">
                                     <tr class="table_row">
                                         <td class="column-1">${i}</td>
-                                        <td class="column-3">${item.getAccount().getName()}</td>
+                                        <td class="column-3">${item.name()}</td>
                                         <td class="column-3"></td>
-                                        <td class="column-2">${item.getAccount().getBirthday()}</td>
-                                        <td class="column-2">${item.getAccount().getJob()}</td>
-                                        <td class="column-2 price">${item.getAccount().getEmail()}</td>
-                                        <td class="column-2">${item.getCreditLimit()}</td>
-                                        <td class="column-2">${item.getAccount().getPhoneNumber()}</td>
-                                        <td class="column-3"><a href="buyer-profile?p=${item.getId()}">View</a></td>
+                                        <td class="column-2">${item.dob()}</td>
+                                        <td class="column-2">${item.job()}</td>
+                                        <td class="column-2 price">${item.email()}</td>
+                                        <td class="column-2">${item.creditLimit()}</td>
+                                        <td class="column-2">${item.phoneNumber()}</td>
+                                        <td class="column-3"><a href="buyer-profile?p=${item.id()}">View</a></td>
                                     </tr>
                                     <c:set var="i" value="${i+1}" />
                                 </c:forEach>
@@ -75,21 +75,22 @@
             $('#loadMore').prop('disabled', true);
 
             $.ajax({
-                url: "/next-buyers",
+                url: "/api/buyers/all/"+pageNumber+"/16",
                 type: "GET",
-                data: {
-                    page: pageNumber++,
-                },
+                // data: {
+                //     page: pageNumber++,
+                // },
                 success: function (response) {
+                    pageNumber++;
                     console.log(response);
 
-                    let newItems = $(response.buyers.map(function (buyer) {
+                    let newItems = $(response.map(function (buyer) {
                         return `
                             <tr class="table_row">
                                         <td class="column-1">`+ counter++ +`</td>
                                         <td class="column-2">` + buyer.name + `</td>
                                         <td class="column-3"></td>
-                                        <td class="column-2">` + buyer.birthday + `</td>
+                                        <td class="column-2">` + buyer.dob + `</td>
                                         <td class="column-2">` + buyer.job + `</td>
                                         <td class="column-2">` + buyer.email + `</td>
                                         <td class="column-2">` + buyer.creditLimit + `</td>

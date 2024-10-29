@@ -30,7 +30,7 @@ public class CartItemService {
     private final CartItemMapper cartItemMapper;
 
     @Transactional
-    public void addCartItem(Long buyerId, Long productId, Integer quantity) {
+    public String addCartItem(Long buyerId, Long productId, Integer quantity) {
         Buyer buyer = buyerService.findById(buyerId);
         System.out.println(buyer.getId());
         ProductDto productDto = productService.findProductById(productId);
@@ -40,14 +40,21 @@ public class CartItemService {
         CartItem existingCartItem = cartItemRepository.findById(cartItemId)
                 .orElse(null);
         if (existingCartItem != null) {
-            existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
-            cartItemRepository.save(existingCartItem);
+            return this.removeCartItem(buyerId, productId);
+//            cartItemRepository.deleteById(cartItemId);
+//            return "Product removed from cart";
+//            existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
+//            cartItemRepository.save(existingCartItem);
         } else {
+            if (product.getQuantity() < quantity) {
+                return "Invalid quantity";
+            }
             CategoryDto categoryDto = categoryService.findById(productDto.category().id());
             Category category = categoryMapper.toEntity(categoryDto);
             product.setCategory(category);
             CartItem cartItem = new CartItem(buyer, product, quantity);
             cartItemRepository.save(cartItem);
+            return "Product added to cart";
         }
     }
 
@@ -59,36 +66,43 @@ public class CartItemService {
     }
 
     @Transactional
-    public void removeCartItem(Long buyerId, Long productId) {
+    public String removeCartItem(Long buyerId, Long productId) {
         CartItemId cartItemId = new CartItemId(buyerId, productId);
         if (!cartItemRepository.existsById(cartItemId)) {
+//            return this.addCartItem(buyerId, productId, 1);
             throw new RecordNotFoundException("Cart Item", "ID", cartItemId.toString());
         }
         cartItemRepository.deleteById(cartItemId);
+        return "Product removed from cart";
     }
 
     @Transactional
-    public void incrementProductQuantity(Long buyerId, Long productId) {
+    public Integer incrementProductQuantity(Long buyerId, Long productId) {
         CartItemId cartItemId = new CartItemId(buyerId, productId);
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID", cartItemId.toString()));
         cartItem.setQuantity(cartItem.getQuantity() + 1);
+        Integer qty = cartItem.getQuantity();
         cartItemRepository.save(cartItem);
+        return qty;
     }
 
 
     @Transactional
-    public void decrementProductQuantity(Long buyerId, Long productId) {
+    public Integer decrementProductQuantity(Long buyerId, Long productId) {
         CartItemId cartItemId = new CartItemId(buyerId, productId);
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RecordNotFoundException("Cart Item", "ID", cartItemId.toString()));
 
         int newQuantity = cartItem.getQuantity() - 1;
         if (newQuantity < 1) {
-            throw new IllegalValueException("Quantity", String.valueOf(newQuantity));
+            return 1;
+//            throw new IllegalValueException("Quantity", String.valueOf(newQuantity));
         }
         cartItem.setQuantity(newQuantity);
+        Integer qty = cartItem.getQuantity();
         cartItemRepository.save(cartItem);
+        return qty;
     }
 
     @Transactional

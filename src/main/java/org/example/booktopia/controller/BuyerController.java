@@ -26,10 +26,10 @@ public class BuyerController {
         return ResponseEntity.ok(buyerDto);
     }
 
-//    @GetMapping("/all/{pageNumber}/{pageSize}")
-//    public ResponseEntity<Iterable<BuyerDto>> getAllBuyers(@PathVariable int pageNumber, @PathVariable int pageSize) {
-//        Page<Buyer> buyers = buyerService.findAllByPage(pageNumber, pageSize);
-//        Iterable<BuyerDto> buyerDtos = buyerMapper.toDto(buyers.getContent());
-//        return ResponseEntity.ok(buyerDtos);
-//    }
+    @GetMapping("/all/{pageNumber}/{pageSize}")
+    public ResponseEntity<Iterable<BuyerDto>> getAllBuyers(@PathVariable int pageNumber, @PathVariable int pageSize) {
+        Page<Buyer> buyers = buyerService.findAllByPage(pageNumber, pageSize);
+        Iterable<BuyerDto> buyerDtos = buyerMapper.toDto(buyers.getContent());
+        return ResponseEntity.ok(buyerDtos);
+    }
 }

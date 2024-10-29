@@ -57,27 +57,27 @@
         <div class="flex-w flex-tr">
             <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md" style="margin: 0 auto;">
                 <form action="edit-book" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="${product.id}">
+                    <input type="hidden" name="id" value="${product.id()}">
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
                         Update Book
                     </h4>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" name="price"
-                            value="${product.price}" step="0.01">
+                            value="${product.price()}" step="0.01">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="number" min="0" name="quantity"
-                            value="${product.quantity}">
+                            value="${product.quantity()}">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="releaseDate"
-                            onfocus="(this.type='date')" onblur="(this.type='text')" value="${product.releaseDate}">
+                            onfocus="(this.type='date')" onblur="(this.type='text')" value="${product.releaseDate()}">
                     </div>
-                    <select class="bor8 m-b-20 stext-111 cl2 plh3 size-116 p-l-62 p-r-30" name="categoryId">
+                    <select class="bor8 m-b-20 stext-111 cl2 plh3 size-116 p-l-62 p-r-30" id="categoryId" name="categoryId">
                         <c:forEach items="${categories}" var="category">
-                            <option value="${category.getId()}" <c:if
-                                test="${category.getId() eq product.getCategory().id}">
-                                selected</c:if>>${category.getName()}</option>
+                            <option value="${category.id()}" <c:if
+                                test="${category.id() eq product.category().id()}">
+                                selected</c:if>>${category.name()}</option>
                         </c:forEach>
                     </select>
 
@@ -85,24 +85,24 @@
 
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="isbn"
-                            value="${product.isbn}">
+                            value="${product.isbn()}">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="author"
-                            value="${product.author}">
+                            value="${product.author()}">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="name"
-                            value="${product.name}">
+                            value="${product.name()}">
                     </div>
                     <div class="bor8 m-b-20">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="description"
-                            value="${product.description}">
+                            value="${product.description()}">
                     </div>
-
+                    <input class="file-upload-input" type="hidden" name="imagePath">
                     <div class="file-upload-container">
                         <div class="file-upload-wrapper">
-                            <input class="file-upload-input" type="file" id="imagePath" name="imagePath">
+                            <input class="file-upload-input" type="file" id="imagePath" name="image">
                             <label for="imagePath" class="custom-file-upload">
                                 <i class="fa fa-cloud-upload"></i> Upload Image
                             </label>

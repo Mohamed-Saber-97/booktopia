@@ -4,6 +4,8 @@ import org.example.booktopia.dtos.AdminDto;
 import org.example.booktopia.model.Admin;
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AdminMapper {
     @Mapping(source = "country", target = "account.address.country")

@@ -17,8 +17,8 @@ public class CartItemController {
 
     @PostMapping("/add/{buyerId}/{productId}/{quantity}")
     public ResponseEntity<?> addCartItem(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId, @PathVariable("quantity") Integer quantity) {
-        cartItemService.addCartItem(buyerId, productId, quantity);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        String result = cartItemService.addCartItem(buyerId, productId, quantity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @GetMapping("/buyer/{buyerId}")
@@ -29,19 +29,19 @@ public class CartItemController {
     @DeleteMapping("/remove/{buyerId}/{productId}")
     public ResponseEntity<?> removeCartItem(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId) {
         cartItemService.removeCartItem(buyerId, productId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Product removed from cart");
     }
 
     @PostMapping("/increment/{buyerId}/{productId}")
     public ResponseEntity<?> incrementProductQuantity(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId) {
-        cartItemService.incrementProductQuantity(buyerId, productId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        Integer result = cartItemService.incrementProductQuantity(buyerId, productId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping("/decrement/{buyerId}/{productId}")
     public ResponseEntity<?> decrementProductQuantity(@PathVariable("buyerId") Long buyerId, @PathVariable("productId") Long productId) {
-        cartItemService.decrementProductQuantity(buyerId, productId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        Integer result = cartItemService.decrementProductQuantity(buyerId, productId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping("/clear/{buyerId}")

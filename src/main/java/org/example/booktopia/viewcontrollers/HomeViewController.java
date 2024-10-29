@@ -1,12 +1,11 @@
 package org.example.booktopia.viewcontrollers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.ProductDto;
-import org.example.booktopia.model.Country;
 import org.example.booktopia.service.BuyerProductService;
-import org.example.booktopia.service.CategoryService;
 import org.example.booktopia.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +20,17 @@ import static org.example.booktopia.utils.RequestAttributeUtil.*;
 public class HomeViewController {
     private final ProductService productService;
     private final BuyerProductService buyerProductService;
-    private final CategoryService categoryService;
+    private final UpdateUserSession updateUserSession;
 
     @GetMapping("/")
-    public String home(Model model, HttpSession session) {
+    public String home(Model model, HttpServletRequest request) {
+        updateUserSession.updateUserSession(request);
+        HttpSession session = request.getSession(false);
+//        HttpServletRequest request;
+//        HttpSession session = request.getSession(false);
         model.addAttribute(PAGE_TITLE, "Home");
+//        model.addAttribute(SUCCESS, session.getAttribute(SUCCESS));
+//        session.removeAttribute(SUCCESS);
         List<ProductDto> interests;
         if (session != null && session.getAttribute(BUYER) != null) {
             interests = buyerProductService.getBuyerInterestedProducts(((BuyerDto) session.getAttribute(USER)).id());

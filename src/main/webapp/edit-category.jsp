@@ -52,12 +52,12 @@
         <div class="flex-w flex-tr">
             <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md" style="margin: 0 auto;">
                 <form action="edit-category" method="post" id="editCategoryForm">
-                    <input type="hidden" name="id" value="${category.id}">
+                    <input type="hidden" name="id" value="${category.id()}">
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
                         Update Category
                     </h4>
                     <div class="form-group">
-                        <input class="form-control" type="text" name="name" value="${category.name}" id="nameInput"
+                        <input class="form-control" type="text" name="name" value="${category.name()}" id="nameInput"
                                data-bs-toggle="popover" data-bs-trigger="manual">
                         <small id="nameHelp" class="form-text text-muted" style="visibility: hidden;">Name should not
                             exceed 100 characters.</small>
@@ -76,14 +76,13 @@
             let categoryName = $('#nameInput').val();
             let categoryId = $('input[name="id"]').val();
 
-            // Proceed with AJAX if category name is not empty
             if (categoryName.trim() !== "") {
                 $.ajax({
-                    url: '/update-category-name', // URL of your servlet
+                    url: '/api/categories/exists/'+categoryName,
                     method: 'POST',
-                    data: {name: categoryName, id: categoryId},
+                    data: { id: categoryId},
                     success: function (response) {
-                        if (response === "true") {
+                        if (!response) {
                             // Category name is valid
                             $('#nameInput').removeClass('is-invalid').addClass('is-valid');
                             $('#nameHelp').text("Category name is available").css({
@@ -93,7 +92,7 @@
                         } else {
                             // Category name is invalid (either exists or too long)
                             $('#nameInput').addClass('is-invalid').removeClass('is-valid');
-                            $('#nameHelp').text(response).css({
+                            $('#nameHelp').text("Name already exists").css({
                                 "color": "red",
                                 "visibility": "visible"
                             });

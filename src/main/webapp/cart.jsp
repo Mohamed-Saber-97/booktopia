@@ -10,8 +10,8 @@
 </form>
 <!-- Shoping Cart -->
 <c:choose>
-    <c:when test="${sessionScope.user.getCart().size() > 0}">
-        <form class="bg0 p-t-75 p-b-85" action="update-cart" method="post">
+    <c:when test="${user.cartSize() > 0}">
+        <form class="bg0 p-t-75 p-b-85" id="update-cart" action="update-cart" method="post">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
@@ -25,38 +25,38 @@
                                         <th class="column-4">Quantity</th>
                                         <th class="column-5">Total</th>
                                     </tr>
-                                    <c:forEach items="${sessionScope.user.getCart()}" var="item">
+                                    <c:forEach items="${cart}" var="item">
                                         <tr class="table_row">
                                             <td class="column-1">
                                                 <div class="how-itemcart1">
-                                                    <img src="${item.key.getImagePath()}" alt="IMG"
-                                                        class="remove-cart-item" data-product-id="${item.key.getId()}">
+                                                    <img src="/${item.productImagePath()}" alt="IMG"
+                                                        class="remove-cart-item" data-product-id="${item.productId()}">
                                                 </div>
                                             </td>
-                                            <td class="column-2">${item.key.getName()}</td>
-                                            <td class="column-3 price" data-product-id="${item.key.getId()}">
-                                                ${item.key.getPrice()}</td>
+                                            <td class="column-2">${item.productName()}</td>
+                                            <td class="column-3 price" data-product-id="${item.productId()}">
+                                                ${item.productPrice()}</td>
                                             <td class="column-4">
                                                 <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                                    <div class="btn-num-product-down cart-single-operation cl8 hov-btn3 trans-04 flex-c-m"
-                                                        data-product-id="${item.key.getId()}"
+                                                    <div class="btn-num-product-down cart-decrement-operation cl8 hov-btn3 trans-04 flex-c-m"
+                                                        data-product-id="${item.productId()}"
                                                         data-operation="decrement">
                                                         <i class="fs-16 zmdi zmdi-minus"></i>
                                                     </div>
                                                     <input class="mtext-104 cl3 txt-center num-product quantity"
-                                                        type="number" data-product-id="${item.key.getId()}"
-                                                        name="quantity[]" value="${item.value}">
+                                                        type="number" data-product-id="${item.productId()}"
+                                                        name="quantity[]" value="${item.quantity()}" min="1">
 
-                                                    <div class="btn-num-product-up cart-single-operation cl8 hov-btn3 trans-04 flex-c-m"
-                                                        data-product-id="${item.key.getId()}"
+                                                    <div class="btn-num-product-up cart-increment-operation cl8 hov-btn3 trans-04 flex-c-m"
+                                                        data-product-id="${item.productId()}"
                                                         data-operation="increment">
                                                         <i class="fs-16 zmdi zmdi-plus"></i>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="column-5 totals" data-product-id="${item.key.getId()}">$
-                                                ${item.key.getPrice() * item.value}</td>
-                                            <input type="hidden" name="id[]" value="${item.key.getId()}">
+                                            <td class="column-5 totals" data-product-id="${item.productId()}">$
+                                                ${item.productPrice() * item.quantity()}</td>
+                                            <input type="hidden" name="id[]" value="${item.productId()}">
                                         </tr>
                                     </c:forEach>
                                 </table>
@@ -86,16 +86,17 @@
 
                                 <div class="size-209 p-t-1">
                                     <span class="mtext-110 cl2 grand-total"></span>
+                                    <input type = 'hidden' name = 'grandTotal' id = 'totalBill'>
                                 </div>
                             </div>
-                            <%@include file="checkout.jsp" %>
+                            <%@include file="/checkout.jsp" %>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
     </c:when>
-    <c:when test="${sessionScope.user.getCart().size() == 0}">
+    <c:when test="${user.cartSize() == 0}">
         <div class="container bg0 p-t-100 p-b-85">
             <div class="row">
                 <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
@@ -117,20 +118,23 @@
             grandTotal += parseFloat($(this).text().replace('$', ''));
         });
         $('.grand-total').text('$' + grandTotal.toFixed(2));
+        $('#totalBill').val(grandTotal);
 
-        $('.cart-single-operation').click(function (event) {
+        $('.cart-increment-operation').click(function (event) {
             event.preventDefault();
             let productId = $(this).data('product-id');
             let operation = $(this).data('operation');
+            let buyerId = ${user.id()};
             $.ajax({
-                url: 'cartSingleOperation',
+                url: "/api/cart-items/increment/" + buyerId+"/"+productId,
                 type: 'POST',
-                data: {
-                    id: productId,
-                    operation: operation
-                },
+                // data: {
+                //     id: productId,
+                //     operation: operation
+                // },
                 success: function (response) {
-                    response = response.trim();
+                    console.log(response);
+                    // response = response.trim();
                     $('.quantity[data-product-id=' + productId + ']').val(response);
                     let price = $('.price[data-product-id=' + productId + ']').text()
                         .replace(
@@ -145,6 +149,42 @@
                         grandTotal += parseFloat($(this).text().replace('$', ''));
                     });
                     $('.grand-total').text('$' + grandTotal.toFixed(2));
+                    $('#totalBill').val(grandTotal);
+
+                }
+            });
+        });
+
+        $('.cart-decrement-operation').click(function (event) {
+            event.preventDefault();
+            let productId = $(this).data('product-id');
+            let operation = $(this).data('operation');
+            let buyerId = ${user.id()};
+            $.ajax({
+                url: "/api/cart-items/decrement/" + buyerId+"/"+productId,
+                type: 'POST',
+                // data: {
+                //     id: productId,
+                //     operation: operation
+                // },
+                success: function (response) {
+                    // response = response.trim();
+                    $('.quantity[data-product-id=' + productId + ']').val(response);
+                    let price = $('.price[data-product-id=' + productId + ']').text()
+                        .replace(
+                            '$', '').trim();
+                    let quantity = $('.quantity[data-product-id=' + productId + ']').val()
+                        .trim();
+                    $(`.totals[data-product-id=` + productId + `]`).text(
+                        '$' + (parseFloat(price) * parseInt(quantity)).toFixed(2)
+                    );
+                    grandTotal = 0;
+                    $('.totals').each(function () {
+                        grandTotal += parseFloat($(this).text().replace('$', ''));
+                    });
+                    $('.grand-total').text('$' + grandTotal.toFixed(2));
+                    $('#totalBill').val(grandTotal);
+
                 }
             });
         });
@@ -162,15 +202,15 @@
 
         function removeCartItem(productId) {
             $.ajax({
-                url: 'remove-bucket-item',
-                type: 'POST',
-                data: {
-                    productId: productId,
-                    bucket: 'cart'
-                },
+                url: "/api/cart-items/remove/" + ${user.id()} + "/" + productId,
+                type: 'DELETE',
+                // data: {
+                //     productId: productId,
+                //     bucket: 'cart'
+                // },
                 success: function (response) {
-                    response = response.trim();
-                    if (response === 'success') {
+                    // response = response.trim();
+                    // if (response === 'success') {
                         $('.remove-cart-item[data-product-id=' + productId + ']').closest(
                                 '.table_row')
                             .remove();
@@ -182,11 +222,26 @@
                             grandTotal += parseFloat($(this).text().replace('$', ''));
                         });
                         $('.grand-total').text('$' + grandTotal.toFixed(2));
-                    }
+                        $('#totalBill').val(grandTotal);
+
+                    // }
                 }
             });
         }
+
+        // $("#update-cart").submit(function (event) {
+        //     event.preventDefault();
+        //     $.ajax({
+        //         url: "/buyers/update-cart",
+        //         type: "POST",
+        //         // data: $("#update-cart").serialize(),
+        //         success: function (response) {
+        //             console.log(response);
+        //         }
+        //     });
+        // });
+
     });
 </script>
 
-<%@include file="footer.jsp" %>
+<%@include file="/footer.jsp" %>

@@ -4,6 +4,8 @@ import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.model.Buyer;
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface BuyerMapper {
 
@@ -23,9 +25,12 @@ public interface BuyerMapper {
     @Mapping(target = "wishlistSize", expression = "java(buyer.getProducts().size())")
     BuyerDto toDto(Buyer buyer);
 
+    List<Buyer> toEntity(List<BuyerDto> buyerDtos);
+
+    List<BuyerDto> toDto(List<Buyer> buyers);
+
     @InheritConfiguration(name = "toEntity")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Buyer partialUpdate(
-            BuyerDto buyerDto,
-            @MappingTarget Buyer buyer);
+            BuyerDto buyerDto, @MappingTarget Buyer buyer);
 }

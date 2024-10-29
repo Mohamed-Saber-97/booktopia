@@ -1,5 +1,5 @@
-<%@include file="header.jsp" %>
-
+<%@include file="/header.jsp" %>
+<c:set var="i" value="1" />
 <c:choose>
     <c:when test="${not empty categories}">
         <div class="container bg0 p-t-75 p-b-45">

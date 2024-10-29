@@ -78,19 +78,19 @@
                 </div>
                 <div class="bor8 m-b-20">
                     <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" readonly
-                           value="${tempBuyer.zipcode()}">
+                           value="${tempBuyer.zipCode()}">
                 </div>
                 <div class="form-group">
                     <label><b>Interests</b></label>
                     <div class="d-flex flex-wrap">
-                        <c:forEach items="${tempBuyer.getInterests()}" var="category">
+                        <c:forEach items="${categories}" var="category">
                             <div class="interest-bubble">
                                 <input type="checkbox"
-                                       id="category${category.getId()}"
+                                       id="category${category.id()}"
                                        name="categories"
-                                       value="${category.getId()}"
-                                       <c:if test="${tempBuyer.getInterests().contains(category)}">checked</c:if>>
-                                <label for="category${category.getId()}">${category.getName()}</label>
+                                       value="${category.id()}"
+                                       <c:if test="${categoryIds.contains(category.id())}">checked</c:if>>
+                                <label for="category${category.id()}">${category.name()}</label>
                             </div>
                         </c:forEach>
                     </div>
@@ -99,7 +99,7 @@
                     </small>
                 </div>
                 <form action="buyer-orders" method="get">
-                    <input type="hidden" name="p" value="${tempBuyer.getId()}">
+                    <input type="hidden" name="p" value="${tempBuyer.id()}">
                     <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
                         View Orders
                     </button>

@@ -15,12 +15,12 @@
                         <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
 
                         <div class="slick3 gallery-lb">
-                            <div class="item-slick3" data-thumb="${product.getImagePath()}">
+                            <div class="item-slick3" data-thumb="${product.imagePath()}">
                                 <div class="wrap-pic-w pos-relative">
-                                    <img src="${product.getImagePath()}" alt="IMG-PRODUCT">
+                                    <img src="/${product.imagePath()}" alt="IMG-PRODUCT">
 
                                     <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                        href="${product.getImagePath()}">
+                                        href="/${product.imagePath()}">
                                         <i class="fa fa-expand"></i>
                                     </a>
                                 </div>
@@ -33,32 +33,32 @@
             <div class="col-md-6 col-lg-5 p-b-30">
                 <div class="p-r-50 p-t-5 p-lr-0-lg">
                     <h4 class="mtext-105 cl2 js-name-detail p-b-14">
-                        ${product.getName()}
+                        ${product.name()}
                     </h4>
 
                     <span class="mtext-106 cl2">
-                        $ ${product.getPrice()}
+                        $ ${product.price()}
                     </span>
 
                     <p class="stext-102 cl3 p-t-23">
-                        ${product.getDescription()}
+                        ${product.description()}
                     </p>
 
                     <p class="stext-102 cl3 p-t-23">
-                        Autor: ${product.getAuthor()}
+                        Autor: ${product.author()}
                     </p>
 
                     <p class="stext-102 cl3 p-t-23">
-                        Release date: ${product.getReleaseDate()}
+                        Release date: ${product.releaseDate()}
                     </p>
 
                     <p class="stext-102 cl3 p-t-23">
-                        ISBN: ${product.getIsbn()}
+                        ISBN: ${product.isbn()}
                     </p>
                     <c:choose>
-                        <c:when test="${product.getQuantity() > 0}">
+                        <c:when test="${product.quantity() > 0}">
                             <p class="stext-102 cl3 p-t-23">
-                                Stock: ${product.getQuantity()}
+                                Stock: ${product.quantity()}
                             </p>
                         </c:when>
                         <c:otherwise>
@@ -70,8 +70,8 @@
                     <div class="p-t-33">
                         <div class="flex-w flex-r-m p-b-10">
 <c:choose>
-    <c:when test="${product.getQuantity() > 0}">
-                            <c:if test="${sessionScope.buyer != null}">
+    <c:when test="${product.quantity() > 0}">
+                            <c:if test="${buyer != null}">
                                 <div class="size-204 flex-w flex-m respon6-next">
                                     <div class="wrap-num-product flex-w m-r-20 m-tb-10">
                                         <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
@@ -87,12 +87,12 @@
                                     </div>
                                     <!-- js-addcart-detail -->
                                     <%--								<c:if test="${sessionScope.buyer != null}">--%>
-                                    <button id="addToCart" data-product-id="${product.getId()}"
+                                    <button id="addToCart" data-product-id="${product.id()}"
                                         class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                        <c:if test="${!sessionScope.user.getCart().containsKey(product)}">
+                                        <c:if test="${!cartIds.contains(product.id())}">
                                             Add to cart
                                         </c:if>
-                                        <c:if test="${sessionScope.user.getCart().containsKey(product)}">
+                                        <c:if test="${cartIds.contains(product.id())}">
                                             Remove from cart
                                         </c:if>
                                     </button>
@@ -101,18 +101,18 @@
                             <c:otherwise>
                         </c:otherwise>
                     </c:choose>
-    <c:if test="${sessionScope.buyer != null}">
-                                <button id="addToWishlist" data-product-id="${product.getId()}"
+    <c:if test="${buyer != null}">
+                                <button id="addToWishlist" data-product-id="${product.id()}"
                                     class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 m-t-10">
-                                    <c:if test="${!sessionScope.user.getWishlist().contains(product)}">
+                                    <c:if test="${!wishlistIds.contains(product.id())}">
                                         Add to wishlist
                                     </c:if>
-                                    <c:if test="${sessionScope.user.getWishlist().contains(product)}">
+                                    <c:if test="${wishlistIds.contains(product.id())}">
                                         Remove from wishlist
                                     </c:if>
                                 </button>
                             </c:if>
-                            <c:if test="${sessionScope.user == null}">
+                            <c:if test="${user == null}">
                                 <button form="loginForm"
                                     class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
                                     Login to add to cart
@@ -121,8 +121,8 @@
                         </div>
                     </div>
                 </div>
-                <form action="login" method="GET" id="loginForm"></form>
-                <!-- <c:if test="${sessionScope.buyer != null}">
+                <form action="/buyers/login" method="GET" id="loginForm"></form>
+                <!-- <c:if test="${buyer != null}">
 						<div class="flex-w flex-m p-l-100 p-t-40 respon7">
 							<div class="flex-m p-r-10 m-r-11">
 								<a href="#"
@@ -145,15 +145,17 @@
             event.preventDefault();
             const productId = $(this).attr('data-product-id');
             const numProduct = $('.num-product').val();
+            const buyerId = ${user.id()};
 
             $.ajax({
-                url: "/addToCart",
+                url: "/api/cart-items/add/"+buyerId+"/"+productId+"/"+numProduct,
                 type: "POST",
-                data: {
-                    productId: productId,
-                    quantity: numProduct
-                },
+                // data: {
+                //     productId: productId,
+                //     quantity: numProduct
+                // },
                 success: function (response) {
+                    console.log(response);
                     console.log(response);
                     if (response.trim() == "Product added to cart") {
                         $('.cart').attr('data-notify', parseInt($('.cart').attr(
@@ -201,7 +203,8 @@
                 error: function (xhr, status, error) {
                     console.error("Error fetching next products." + error);
                 },
-                complete: function () {
+                complete: function (response) {
+                    console.log(response);
                     console.log("Request completed.");
                 }
             });
@@ -210,13 +213,15 @@
         $("#addToWishlist").click(function (event) {
             event.preventDefault();
             const productId = $(this).attr('data-product-id');
+            const buyerId = ${user.id()};
             $.ajax({
-                url: "/addToWishlist",
+                url: "/api/buyer-wishlist/add/"+buyerId+"/"+productId,
                 type: "POST",
-                data: {
-                    productId: productId
-                },
+                // data: {
+                //     productId: productId
+                // },
                 success: function (response) {
+                    console.log(response);
                     if (response.trim() == "Product added to wishlist") {
                         $('.wishlist').attr('data-notify', parseInt($('.wishlist').attr(
                                 'data-notify')) +
@@ -266,4 +271,4 @@
     });
 </script>
 
-<%@include file="footer.jsp" %>
+<%@include file="/footer.jsp" %>

@@ -104,7 +104,7 @@
                         <div class="file-upload-container">
                             <div class="file-upload-wrapper">
                                 <input class="file-upload-input form-control" type="file" id="imagePath"
-                                       name="imagePath">
+                                       name="image">
                                 <label for="imagePath" class="custom-file-upload">
                                     <i class="fa fa-cloud-upload"></i> Upload Image
                                 </label>

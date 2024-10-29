@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.dtos.OrderDto;
 import org.example.booktopia.dtos.OrderProductDto;
+import org.example.booktopia.dtos.ProductDto;
 import org.example.booktopia.error.RecordNotFoundException;
 import org.example.booktopia.mapper.OrderMapper;
 import org.example.booktopia.mapper.OrderProductMapper;
@@ -12,12 +13,15 @@ import org.example.booktopia.mapper.ProductMapper;
 import org.example.booktopia.model.*;
 import org.example.booktopia.repository.OrderRepository;
 import org.example.booktopia.repository.ProductRepository;
+import org.example.booktopia.specifications.OrderSpecifications;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +53,15 @@ public class OrderService {
                 .orElseThrow(() -> new RecordNotFoundException("Order", "ID", id.toString()));
     }
 
+//    public List<ProductDto> findAllProductsByOrderId(Long id, Long buyerId) {
+//        Buyer buyer = buyerService.findById(buyerId);
+//        Order order = this.findById(id);
+//        return order.getOrderProducts().stream()
+//                .map(OrderProduct::getProduct)
+//                .map(productMapper::toDto)
+//                .toList();
+//    }
+
     @Transactional
     public OrderDto save(Long buyerId, Map<Long, Integer> productQuantities) {
         Order order = new Order();
@@ -77,5 +90,21 @@ public class OrderService {
         }
         order = orderRepository.save(order);
         return orderMapper.toDto(order);
+    }
+
+    public List<OrderDto> searchOrders(Optional<Long> orderId, Optional<Long> buyerId, Integer pageNumber, Integer pageSize) {
+        Specification<Order> specification = Specification.where(null);
+        // Filter by Order ID if provided
+        if (orderId.isPresent()) {
+            specification = specification.and(OrderSpecifications.hasOrderId(orderId.get()));
+        }
+        // Filter by Customer ID if provided
+        if (buyerId.isPresent()) {
+            specification = specification.and(OrderSpecifications.hasBuyerId(buyerId.get()));
+        }
+        // Fetch paginated list of orders matching the specifications
+        List<Order> orders = orderRepository.findAll(specification, PageRequest.of(pageNumber, pageSize)).getContent();
+        // Convert to DTOs if necessary
+        return orderMapper.toDto(orders); // Assuming you have an OrderMapper to map Order to OrderDto
     }
 }

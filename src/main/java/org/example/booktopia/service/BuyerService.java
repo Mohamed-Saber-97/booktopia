@@ -1,24 +1,43 @@
 package org.example.booktopia.service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.booktopia.controller.PaymobController;
 import org.example.booktopia.dtos.BuyerDto;
+import org.example.booktopia.dtos.OrderDto;
+import org.example.booktopia.error.InsufficientFunds;
+import org.example.booktopia.error.InsufficientStock;
 import org.example.booktopia.error.RecordNotFoundException;
 import org.example.booktopia.mapper.BuyerMapper;
+import org.example.booktopia.mapper.CartItemMapperImpl;
 import org.example.booktopia.mapper.CategoryMapper;
+import org.example.booktopia.mapper.OrderMapper;
 import org.example.booktopia.model.Buyer;
 import org.example.booktopia.repository.BuyerRepository;
+import org.example.booktopia.repository.OrderProductRepository;
+import org.example.booktopia.repository.OrderRepository;
+import org.example.booktopia.repository.ProductRepository;
 import org.example.booktopia.utils.RequestBuilderUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static org.example.booktopia.utils.RequestAttributeUtil.USER;
 
@@ -31,6 +50,12 @@ public class BuyerService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final CategoryMapper categoryMapper;
     private final RequestBuilderUtil requestBuilderUtil;
+    private final PaymobController paymobController;
+    private final OrderMapper orderMapper;
+    private final CartItemMapperImpl cartItemMapperImpl;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final OrderProductRepository orderProductRepository;
 
     public Buyer findById(Long id) {
         return buyerRepository.findById(id)
@@ -38,9 +63,24 @@ public class BuyerService implements UserDetailsService {
     }
 
     @Transactional
+    public BuyerDto save(Buyer buyer) {
+        return buyerMapper.toDto(buyerRepository.save(buyer));
+    }
+
+    @Transactional
     public BuyerDto save(HttpServletRequest request) {
         Buyer buyer = requestBuilderUtil.createBuyerFromRequest(request);
         buyer = buyerRepository.save(buyer);
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_BUYER"));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                buyer.getUsername(),
+                buyer.getPassword(),
+                authorities
+        );
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
+        HttpSession session = request.getSession(true);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
         return buyerMapper.toDto(buyer);
     }
 
@@ -94,5 +134,98 @@ public class BuyerService implements UserDetailsService {
         buyerRepository.save(requestBuyer);
         return buyerMapper.toDto(requestBuyer);
     }
+
+    public List<OrderDto> getOrdersByBuyerId(Long id) {
+        Buyer buyer = this.findById(id);
+        return buyer.getOrders()
+                    .stream()
+                    .map(orderMapper::toDto)
+                    .toList();
+    }
+
+    public List<BuyerDto> getAllBuyers(Integer pageNumber, Integer pageSize) {
+        return buyerRepository.findAll(PageRequest.of(pageNumber, pageSize))
+                              .stream()
+                              .map(buyerMapper::toDto)
+                              .toList();
+    }
+
+    @Transactional
+    public BuyerDto checkout(Long id, String action) throws InsufficientStock, InsufficientFunds {
+        Buyer buyer = this.findById(id);
+//        Set<CartItem> cartItems = buyer.getCartItems();
+//        Order order = new Order(buyer);
+//        order = orderRepository.save(order);
+//        for (var cartItem : cartItems) {
+//            Product product = cartItem.getProduct();
+//            Integer productStock = product.getQuantity();
+//            Integer productQuantity = cartItem.getQuantity();
+//            if (productStock < productQuantity) {
+//                throw new InsufficientStock();
+//            }
+//            product.setQuantity(productStock - productQuantity);
+//            product = productRepository.save(product);
+//            BigDecimal productPrice = product.getPrice();
+//            BigDecimal orderPrice = productPrice.multiply(new BigDecimal(productQuantity));
+//            BigDecimal buyerCreditLimit = buyer.getCreditLimit();
+//            if (orderPrice.compareTo(buyerCreditLimit) > 0) {
+//                throw new InsufficientFunds();
+//            }
+//            buyer.setCreditLimit(buyerCreditLimit.subtract(orderPrice));
+//            //-- Add it to Orders
+//            OrderProduct orderProduct = new OrderProduct(product, order);
+//            orderProduct = orderProductRepository.save(orderProduct);
+//            order.addOrderProduct(orderProduct);
+//            order = orderRepository.save(order);
+//        }
+//
+//        buyer.getCartItems()
+//             .clear();
+//        buyer = buyerRepository.save(buyer);
+        return buyerMapper.toDto(buyer);
+    }
+
+//    @Transactional
+//    public Buyer checkout(Buyer buyer) throws InsufficientStockException, InsufficientFundsException {
+//
+//        paymobController.checkout(buyer);
+//        if (buyer == null || buyer.getCartItems() == null) return buyer;
+//
+//        try {
+//            Map<Product, Integer> currentCart = buyer.getCart();
+//            Order order = new Order(buyer);
+//            order = entityManager.merge(order);
+//            for (Map.Entry<Product, Integer> entry : currentCart.entrySet()) {
+//                Product product = entry.getKey();
+//                //--- Check if stock sufficient
+//                Integer productStock = product.getQuantity();
+//                Integer productQuantity = entry.getValue();
+//                if (productStock < productQuantity) {
+//                    throw new InsufficientStockException("Transaction declined insufficient stock");
+//                }
+//                product.setQuantity(productStock - productQuantity);
+//                entityManager.merge(product);
+//                //-- Check is funds sufficient
+//                BigDecimal productPrice = product.getPrice();
+//                BigDecimal orderPrice = productPrice.multiply(new BigDecimal(productQuantity));
+//                BigDecimal buyerCreditLimit = buyer.getCreditLimit();
+//                if (orderPrice.compareTo(buyerCreditLimit) > 0) {
+//                    throw new InsufficientFundsException("Transaction declined insufficient funds");
+//                }
+//                buyer.setCreditLimit(buyerCreditLimit.subtract(orderPrice));
+//
+//                //-- Add it to Orders
+//                OrderProduct orderProduct = new OrderProduct(order, entry);
+//                order.addOrderProduct(orderProduct);
+//                entityManager.merge(order);
+//            }
+//            buyer.clearCart();
+//            buyer = entityManager.merge(buyer);
+//            transaction.commit();
+//            return buyer;
+//        } catch (InsufficientStockException | InsufficientFundsException e) {
+//            throw e;
+//    }
+//
 
 }

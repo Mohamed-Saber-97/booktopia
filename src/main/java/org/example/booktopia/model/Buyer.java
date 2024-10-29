@@ -49,6 +49,7 @@ public class Buyer extends BaseEntity implements UserDetails {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Setter
+    @Getter
     private Set<Category> interests = new LinkedHashSet<>();
 
     @ManyToMany
@@ -58,18 +59,21 @@ public class Buyer extends BaseEntity implements UserDetails {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Setter
+    @Getter
     private Set<Product> products = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "buyer")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Setter
+    @Getter
     private Set<CartItem> cartItems = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "buyer")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Setter
+    @Getter
     private Set<Order> orders = new LinkedHashSet<>();
     private LocalDate credentialsExpiryDate;
     private LocalDate accountExpiryDate;

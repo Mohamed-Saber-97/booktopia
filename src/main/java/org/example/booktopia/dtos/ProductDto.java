@@ -1,5 +1,7 @@
 package org.example.booktopia.dtos;
 
+import org.springframework.lang.Nullable;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -12,7 +14,7 @@ public record ProductDto(
         LocalDate releaseDate,
         BigDecimal price,
         Integer quantity,
-        String imagePath,
+        @Nullable String imagePath,
         CategoryDto category
 ) {
 }

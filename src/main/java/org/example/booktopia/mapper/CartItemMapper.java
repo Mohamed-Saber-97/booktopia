@@ -5,6 +5,7 @@ import org.example.booktopia.model.CartItem;
 import org.mapstruct.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CartItemMapper {
@@ -26,6 +27,10 @@ public interface CartItemMapper {
     List<CartItem> toEntity(List<CartItemDto> cartItemDtos);
 
     List<CartItemDto> toDto(List<CartItem> cartItems);
+
+    Set<CartItem> toEntity(Set<CartItemDto> cartItemDtos);
+
+    Set<CartItemDto> toDto(Set<CartItem> cartItems);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     CartItem partialUpdate(
