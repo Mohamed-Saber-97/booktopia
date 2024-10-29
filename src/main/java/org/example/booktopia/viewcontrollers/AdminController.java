@@ -205,26 +205,38 @@ public class AdminController {
 
     @GetMapping("/buyer-profile")
     public String buyerProfile(@RequestParam Long p, Model model, HttpSession session) {
-        Buyer buyer = buyerService.findById(p);
-        List<CategoryDto> categoryDtos = categoryService.findAllAvailableCategories();
-        BuyerDto buyerDto = buyerMapper.toDto(buyer);
-        List<Long> categoryIds = buyerInterestService.findCategoryIdsByBuyerId(buyer.getId());
-        model.addAttribute(PAGE_TITLE, "Buyer Profile");
-        model.addAttribute(TEMP_BUYER, buyerDto);
-        model.addAttribute(CATEGORIES, categoryDtos);
-        model.addAttribute(CATEGORY_IDS, categoryIds);
+        try {
+            Buyer buyer = buyerService.findById(p);
+            List<CategoryDto> categoryDtos = categoryService.findAllAvailableCategories();
+            BuyerDto buyerDto = buyerMapper.toDto(buyer);
+            List<Long> categoryIds = buyerInterestService.findCategoryIdsByBuyerId(buyer.getId());
+            model.addAttribute(PAGE_TITLE, "Buyer Profile");
+            model.addAttribute(TEMP_BUYER, buyerDto);
+            model.addAttribute(CATEGORIES, categoryDtos);
+            model.addAttribute(CATEGORY_IDS, categoryIds);
+        } catch (RecordNotFoundException e) {
+            model.addAttribute(ERROR, "Buyer not found");
+            model.addAttribute(PAGE_TITLE, "Buyers");
+            return "buyers";
+        }
         return "buyer-profile";
     }
 
     @GetMapping("/buyer-orders")
     public String buyerOrders(@RequestParam Long p, Model model) {
-        Buyer buyer = buyerService.findById(p);
-        BuyerDto buyerDto = buyerMapper.toDto(buyer);
-        List<OrderDto> orderDtos = buyerService.getOrdersByBuyerId(p);
-        model.addAttribute(PAGE_TITLE, "Buyer Orders");
-        model.addAttribute(TEMP_BUYER, buyerDto);
-        model.addAttribute(ORDERS, orderDtos);
-        return "buyer-orders";
+        try {
+            Buyer buyer = buyerService.findById(p);
+            BuyerDto buyerDto = buyerMapper.toDto(buyer);
+            List<OrderDto> orderDtos = buyerService.getOrdersByBuyerId(p);
+            model.addAttribute(PAGE_TITLE, "Buyer Orders");
+            model.addAttribute(TEMP_BUYER, buyerDto);
+            model.addAttribute(ORDERS, orderDtos);
+            return "buyer-orders";
+        } catch (RecordNotFoundException e) {
+            model.addAttribute(ERROR, "Buyer not found");
+            model.addAttribute(PAGE_TITLE, "Buyers");
+            return "buyers";
+        }
     }
 
     @GetMapping("/buyer-order-products")

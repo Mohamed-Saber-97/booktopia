@@ -46,7 +46,7 @@
                 <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
                     <div class="m-l-25 m-r--38 m-lr-0-xl">
                         <div class="">
-                            <h1>There is no buyers yet</h1>
+                            <h1>There is no available buyers</h1>
                         </div>
                     </div>
                 </div>
