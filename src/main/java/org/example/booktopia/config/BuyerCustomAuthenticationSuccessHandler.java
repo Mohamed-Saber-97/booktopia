@@ -34,7 +34,7 @@ public class BuyerCustomAuthenticationSuccessHandler implements AuthenticationSu
             session.setAttribute(USER, buyer);
             session.setAttribute(BUYER, YES);
             session.setAttribute(PAGE_TITLE, "Home");
-            request.setAttribute(SUCCESS, "Welcome back, %s".formatted(buyer.name()));
+            session.setAttribute(SUCCESS, "Welcome back, %s".formatted(buyer.name()));
             response.sendRedirect(request.getContextPath() + "/");
         } else {
             request.setAttribute(ERROR, "Invalid email or password");

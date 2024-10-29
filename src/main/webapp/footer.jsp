@@ -3,9 +3,6 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-lg-3 p-b-50">
-            </div>
-
-            <div class="col-sm-6 col-lg-3 p-b-50">
                 <h4 class="stext-301 cl0 p-b-30">
                     GET IN TOUCH
                 </h4>
@@ -19,12 +16,11 @@
 
         <div class="p-t-40">
             <p class="stext-107 cl6 txt-center">
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 Copyright &copy;<script>
-                    document.write(new Date().getFullYear());
-                </script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by
+                document.write(new Date().getFullYear());
+            </script>
+                All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by
                 Mohamed Saber & Abdelrahman Elmohandes & Mina Ashraf & Mohamed Yasser
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
             </p>
         </div>
     </div>

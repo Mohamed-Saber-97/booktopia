@@ -46,19 +46,32 @@ public class AdminController {
     }
 
     @GetMapping("/add-category")
-    public String addCategory(Model model) {
+    public String addCategory(Model model, HttpSession session) {
         model.addAttribute(PAGE_TITLE, "Add Category");
+        try {
+            if (session.getAttribute(SUCCESS) != null) {
+                model.addAttribute(SUCCESS, session.getAttribute(SUCCESS));
+                session.removeAttribute(SUCCESS);
+            }
+            if (session.getAttribute(ERROR) != null) {
+                model.addAttribute(ERROR, session.getAttribute(ERROR));
+                session.removeAttribute(ERROR);
+            }
+        } catch (Exception e) {
+
+        }
         return "add-category";
     }
 
     @PostMapping("/add-category")
-    public String addCategory(@ModelAttribute CategoryDto categoryDto, Model model) {
+    public String addCategory(@ModelAttribute CategoryDto categoryDto, Model model, HttpSession session) {
         try {
             categoryService.save(categoryDto);
             model.addAttribute(PAGE_TITLE, "Categories");
+            session.setAttribute(SUCCESS, "Category Added Successfully");
             return "redirect:/admins/categories";
         } catch (Exception e) {
-            model.addAttribute(ERROR, "Error while adding category");
+            session.setAttribute(ERROR, "Error while adding category");
             model.addAttribute(PAGE_TITLE, "Add Category");
             return "add-category";
         }
@@ -93,7 +106,10 @@ public class AdminController {
 
     @GetMapping("/books")
     public String books(Model model) {
-        List<ProductDto> productDtos = productService.search(List.of(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()), 0, 16);
+        List<ProductDto> productDtos = productService.search(List.of(Optional.empty(),
+                                                                     Optional.empty(),
+                                                                     Optional.empty(),
+                                                                     Optional.empty()), 0, 16);
         List<CategoryDto> categoryDtos = categoryService.findAllAvailableCategories();
         model.addAttribute(PAGE_TITLE, "Books");
         model.addAttribute(PRODUCTS, productDtos);
@@ -111,7 +127,9 @@ public class AdminController {
 
     @PostMapping("/add-book")
     @Transactional
-    public String addBook(@ModelAttribute NewProductDto newProductDto, HttpServletRequest request, Model model) throws ServletException, IOException {
+    public String addBook(@ModelAttribute NewProductDto newProductDto,
+                          HttpServletRequest request,
+                          Model model) throws ServletException, IOException {
 //        Product newProduct = newProductMapper.toEntity(newProductDto);
         Map<String, String> errors = validatorUtil.validateAddBook(request, newProductDto);
         if (!errors.isEmpty()) {
@@ -159,7 +177,9 @@ public class AdminController {
 
     @PostMapping("/edit-book")
     @Transactional
-    public String editBook(@ModelAttribute ProductDto productDto, HttpServletRequest request, Model model) throws ServletException, IOException {
+    public String editBook(@ModelAttribute ProductDto productDto,
+                           HttpServletRequest request,
+                           Model model) throws ServletException, IOException {
         Map<String, String> errors = validatorUtil.validateUpdateBook(request, productDto);
         if (!errors.isEmpty()) {
             model.addAttribute(ERROR, errors.get(ERROR));
@@ -231,7 +251,10 @@ public class AdminController {
     public String buyerOrders(@RequestParam Long p, @RequestParam Long order, Model model) {
         try {
             Buyer buyer = buyerService.findById(p);
-            if (buyer.getOrders().stream().map(Order::getId).noneMatch(id -> id.equals(order))) {
+            if (buyer.getOrders()
+                     .stream()
+                     .map(Order::getId)
+                     .noneMatch(id -> id.equals(order))) {
                 model.addAttribute(ERROR, "Order not found");
                 model.addAttribute(PAGE_TITLE, "Buyer Orders");
                 return "buyer-orders";

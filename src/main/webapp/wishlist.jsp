@@ -29,7 +29,8 @@
                                             <td class="column-1">
                                                 <div class="how-itemcart1">
                                                     <img src="/${item.productImagePath()}" alt="IMG"
-                                                         class="remove-wishlist-item" data-product-id="${item.productId()}">
+                                                         class="remove-wishlist-item"
+                                                         data-product-id="${item.productId()}">
                                                 </div>
                                             </td>
                                             <td class="column-2">${item.productName()}</td>
@@ -39,9 +40,6 @@
                                         </tr>
                                     </c:forEach>
                                 </table>
-                            </div>
-
-                            <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
                             </div>
                         </div>
                     </div>
@@ -76,7 +74,7 @@
 
         function removeWishlistItem(productId) {
             $.ajax({
-                url: "/api/buyer-wishlist/remove/" + ${user.id()}+ "/" + productId,
+                url: "/api/buyer-wishlist/remove/" + ${user.id()}+"/" + productId,
                 type: 'POST',
                 // data: {
                 //     productId: productId,
