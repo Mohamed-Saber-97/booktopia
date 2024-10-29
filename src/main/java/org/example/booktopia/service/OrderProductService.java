@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.booktopia.dtos.OrderProductDto;
 import org.example.booktopia.mapper.OrderProductMapper;
+import org.example.booktopia.model.OrderProduct;
 import org.example.booktopia.repository.OrderProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,12 @@ public class OrderProductService {
 
     public List<OrderProductDto> findAllProductsByBuyerIdAndOrderId(Long buyerId, Long orderId) {
         return orderProductRepository.findAllProductsByBuyerIdAndOrderId(buyerId, orderId)
-                .stream()
-                .map(orderProductMapper::toDto)
-                .toList();
+                                     .stream()
+                                     .map(orderProductMapper::toDto)
+                                     .toList();
+    }
+
+    public OrderProduct save(OrderProduct orderProduct) {
+        return orderProductRepository.save(orderProduct);
     }
 }
