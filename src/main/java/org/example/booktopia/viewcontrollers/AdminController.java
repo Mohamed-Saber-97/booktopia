@@ -28,7 +28,6 @@ import static org.example.booktopia.utils.RequestAttributeUtil.*;
 @RequestMapping("/admins")
 @RequiredArgsConstructor
 public class AdminController {
-    private final AdminService adminService;
     private final ProductService productService;
     private final CategoryService categoryService;
     private final RequestBuilderUtil requestBuilderUtil;
@@ -36,7 +35,6 @@ public class AdminController {
     private final BuyerService buyerService;
     private final BuyerMapper buyerMapper;
     private final BuyerInterestService buyerInterestService;
-    private final BuyerProductService buyerProductService;
     private final OrderService orderService;
 
     @GetMapping("/login")
@@ -68,10 +66,10 @@ public class AdminController {
         try {
             categoryService.save(categoryDto);
             model.addAttribute(PAGE_TITLE, "Categories");
-            session.setAttribute(SUCCESS, "Category Added Successfully");
+            model.addAttribute(SUCCESS, "Category Added Successfully");
             return "redirect:/admins/categories";
         } catch (Exception e) {
-            session.setAttribute(ERROR, "Error while adding category");
+            model.addAttribute(ERROR, "Error while adding category");
             model.addAttribute(PAGE_TITLE, "Add Category");
             return "add-category";
         }
@@ -107,9 +105,9 @@ public class AdminController {
     @GetMapping("/books")
     public String books(Model model) {
         List<ProductDto> productDtos = productService.search(List.of(Optional.empty(),
-                                                                     Optional.empty(),
-                                                                     Optional.empty(),
-                                                                     Optional.empty()), 0, 16);
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty()), 0, 16);
         List<CategoryDto> categoryDtos = categoryService.findAllAvailableCategories();
         model.addAttribute(PAGE_TITLE, "Books");
         model.addAttribute(PRODUCTS, productDtos);
@@ -264,9 +262,9 @@ public class AdminController {
         try {
             Buyer buyer = buyerService.findById(p);
             if (buyer.getOrders()
-                     .stream()
-                     .map(Order::getId)
-                     .noneMatch(id -> id.equals(order))) {
+                    .stream()
+                    .map(Order::getId)
+                    .noneMatch(id -> id.equals(order))) {
                 model.addAttribute(ERROR, "Order not found");
                 model.addAttribute(PAGE_TITLE, "Buyer Orders");
                 return "buyer-orders";
