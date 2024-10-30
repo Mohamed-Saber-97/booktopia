@@ -36,13 +36,15 @@ class CartItemControllerTest {
         Long buyerId = 1L;
         Long productId = 2L;
         Integer quantity = 3;
+        String expectedMessage = "Product added to cart";
 
         // Mock the service method
-        doNothing().when(cartItemService).addCartItem(buyerId, productId, quantity);
+        when(cartItemService.addCartItem(buyerId, productId, quantity)).thenReturn(expectedMessage);
 
         ResponseEntity<?> response = cartItemController.addCartItem(buyerId, productId, quantity);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(expectedMessage, response.getBody());
         verify(cartItemService).addCartItem(buyerId, productId, quantity); // Verify service method was called
     }
 
@@ -91,13 +93,15 @@ class CartItemControllerTest {
     void removeCartItem_withValidIds_shouldReturnNoContent() {
         Long buyerId = 1L;
         Long productId = 2L;
+        String expectedMessage = "Product removed from cart";
 
         // Mock the service method
-        doNothing().when(cartItemService).removeCartItem(buyerId, productId);
+        when(cartItemService.removeCartItem(buyerId, productId)).thenReturn(expectedMessage);
 
         ResponseEntity<?> response = cartItemController.removeCartItem(buyerId, productId);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(expectedMessage, response.getBody());
         verify(cartItemService).removeCartItem(buyerId, productId); // Verify service method was called
     }
 
@@ -105,13 +109,15 @@ class CartItemControllerTest {
     void incrementProductQuantity_withValidIds_shouldReturnOk() {
         Long buyerId = 1L;
         Long productId = 2L;
+        Integer expectedQuantity = 4;
 
         // Mock the service method
-        doNothing().when(cartItemService).incrementProductQuantity(buyerId, productId);
+        when(cartItemService.incrementProductQuantity(buyerId, productId)).thenReturn(expectedQuantity);
 
         ResponseEntity<?> response = cartItemController.incrementProductQuantity(buyerId, productId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedQuantity, response.getBody());
         verify(cartItemService).incrementProductQuantity(buyerId, productId); // Verify service method was called
     }
 
@@ -119,13 +125,15 @@ class CartItemControllerTest {
     void decrementProductQuantity_withValidIds_shouldReturnOk() {
         Long buyerId = 1L;
         Long productId = 2L;
+        Integer expectedQuantity = 2;
 
         // Mock the service method
-        doNothing().when(cartItemService).decrementProductQuantity(buyerId, productId);
+        when(cartItemService.decrementProductQuantity(buyerId, productId)).thenReturn(expectedQuantity);
 
         ResponseEntity<?> response = cartItemController.decrementProductQuantity(buyerId, productId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedQuantity, response.getBody());
         verify(cartItemService).decrementProductQuantity(buyerId, productId); // Verify service method was called
     }
 

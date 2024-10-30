@@ -3,6 +3,8 @@ package org.example.booktopia.controller;
 import org.example.booktopia.dtos.CategoryDto;
 import org.example.booktopia.dtos.ProductDto;
 import org.example.booktopia.mapper.ProductMapper;
+import org.example.booktopia.mapper.ProductMapperImpl;
+import org.example.booktopia.model.Product;
 import org.example.booktopia.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,8 +29,8 @@ class ProductControllerTest {
     @InjectMocks
     private ProductController productController;
 
+    @Mock
     private ProductMapper productMapper;
-
 
     @BeforeEach
     void setUp() {
@@ -124,16 +126,22 @@ class ProductControllerTest {
 
     @Test
     void testSaveProduct() {
+        // Arrange
         ProductDto productDto = new ProductDto(null, "Product7", "Description7", "Author7",
                 "ISBN7", LocalDate.now(), BigDecimal.TEN, 11,
                 "/image7.jpg", new CategoryDto(7L, "Fantasy"));
         ProductDto savedProductDto = new ProductDto(7L, "Product7", "Description7", "Author7",
                 "ISBN7", LocalDate.now(), BigDecimal.TEN, 11, "/image7.jpg", new CategoryDto(7L, "Fantasy"));
 
-        when(productService.save(productMapper.toEntity(productDto))).thenReturn(savedProductDto);
+        // Mocking behavior
+        Product productToSave = new Product(); // Create an empty Product object or use a mapper if necessary
+        when(productMapper.toEntity(productDto)).thenReturn(productToSave);
+        when(productService.save(productToSave)).thenReturn(savedProductDto);
 
+        // Act
         ResponseEntity<ProductDto> response = productController.saveProduct(productDto);
 
+        // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(savedProductDto, response.getBody());
     }

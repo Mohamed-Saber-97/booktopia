@@ -29,29 +29,43 @@ class BuyerWishlistControllerTest {
     void addProductToWishlist_withValidIds_shouldReturnCreated() {
         Long buyerId = 1L;
         Long productId = 2L;
+        String expectedMessage = "Product added to wishlist";
 
-        // Mock the service method to do nothing
-        doNothing().when(buyerWishlistService).addProductToWishlist(buyerId, productId);
+        // Mock the service method to return the expected message
+        when(buyerWishlistService.addProductToWishlist(buyerId, productId)).thenReturn(expectedMessage);
 
+        // Call the controller method
         ResponseEntity<?> response = buyerWishlistController.addProductToWishlist(buyerId, productId);
 
+        // Verify the response status and body
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        verify(buyerWishlistService).addProductToWishlist(buyerId, productId); // Verify service method was called
+        assertEquals(expectedMessage, response.getBody());
+
+        // Verify that the service method was called with correct parameters
+        verify(buyerWishlistService).addProductToWishlist(buyerId, productId);
     }
+
 
     @Test
-    void removeProductFromWishlist_withValidIds_shouldReturnNoContent() {
+    void removeProductFromWishlist_withValidIds_shouldReturnOk() {
         Long buyerId = 1L;
         Long productId = 2L;
+        String expectedMessage = "Product removed from wishlist";
 
-        // Mock the service method to do nothing
-        doNothing().when(buyerWishlistService).removeProductFromWishlist(buyerId, productId);
+        // Mock the service method to return the expected message
+        when(buyerWishlistService.removeProductFromWishlist(buyerId, productId)).thenReturn(expectedMessage);
 
+        // Call the controller method
         ResponseEntity<?> response = buyerWishlistController.removeProductFromWishlist(buyerId, productId);
 
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(buyerWishlistService).removeProductFromWishlist(buyerId, productId); // Verify service method was called
+        // Verify the response status and body
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedMessage, response.getBody());
+
+        // Verify that the service method was called with correct parameters
+        verify(buyerWishlistService).removeProductFromWishlist(buyerId, productId);
     }
+
 
     @Test
     void addProductToWishlist_whenServiceThrowsException_shouldReturnBadRequest() {
