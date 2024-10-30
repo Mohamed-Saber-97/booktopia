@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.booktopia.controller.PaymobController;
 import org.example.booktopia.dtos.BuyerDto;
 import org.example.booktopia.dtos.OrderDto;
 import org.example.booktopia.dtos.OrderProductDto;
@@ -36,7 +35,6 @@ public class BuyerController {
     private final BuyerService buyerService;
     private final CategoryService categoryService;
     private final UpdateUserSession updateUserSession;
-    private final PaymobController paymobController;
     private final OrderService orderService;
     private final OrderProductService orderProductService;
     private final BuyerProductService buyerProductService;
@@ -64,9 +62,13 @@ public class BuyerController {
     }
 
     @GetMapping("/cart")
-    public String getCart(HttpServletRequest request, Model model) {
+    public String getCart(HttpServletRequest request, Model model, HttpSession session) {
         updateUserSession.updateUserSession(request);
         model.addAttribute(PAGE_TITLE, "Cart");
+        if (session.getAttribute(ERROR) != null) {
+            model.addAttribute(ERROR, session.getAttribute(ERROR));
+            session.removeAttribute(ERROR);
+        }
         return "cart";
     }
 
@@ -78,12 +80,16 @@ public class BuyerController {
     }
 
     @GetMapping("/orders")
-    public String getOrders(HttpServletRequest request, Model model) {
+    public String getOrders(HttpServletRequest request, Model model, HttpSession session) {
         updateUserSession.updateUserSession(request);
         model.addAttribute(PAGE_TITLE, "Orders");
         List<OrderDto> orderDtos = buyerService.getOrdersByBuyerId(((BuyerDto) request.getSession()
                                                                                       .getAttribute(USER)).id());
         model.addAttribute(ORDERS, orderDtos);
+        if (session.getAttribute(SUCCESS) != null) {
+            model.addAttribute(SUCCESS, session.getAttribute(SUCCESS));
+            session.removeAttribute(SUCCESS);
+        }
         return "orders";
     }
 
@@ -115,16 +121,12 @@ public class BuyerController {
                 BigDecimal totalBillInteger = new BigDecimal(Double.parseDouble(totalBill));
                 Request stripeRequest = new Request(totalBillInteger, buyerDto.email(), "Product");
                 request.setAttribute("stripeRequest", stripeRequest);
-                buyerDto = buyerProductService.checkout(buyerDto.id(), action);
-                session.setAttribute(USER, buyerDto);
-                session.setAttribute(SUCCESS, "Thank you for your purchase!");
                 return "forward:/buyers/payment";
             }
 
         } catch (InsufficientStock | InsufficientFunds e) {
             request.getSession()
                    .setAttribute(ERROR, e.getMessage());
-//            response.sendRedirect(request.getContextPath() + "/buyers/cart");
             return "redirect:/buyers/cart";
         }
         return "redirect:/buyers/orders";

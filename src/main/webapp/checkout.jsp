@@ -24,29 +24,31 @@
         </div>
     </c:when>
     <c:otherwise>
-        <!-- Element with action button when there are items in the cart -->
         <div style="
-            background-color: #ffffff;
-            color: #000000;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        ">
-            Checkout using:
-            <br>
-            <a href="checkout.jsp" style="display: inline-block; margin-top: 10px; text-decoration: none;">
-                <button name="action" value="credit" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                    Credit
-                </button>
-            </a>
-            <br/> <!-- Line break for spacing -->
-            <a href="checkout.jsp" style="display: inline-block; margin-top: 10px; text-decoration: none;">
-                <button name="action" value="stripe" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                    Stripe
-                </button>
-            </a>
+        background-color: #ffffff;
+        color: #000000;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    ">
+            <h2>Checkout</h2>
+            <div style="display: flex; justify-content: center; margin-top: 10px;">
+                <a href="checkout.jsp" style="text-decoration: none; margin-right: 10px;">
+                    <button name="action" value="credit"
+                            class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                        <i class="bi bi-wallet" style="margin-right: 5px;"></i> Wallet
+                    </button>
+                </a>
+                <a href="checkout.jsp" style="text-decoration: none;">
+                    <button name="action" value="stripe"
+                            class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                        <i class="bi bi-credit-card" style="margin-right: 5px;"></i> Card
+                    </button>
+                </a>
+            </div>
         </div>
+
     </c:otherwise>
 </c:choose>

@@ -79,10 +79,12 @@ async function handleSubmit(e) {
     // redirected to the `return_url`.
     if (error.type === "card_error" || error.type === "validation_error") {
         showMessage(error.message);
+        window.location.href = "/paymentFail"; // Redirect to /paymentFail
+
     } else {
         showMessage("An unexpected error occurred.");
+        window.location.href = "/paymentFail"; // Redirect to /paymentFail
     }
-
     setLoading(false);
 }
 

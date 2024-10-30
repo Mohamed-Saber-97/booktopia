@@ -1,6 +1,58 @@
 <%@include file="/header.jsp" %>
 
+<style>
+    /* Adjust product image container size */
+    .block2 {
+        width: 100%;
+        max-width: 25rem; /* Adjust to control maximum width */
+        margin: 0 auto; /* Center the product block */
+    }
 
+    /* Image container size */
+    .block2-pic {
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .block2-pic img {
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    /* Center the text and adjust padding */
+    .block2-txt {
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    /* Center the product name and price */
+    .block2-txt-child1 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .block2-txt-child1 a {
+        font-size: 1.1rem;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .block2-txt-child1 span {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #555;
+    }
+
+    /* Adjust column size for products */
+    .col-6, .col-md-4, .col-lg-3 {
+        max-width: 280px; /* Adjust this value to control product container width */
+        margin: auto;
+    }
+</style>
 <!-- Slider -->
 <section class="section-slide">
     <div class="wrap-slick1">
@@ -109,7 +161,7 @@
                                             ${interest.name()}
                                     </a>
 
-                                    <span class="stext-105 cl3">
+                                    <span class="stext-105 cl3">$
                                             ${interest.price()}
                                     </span>
                                 </div>

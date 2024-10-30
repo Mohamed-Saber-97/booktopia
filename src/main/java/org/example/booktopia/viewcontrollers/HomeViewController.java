@@ -26,11 +26,7 @@ public class HomeViewController {
     public String home(Model model, HttpServletRequest request) {
         updateUserSession.updateUserSession(request);
         HttpSession session = request.getSession(false);
-//        HttpServletRequest request;
-//        HttpSession session = request.getSession(false);
         model.addAttribute(PAGE_TITLE, "Home");
-//        model.addAttribute(SUCCESS, session.getAttribute(SUCCESS));
-//        session.removeAttribute(SUCCESS);
         List<ProductDto> interests;
         if (session != null && session.getAttribute(BUYER) != null) {
             interests = buyerProductService.getBuyerInterestedProducts(((BuyerDto) session.getAttribute(USER)).id());
@@ -41,6 +37,18 @@ public class HomeViewController {
             interests.addAll(productService.findFirst(16 - interests.size()));
         }
         model.addAttribute(INTERESTS, interests);
+        try {
+            if (session.getAttribute(SUCCESS) != null) {
+                model.addAttribute(SUCCESS, session.getAttribute(SUCCESS));
+                session.removeAttribute(SUCCESS);
+            }
+            if (session.getAttribute(ERROR) != null) {
+                model.addAttribute(ERROR, session.getAttribute(ERROR));
+                session.removeAttribute(ERROR);
+            }
+        }catch (Exception e) {
+
+        }
         return "index";
     }
 }

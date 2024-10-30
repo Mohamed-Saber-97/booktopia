@@ -41,6 +41,18 @@ public class ProfileViewController {
             List<Long> categoryIds = buyerInterestService.findCategoryIdsByBuyerId(buyerId);
             model.addAttribute("interests", categoryIds);
         }
+        try {
+            if (session.getAttribute(SUCCESS) != null) {
+                model.addAttribute(SUCCESS, session.getAttribute(SUCCESS));
+                session.removeAttribute(SUCCESS);
+            }
+            if (session.getAttribute(ERROR) != null) {
+                model.addAttribute(ERROR, session.getAttribute(ERROR));
+                session.removeAttribute(ERROR);
+            }
+        } catch (Exception e) {
+
+        }
         return "profile";
     }
 
@@ -57,6 +69,7 @@ public class ProfileViewController {
             session.setAttribute(USER, currentAdmin);
             session.setAttribute(ADMIN, YES);
             session.setAttribute(PAGE_TITLE, "Home");
+            session.setAttribute(SUCCESS, "Profile successfully updated");
             return "redirect:/profile";
         }
         if (isBuyer) {
@@ -64,6 +77,7 @@ public class ProfileViewController {
             session.setAttribute(USER, currentBuyer);
             session.setAttribute(BUYER, YES);
             session.setAttribute(PAGE_TITLE, "Home");
+            session.setAttribute(SUCCESS, "Profile successfully updated");
             return "redirect:/profile";
         }
         return "redirect:/profile";
